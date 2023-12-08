@@ -15,6 +15,6 @@ namespace ePadel.Model
 
         public int BrojTerena { get; set; }
 
-        public decimal Cena { get; set; }
+        public decimal Cijena { get; set; }
     }
 }

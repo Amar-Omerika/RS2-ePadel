@@ -4,22 +4,22 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ePadel.Controllers
 {
-    [ApiController]
-    [Route("[controller]")]
-    public class PadelTerenController : ControllerBase
-    {
+    //[ApiController]
+    //[Route("[controller]")]
+    //public class PadelTerenController : ControllerBase
+    //{
 
-        private readonly IPadelTerenService _padelTerenService;
+    //    private readonly IPadelTerenService _padelTerenService;
 
-        public PadelTerenController(IPadelTerenService padelTerenService)
-        {
-          _padelTerenService = padelTerenService;
-        }
+    //    public PadelTerenController(IPadelTerenService padelTerenService)
+    //    {
+    //      _padelTerenService = padelTerenService;
+    //    }
 
-        [HttpGet()]
-        public IEnumerable<PadelTeren> Get()
-        {
-            return _padelTerenService.Get();
-        }
-    }
+    //    [HttpGet()]
+    //    public IEnumerable<PadelTeren> Get()
+    //    {
+    //        return _padelTerenService.Get();
+    //    }
+    //}
 }
