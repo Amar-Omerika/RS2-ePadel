@@ -1,6 +1,10 @@
 ﻿using AutoMapper;
+using ePadel.Model;
 using ePadel.Model.Requests.KorisnikRequest;
+using ePadel.Model.SearchObjects;
+using ePadel.Services.BaseService;
 using ePadel.Services.Database;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,69 +14,98 @@ using System.Threading.Tasks;
 
 namespace ePadel.Services.KorisnikService
 {
-    public class KorisnikService : IKorisnikService
+    public class KorisnikService : BaseCRUDService<Model.Korisnik, Database.Korisnik, BaseSearchObject, KorisnikInsertRequest, KorisnikUpdateRequest>, IKorisnikService
     {
-        IB190069_ePadelContext _context;
-        public IMapper _mapper { get;set; }
-        public KorisnikService(IB190069_ePadelContext context,IMapper mapper)
+        public KorisnikService(IB190069_ePadelContext context, IMapper mapper) : base(context, mapper)
         {
-            _context = context;
-            _mapper= mapper;
-        }
-        public List<Model.Korisnik> Get()
-        {
-            var entityList= _context.Korisniks.ToList();
-            //var list = new List<Model.Korisnik>();
-            //foreach (var item in entityList) {
-            //  list.Add(new Model.Korisnik() { Email = item.Email, Ime = item.Ime, KorisnickoIme = item.KorisnickoIme,Prezime=item.Prezime,KorisnikId=item.KorisnikId});
-            //}
-            //return list;
-            return _mapper.Map<List<Model.Korisnik>>(entityList);
-        }
-        public Model.Korisnik Insert(KorisnikInsertRequest request)
-        {
-            var entity = new Korisnik();
-            _mapper.Map(request, entity);
 
-            entity.LozinkaSalt = GenerateSalt();
-            entity.LozinkaHash = GenerateHash(entity.LozinkaSalt,request.Password);
+        }
+        public override IQueryable<ePadel.Services.Database.Korisnik> AddInclude(IQueryable<ePadel.Services.Database.Korisnik> query, BaseSearchObject search = null)
+        {
+            query = query.Include(x => x.KorisnikUloges);
+            return base.AddInclude(query, search);
+        }
 
-            _context.Korisniks.Add(entity);
+        public override IQueryable<ePadel.Services.Database.Korisnik> AddFilter(IQueryable<ePadel.Services.Database.Korisnik> query, BaseSearchObject search = null)
+        {
+            var filteredQuery = base.AddFilter(query, search);
+
+            if (!string.IsNullOrWhiteSpace(search?.Tekst))
+                filteredQuery = filteredQuery.Where(x => x.Ime.ToLower().Contains(search.Tekst.ToLower()) || x.Prezime.ToLower().Contains(search.Tekst.ToLower()) || x.KorisnickoIme.ToLower().Contains(search.Tekst.ToLower()));
+            return filteredQuery;
+        }
+
+        public override void BeforeInsert(KorisnikInsertRequest insert, Database.Korisnik entity)
+        {
+            var salt = Helper.PasswordHelper.GenerateSalt();
+            entity.LozinkaSalt = salt;
+            entity.LozinkaHash = Helper.PasswordHelper.GenerateHash(salt, insert.Password);
+            base.BeforeInsert(insert, entity);
+        }
+
+        public override Model.Korisnik Insert(KorisnikInsertRequest request)
+        {
+            var korisnici = _context.Set<Database.Korisnik>().AsQueryable();
+
+            if (korisnici.Any(x => x.KorisnickoIme == request.KorisnickoIme))
+            {
+                throw new KorisnikException("Korisnicko ime vec postoji", "Postoji korisnik sa tim korisnickim imenom!");
+            }
+
+            var entity = base.Insert(request);
+
+            foreach (var role in request.Uloge)
+            {
+                Database.KorisnikUloge korisnikUloge = new Database.KorisnikUloge
+                {
+                    KorisnikId = entity.KorisnikId,
+                    UlogaId = role
+                };
+                _context.KorisnikUloges.Add(korisnikUloge);
+            }
+
             _context.SaveChanges();
 
-            return _mapper.Map<Model.Korisnik>(entity);
+            return entity;
         }
-        public static string GenerateHash(string salt, string lozinka)
+        public override Model.Korisnik Update(int id, KorisnikUpdateRequest request)
         {
-            byte[] src = Convert.FromBase64String(salt);
-            byte[] bytes = Encoding.Unicode.GetBytes(lozinka);
-            byte[] dst = new byte[src.Length + bytes.Length];
-
-            System.Buffer.BlockCopy(src, 0, dst, 0, src.Length);
-            System.Buffer.BlockCopy(bytes, 0, dst, src.Length, bytes.Length);
-
-            HashAlgorithm algorithm = HashAlgorithm.Create("SHA1");
-            byte[] inArray = algorithm.ComputeHash(dst);
-            return Convert.ToBase64String(inArray);
+            var korisnikSaKorisnickimImenom = _context.Korisniks.Where(x => x.KorisnikId != id && x.KorisnickoIme == request.KorisnickoIme).ToList();
+            if (korisnikSaKorisnickimImenom != null && korisnikSaKorisnickimImenom.Count > 0)
+            {
+                throw new KorisnikException("Korisničko ime", "Korisničko ime već postoji!");
+            }
+            return base.Update(id, request);
         }
-
-        public static string GenerateSalt()
+        public Model.Korisnik GetByUsername(string korisnickoIme)
         {
-            var buf = new byte[16];
-            (new RNGCryptoServiceProvider()).GetBytes(buf);
-            return Convert.ToBase64String(buf);
+            var korisnik = _context.Korisniks.Where(x => x.KorisnickoIme == korisnickoIme).FirstOrDefault();
+            return _mapper.Map<Model.Korisnik>(korisnik);
         }
-
-        public Model.Korisnik Update(int id,KorisnikUpdateRequest request)
+        public override Model.Korisnik Delete(int id)
         {
             var entity = _context.Korisniks.Find(id);
+            var korisnikUloge = _context.KorisnikUloges.Where(e => e.KorisnikId == id).ToList();
 
-            //mapira sa objekta request na nas entitet
-            _mapper.Map(request, entity);
+            if (korisnikUloge != null && korisnikUloge.Any())
+            {
+                var uloga = _context.KorisnikUloges.Where(e => e.KorisnikId == id).ToList();
+                foreach (var ulogaUloge in uloga)
+                {
+                    _context.KorisnikUloges.Remove(ulogaUloge);
+                }
+                _context.Korisniks.Remove(entity);
+            }
+            else if (entity == null)
+            {
+                return null;
+            }
+            else
+            {
+                _context.Korisniks.Remove(entity);
+            }
 
             _context.SaveChanges();
-
-            //ovdje vratimo samo nas entitet
             return _mapper.Map<Model.Korisnik>(entity);
         }
     }

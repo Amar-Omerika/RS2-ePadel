@@ -1,6 +1,9 @@
 using ePadel.Model;
 using ePadel.Model.Requests.KorisnikRequest;
+using ePadel.Model.SearchObjects;
+using ePadel.Services.BaseService;
 using ePadel.Services.KorisnikService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Storage;
 
@@ -8,25 +11,23 @@ namespace ePadel.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class KorisnikController : ControllerBase
+    public class KorisnikController : BaseCRUDController<Model.Korisnik, BaseSearchObject, KorisnikInsertRequest, KorisnikUpdateRequest>
     {
-
-        private readonly IKorisnikService _service;
-
-        public KorisnikController(IKorisnikService service)
+        protected IKorisnikService _service { get; set; }
+        public KorisnikController(IKorisnikService service) : base(service)
         {
-            _service = service;
         }
 
-        [HttpGet()]
-        public IEnumerable<Model.Korisnik> Get()
+        //[Authorize]
+        public override Model.Korisnik Insert([FromBody] KorisnikInsertRequest request)
         {
-            return _service.Get();
+            return base.Insert(request);
         }
-        [HttpPost]
-        public Model.Korisnik Insert(KorisnikInsertRequest request) { return _service.Insert(request); }
 
-        [HttpPut("{id}")]
-        public Model.Korisnik Update(int id, KorisnikUpdateRequest request) { return _service.Update(id,request); }
+        //[Authorize]
+        public override Model.Korisnik Update(int id, [FromBody] KorisnikUpdateRequest request)
+        {
+            return base.Update(id, request);
+        }
     }
 }

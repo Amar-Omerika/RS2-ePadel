@@ -13,5 +13,6 @@ namespace ePadel.Model.Requests.KorisnikRequest
         public string? Email { get; set; }
         public string? BrTelefona { get; set; }
         public bool? Aktivan { get; set; }
+        public string? KorisnickoIme { get; set; }
     }
 }
