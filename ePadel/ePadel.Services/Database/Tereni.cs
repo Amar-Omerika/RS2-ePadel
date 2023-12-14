@@ -5,11 +5,6 @@ namespace ePadel.Services.Database
 {
     public partial class Tereni
     {
-        public Tereni()
-        {
-            Rezervacijes = new HashSet<Rezervacije>();
-        }
-
         public int TerenId { get; set; }
         public string? Naziv { get; set; }
         public int? BrojTerena { get; set; }

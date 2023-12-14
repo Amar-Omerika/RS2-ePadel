@@ -5,11 +5,7 @@ namespace ePadel.Services.Database
 {
     public partial class Uloga
     {
-        public Uloga()
-        {
-            KorisnikUloges = new HashSet<KorisnikUloge>();
-        }
-
+ 
         public int UlogaId { get; set; }
         public string? Naziv { get; set; }
 

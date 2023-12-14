@@ -5,10 +5,6 @@ namespace ePadel.Services.Database
 {
     public partial class Termini
     {
-        public Termini()
-        {
-            Rezervacijes = new HashSet<Rezervacije>();
-        }
 
         public int TerminId { get; set; }
         public DateTime? Datum { get; set; }

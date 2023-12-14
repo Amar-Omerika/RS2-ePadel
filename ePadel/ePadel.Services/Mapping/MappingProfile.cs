@@ -11,8 +11,8 @@ namespace ePadel.Services.Mapping
     {
         public MappingProfile() {
             CreateMap<Database.Korisnik, Model.Korisnik>();
-            CreateMap<Model.Requests.KorisnikRequest.KorisnikInsertRequest, Database.Korisnik>();
-            CreateMap<Model.Requests.KorisnikRequest.KorisnikUpdateRequest, Database.Korisnik>();
+            CreateMap<Database.KorisnikUloge, Model.KorisnikUloge>();
+            CreateMap<Database.Uloga, Model.Uloga>();
         }
        
     }

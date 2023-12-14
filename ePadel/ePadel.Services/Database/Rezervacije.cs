@@ -5,12 +5,7 @@ namespace ePadel.Services.Database
 {
     public partial class Rezervacije
     {
-        public Rezervacije()
-        {
-            Ocijenes = new HashSet<Ocijene>();
-            Plaćanjas = new HashSet<Plaćanja>();
-        }
-
+  
         public int RezervacijaId { get; set; }
         public int? KorisnikId { get; set; }
         public int? TerenId { get; set; }
@@ -21,7 +16,7 @@ namespace ePadel.Services.Database
         public virtual Korisnik? Korisnik { get; set; }
         public virtual Tereni? Teren { get; set; }
         public virtual Termini? Termin { get; set; }
-        public virtual ICollection<Ocijene> Ocijenes { get; set; }
-        public virtual ICollection<Plaćanja> Plaćanjas { get; set; }
+        public virtual ICollection<Ocijene>? Ocijenes { get; set; }
+        public virtual ICollection<Plaćanja>? Plaćanjas { get; set; }
     }
 }
