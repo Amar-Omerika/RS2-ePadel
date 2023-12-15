@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace ePadel.Model
 {
-    public partial class PadelTeren
+    public class Tereni
     {
         public int TerenID { get; set; }
 
-        public string Naziv { get; set; }
+        public string? Naziv { get; set; }
 
         public int BrojTerena { get; set; }
 

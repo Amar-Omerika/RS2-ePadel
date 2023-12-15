@@ -9,6 +9,6 @@ namespace ePadel.Services.PadelTerenService
 {
     public  interface IPadelTerenService
     {
-        IList<PadelTeren> Get();
+        IList<Tereni> Get();
     }
 }

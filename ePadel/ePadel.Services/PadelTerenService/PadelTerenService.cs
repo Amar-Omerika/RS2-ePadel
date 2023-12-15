@@ -16,10 +16,10 @@ namespace ePadel.Services.PadelTerenService
         {
             _context = context;
         }
-        List<Model.PadelTeren> padelTereni = new List<Model.PadelTeren>() { new PadelTeren() { TerenID=1,
+        List<Model.Tereni> padelTereni = new List<Model.Tereni>() { new Model.Tereni() { TerenID=1,
             Naziv="TestniPadel"
         }};
-        public IList<PadelTeren> Get()
+        public IList<Model.Tereni> Get()
         {
             //var list = _context.Plaćanjas.ToList();
             return padelTereni;
