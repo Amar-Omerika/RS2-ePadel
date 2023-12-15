@@ -1,7 +1,7 @@
 using ePadel.Services.AuthService;
 using ePadel.Services.Database;
 using ePadel.Services.KorisnikService;
-using ePadel.Services.PadelTerenService;
+using ePadel.Services.TerenService;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,9 +9,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 //here we add dependency injection
-builder.Services.AddTransient<IPadelTerenService, PadelTerenService>();
 builder.Services.AddTransient<IKorisnikService, KorisnikService>();
 builder.Services.AddTransient<IAuthService, AuthService>();
+builder.Services.AddTransient<ITerenService, TerenService>();
 
 
 

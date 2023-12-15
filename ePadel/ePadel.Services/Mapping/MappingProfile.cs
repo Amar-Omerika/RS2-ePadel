@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ePadel.Model.Requests.KorisnikRequest;
 using ePadel.Model.Requests.KorisnikUlogeRequest;
+using ePadel.Model.Requests.TerenRequest;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,11 +16,16 @@ namespace ePadel.Services.Mapping
             CreateMap<Database.Korisnik, Model.Korisnik>();
             CreateMap<Database.KorisnikUloge, Model.KorisnikUloge>();
             CreateMap<Database.Uloga, Model.Uloga>();
+            CreateMap<Database.Tereni, Model.Tereni>();
+
 
 
             CreateMap<KorisnikInsertRequest, Database.Korisnik>();
             CreateMap<KorisnikUpdateRequest, Database.Korisnik>();
             CreateMap<KorisnikUlogeInsertRequest, Database.KorisnikUloge>();
+
+            CreateMap<TerenInsertRequest, Database.Tereni>();
+            CreateMap<TerenUpdateRequest, Database.Tereni>();
         }
        
     }
