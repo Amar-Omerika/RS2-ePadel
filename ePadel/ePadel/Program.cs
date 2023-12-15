@@ -1,3 +1,4 @@
+using ePadel.Services.AuthService;
 using ePadel.Services.Database;
 using ePadel.Services.KorisnikService;
 using ePadel.Services.PadelTerenService;
@@ -10,6 +11,8 @@ var builder = WebApplication.CreateBuilder(args);
 //here we add dependency injection
 builder.Services.AddTransient<IPadelTerenService, PadelTerenService>();
 builder.Services.AddTransient<IKorisnikService, KorisnikService>();
+builder.Services.AddTransient<IAuthService, AuthService>();
+
 
 
 
