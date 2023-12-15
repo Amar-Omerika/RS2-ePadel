@@ -63,13 +63,13 @@ namespace ePadel.Services.Database
             new KorisnikUloge()
             {
                 KorisnikUlogeId = 1,
-                UlogaId = 1, // Postavite odgovarajući ID uloge
+                UlogaId = 2, // Postavite odgovarajući ID uloge
                 KorisnikId = 1 // Postavite odgovarajući ID korisnika
             },
                new KorisnikUloge()
             {
                 KorisnikUlogeId = 2,
-                UlogaId = 2, // Postavite odgovarajući ID uloge
+                UlogaId = 1, // Postavite odgovarajući ID uloge
                 KorisnikId = 2 // Postavite odgovarajući ID korisnika
             }
             });

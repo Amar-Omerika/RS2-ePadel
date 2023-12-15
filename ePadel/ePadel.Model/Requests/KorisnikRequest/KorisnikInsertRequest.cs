@@ -16,6 +16,7 @@ namespace ePadel.Model.Requests.KorisnikRequest
         public bool? Aktivan { get; set; }
         public  string? Password { get; set; }
         public string? PasswordPotvrda { get; set; }
+        public string? Slika { get; set; }
         public List<int>? Uloge { get; set; } = new List<int>();
     }
 }
