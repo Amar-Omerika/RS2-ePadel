@@ -16,5 +16,7 @@ namespace ePadel.Model
         public int BrojTerena { get; set; }
 
         public decimal Cijena { get; set; }
+
+        public virtual ICollection<TipTerena>? TipTerenas { get; set; }
     }
 }
