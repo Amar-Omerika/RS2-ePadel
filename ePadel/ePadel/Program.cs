@@ -2,6 +2,7 @@ using ePadel.Services.AuthService;
 using ePadel.Services.Database;
 using ePadel.Services.KorisnikService;
 using ePadel.Services.TerenService;
+using ePadel.Services.TipTerenaService;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,6 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddTransient<IKorisnikService, KorisnikService>();
 builder.Services.AddTransient<IAuthService, AuthService>();
 builder.Services.AddTransient<ITerenService, TerenService>();
+builder.Services.AddTransient<ITipTerenaService, TipTerenaService>();
 
 
 

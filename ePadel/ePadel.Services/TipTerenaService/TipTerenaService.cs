@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
-using ePadel.Model;
 using ePadel.Model.Requests.TerenRequest;
+using ePadel.Model;
+using ePadel.Model.Requests.TipTerenaRequest;
 using ePadel.Model.SearchObjects;
 using ePadel.Services.BaseService;
 using ePadel.Services.Database;
@@ -10,14 +11,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ePadel.Services.TerenService
+namespace ePadel.Services.TipTerenaService
 {
-    public class TerenService : BaseCRUDService<Model.Tereni, Database.Tereni, BaseSearchObject, TerenInsertRequest, TerenUpdateRequest>, ITerenService
+    public class TipTerenaService : BaseCRUDService<Model.TipTerena, Database.TipTerena, BaseSearchObject, TipTerenaInsertRequest, TipTerenaUpdateRequest>, ITipTerenaService
     {
-        public TerenService(IB190069_ePadelContext context, IMapper mapper) : base(context, mapper)
+        public TipTerenaService(IB190069_ePadelContext context, IMapper mapper) : base(context, mapper)
         {
         }
-        public IQueryable<ePadel.Services.Database.Tereni> AddFilter(IQueryable<ePadel.Services.Database.Tereni> query, BaseSearchObject search = null)
+
+        public IQueryable<ePadel.Services.Database.TipTerena> AddFilter(IQueryable<ePadel.Services.Database.TipTerena> query, BaseSearchObject search = null)
         {
             var filteredQuery = base.AddFilter(query, search);
 
@@ -25,11 +27,11 @@ namespace ePadel.Services.TerenService
                 filteredQuery = filteredQuery.Where(x => x.Naziv.ToLower().Contains(search.Tekst.ToLower()));
             return filteredQuery;
         }
-        public override Model.Tereni Insert(TerenInsertRequest request)
+        public override Model.TipTerena Insert(TipTerenaInsertRequest request)
         {
             try
             {
-                var tereni = _context.Set<Database.Tereni>().AsQueryable();
+                var tereni = _context.Set<Database.TipTerena>().AsQueryable();
 
                 var entity = base.Insert(request);
 
@@ -40,22 +42,23 @@ namespace ePadel.Services.TerenService
             catch (Exception ex)
             {
 
-                throw new  UniversalException("Error",$"{ex.Message}");
+                throw new UniversalException("Error", $"{ex.Message}");
             }
         }
-        public override Model.Tereni Update(int id, TerenUpdateRequest request)
+        public override Model.TipTerena Update(int id, TipTerenaUpdateRequest request)
         {
             try
             {
-                var terenSaImenom = _context.Terenis.Where(x => x.TerenId != id && x.Naziv == request.Naziv).ToList();
+                var tipTerena = _context.TipTerenas.Where(x => x.TipTerenaId != id && x.Naziv == request.Naziv).ToList();
                 return base.Update(id, request);
             }
             catch (Exception ex)
             {
 
                 throw new UniversalException("Error", $"{ex.Message}");
-            }       
-      
+            }
+
         }
+
     }
 }

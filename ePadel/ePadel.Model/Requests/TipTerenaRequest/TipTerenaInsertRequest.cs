@@ -5,18 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ePadel.Model
+namespace ePadel.Model.Requests.TipTerenaRequest
 {
-    public class Tereni
+    public class TipTerenaInsertRequest
     {
-        public int TerenId { get; set; }
-
+        [Required(AllowEmptyStrings = false)]
         public string? Naziv { get; set; }
 
-        public int BrojTerena { get; set; }
+        public string? Slika { get; set; }
 
-        public decimal Cijena { get; set; }
-
-       
     }
 }

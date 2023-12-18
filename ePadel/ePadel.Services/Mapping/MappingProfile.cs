@@ -2,6 +2,7 @@
 using ePadel.Model.Requests.KorisnikRequest;
 using ePadel.Model.Requests.KorisnikUlogeRequest;
 using ePadel.Model.Requests.TerenRequest;
+using ePadel.Model.Requests.TipTerenaRequest;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,6 +31,9 @@ namespace ePadel.Services.Mapping
 
             CreateMap<TerenInsertRequest, Database.Tereni>();
             CreateMap<TerenUpdateRequest, Database.Tereni>();
+
+            CreateMap<TipTerenaInsertRequest, Database.TipTerena>();
+            CreateMap<TipTerenaUpdateRequest, Database.TipTerena>();
         }
        
     }
