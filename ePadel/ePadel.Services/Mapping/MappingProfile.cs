@@ -17,6 +17,10 @@ namespace ePadel.Services.Mapping
             CreateMap<Database.KorisnikUloge, Model.KorisnikUloge>();
             CreateMap<Database.Uloga, Model.Uloga>();
             CreateMap<Database.Tereni, Model.Tereni>();
+            CreateMap<Database.TipTerena, Model.TipTerena>();
+            CreateMap<Database.KorisničkePreferencije, Model.KorisničkePreferencije>();
+
+
 
 
 
