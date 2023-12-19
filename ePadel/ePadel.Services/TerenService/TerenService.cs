@@ -4,6 +4,7 @@ using ePadel.Model.Requests.TerenRequest;
 using ePadel.Model.SearchObjects;
 using ePadel.Services.BaseService;
 using ePadel.Services.Database;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,13 +18,21 @@ namespace ePadel.Services.TerenService
         public TerenService(IB190069_ePadelContext context, IMapper mapper) : base(context, mapper)
         {
         }
-        public IQueryable<ePadel.Services.Database.Tereni> AddFilter(IQueryable<ePadel.Services.Database.Tereni> query, BaseSearchObject search = null)
+
+        public override IQueryable<ePadel.Services.Database.Tereni> AddInclude(IQueryable<ePadel.Services.Database.Tereni> query, BaseSearchObject search = null)
+        {
+            query = query.Include(x => x.TipTerena);
+            return base.AddInclude(query, search);
+        }
+        public override IQueryable<ePadel.Services.Database.Tereni> AddFilter(IQueryable<ePadel.Services.Database.Tereni> query, BaseSearchObject search = null)
         {
             var filteredQuery = base.AddFilter(query, search);
 
             if (!string.IsNullOrWhiteSpace(search?.Tekst))
                 filteredQuery = filteredQuery.Where(x => x.Naziv.ToLower().Contains(search.Tekst.ToLower()));
             return filteredQuery;
+
+           
         }
         public override Model.Tereni Insert(TerenInsertRequest request)
         {

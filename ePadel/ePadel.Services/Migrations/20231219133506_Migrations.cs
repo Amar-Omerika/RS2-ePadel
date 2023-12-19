@@ -78,7 +78,7 @@ namespace ePadel.Services.Migrations
                     TipTerenaID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Naziv = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Slika = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Slika = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -133,7 +133,7 @@ namespace ePadel.Services.Migrations
                 {
                     table.PrimaryKey("PK__Tereni__203D9C3BFA9E8DA5", x => x.TerenID);
                     table.ForeignKey(
-                        name: "FK__Tereni__TipTeren__2E1BDC42",
+                        name: "FK_Tereni_TipTerena_TipTerenaID",
                         column: x => x.TipTerenaID,
                         principalTable: "TipTerena",
                         principalColumn: "TipTerenaID");
@@ -258,7 +258,7 @@ namespace ePadel.Services.Migrations
             migrationBuilder.InsertData(
                 table: "Termini",
                 columns: new[] { "TerminID", "Datum", "VremePočetka", "VremeZavršetka" },
-                values: new object[] { 1, new DateTime(2023, 12, 14, 0, 0, 0, 0, DateTimeKind.Local), new TimeSpan(0, 10, 0, 0, 0), new TimeSpan(0, 12, 0, 0, 0) });
+                values: new object[] { 1, new DateTime(2023, 12, 19, 0, 0, 0, 0, DateTimeKind.Local), new TimeSpan(0, 10, 0, 0, 0), new TimeSpan(0, 12, 0, 0, 0) });
 
             migrationBuilder.InsertData(
                 table: "TipTerena",
@@ -284,8 +284,8 @@ namespace ePadel.Services.Migrations
                 columns: new[] { "KorisnikUlogeId", "KorisnikId", "UlogaId" },
                 values: new object[,]
                 {
-                    { 1, 1, 1 },
-                    { 2, 2, 2 }
+                    { 1, 1, 2 },
+                    { 2, 2, 1 }
                 });
 
             migrationBuilder.InsertData(
@@ -306,7 +306,7 @@ namespace ePadel.Services.Migrations
             migrationBuilder.InsertData(
                 table: "Rezervacije",
                 columns: new[] { "RezervacijaID", "DatumRezervacije", "KorisnikID", "RezervacijaStatus", "TerenID", "TerminID" },
-                values: new object[] { 1, new DateTime(2023, 12, 14, 14, 43, 32, 144, DateTimeKind.Local).AddTicks(2618), 1, "Aktivna", 1, 1 });
+                values: new object[] { 1, new DateTime(2023, 12, 19, 14, 35, 5, 432, DateTimeKind.Local).AddTicks(7618), 1, "Aktivna", 1, 1 });
 
             migrationBuilder.InsertData(
                 table: "Ocijene",

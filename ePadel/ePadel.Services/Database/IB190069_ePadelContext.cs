@@ -169,11 +169,7 @@ namespace ePadel.Services.Database
                 entity.Property(e => e.Cijena).HasColumnType("decimal(18, 0)");
 
                 entity.Property(e => e.TipTerenaId).HasColumnName("TipTerenaID");
-
-                entity.HasOne(d => d.TipTerena)
-                    .WithMany(p => p.Terenis)
-                    .HasForeignKey(d => d.TipTerenaId)
-                    .HasConstraintName("FK__Tereni__TipTeren__2E1BDC42");
+ 
             });
 
             modelBuilder.Entity<TerminStatusi>(entity =>

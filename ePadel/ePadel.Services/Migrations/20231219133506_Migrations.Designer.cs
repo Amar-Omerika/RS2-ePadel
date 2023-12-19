@@ -12,7 +12,7 @@ using ePadel.Services.Database;
 namespace ePadel.Services.Migrations
 {
     [DbContext(typeof(IB190069_ePadelContext))]
-    [Migration("20231214134332_Migrations")]
+    [Migration("20231219133506_Migrations")]
     partial class Migrations
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -156,13 +156,13 @@ namespace ePadel.Services.Migrations
                         {
                             KorisnikUlogeId = 1,
                             KorisnikId = 1,
-                            UlogaId = 1
+                            UlogaId = 2
                         },
                         new
                         {
                             KorisnikUlogeId = 2,
                             KorisnikId = 2,
-                            UlogaId = 2
+                            UlogaId = 1
                         });
                 });
 
@@ -298,7 +298,7 @@ namespace ePadel.Services.Migrations
                         new
                         {
                             RezervacijaId = 1,
-                            DatumRezervacije = new DateTime(2023, 12, 14, 14, 43, 32, 144, DateTimeKind.Local).AddTicks(2618),
+                            DatumRezervacije = new DateTime(2023, 12, 19, 14, 35, 5, 432, DateTimeKind.Local).AddTicks(7618),
                             KorisnikId = 1,
                             RezervacijaStatus = "Aktivna",
                             TerenId = 1,
@@ -389,7 +389,7 @@ namespace ePadel.Services.Migrations
                         new
                         {
                             TerminId = 1,
-                            Datum = new DateTime(2023, 12, 14, 0, 0, 0, 0, DateTimeKind.Local),
+                            Datum = new DateTime(2023, 12, 19, 0, 0, 0, 0, DateTimeKind.Local),
                             VremePočetka = new TimeSpan(0, 10, 0, 0, 0),
                             VremeZavršetka = new TimeSpan(0, 12, 0, 0, 0)
                         });
@@ -433,7 +433,6 @@ namespace ePadel.Services.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Slika")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("TipTerenaId");
@@ -563,9 +562,8 @@ namespace ePadel.Services.Migrations
             modelBuilder.Entity("ePadel.Services.Database.Tereni", b =>
                 {
                     b.HasOne("ePadel.Services.Database.TipTerena", "TipTerena")
-                        .WithMany("Terenis")
-                        .HasForeignKey("TipTerenaId")
-                        .HasConstraintName("FK__Tereni__TipTeren__2E1BDC42");
+                        .WithMany()
+                        .HasForeignKey("TipTerenaId");
 
                     b.Navigation("TipTerena");
                 });
@@ -597,8 +595,6 @@ namespace ePadel.Services.Migrations
             modelBuilder.Entity("ePadel.Services.Database.TipTerena", b =>
                 {
                     b.Navigation("KorisničkePreferencijes");
-
-                    b.Navigation("Terenis");
                 });
 
             modelBuilder.Entity("ePadel.Services.Database.Uloga", b =>

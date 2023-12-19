@@ -18,7 +18,10 @@ namespace ePadel.Model.Requests.TerenRequest
         [Required(AllowEmptyStrings = false)]
         public decimal Cijena { get; set; }
 
+        [Required]
         public int TipTerenaId { get; set; }
+
+
 
     }
 }

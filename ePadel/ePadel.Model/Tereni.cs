@@ -17,6 +17,8 @@ namespace ePadel.Model
 
         public decimal Cijena { get; set; }
 
-       
+        public int? TipTerenaId { get; set; }
+        public virtual TipTerena? TipTerena { get; set; }
+
     }
 }
