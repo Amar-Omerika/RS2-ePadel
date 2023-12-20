@@ -1,7 +1,5 @@
-﻿using ePadel.Model.Requests.KorisnikRequest;
-using ePadel.Model.Requests.TerenRequest;
+﻿using ePadel.Model.Requests.TerenRequest;
 using ePadel.Model.SearchObjects;
-using ePadel.Services.KorisnikService;
 using ePadel.Services.TerenService;
 using Microsoft.AspNetCore.Mvc;
 

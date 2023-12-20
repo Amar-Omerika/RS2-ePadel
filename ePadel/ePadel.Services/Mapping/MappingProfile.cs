@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ePadel.Model.Requests.KorisnikRequest;
 using ePadel.Model.Requests.KorisnikUlogeRequest;
+using ePadel.Model.Requests.RezervacijaRequest;
 using ePadel.Model.Requests.TerenRequest;
 using ePadel.Model.Requests.TipTerenaRequest;
 using System;
@@ -20,6 +21,10 @@ namespace ePadel.Services.Mapping
             CreateMap<Database.Tereni, Model.Tereni>();
             CreateMap<Database.TipTerena, Model.TipTerena>();
             CreateMap<Database.KorisničkePreferencije, Model.KorisničkePreferencije>();
+            CreateMap<Database.Rezervacije, Model.Rezervacije>();
+            CreateMap<Database.RezervacijaStatusi, Model.RezervacijaStatusi>();
+            CreateMap<Database.Termini, Model.Termini>();
+            CreateMap<Database.Ocijene, Model.Ocijene>();
 
 
 
@@ -34,6 +39,9 @@ namespace ePadel.Services.Mapping
 
             CreateMap<TipTerenaInsertRequest, Database.TipTerena>();
             CreateMap<TipTerenaUpdateRequest, Database.TipTerena>();
+
+            CreateMap<RezervacijaInsertRequest, Database.Rezervacije>();
+            CreateMap<RezervacijaUpdateRequest, Database.Rezervacije>();
         }
        
     }

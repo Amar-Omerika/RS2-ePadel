@@ -30,10 +30,10 @@ namespace ePadel.Model.Requests.KorisnikRequest
         [MinLength(8, ErrorMessage = "Lozinka mora sadržavati najmanje 8 karaktera!")]
         public string? Password { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Spol je obavezan.")]
         public string? Spol { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Dominantna ruka je obavezna.")]
         public string? DominantnaRuka { get; set; }
 
         public string? PasswordPotvrda { get; set; }
