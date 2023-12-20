@@ -15,6 +15,8 @@ namespace ePadel.Model
         public string? Email { get; set; }
         public string? BrTelefona { get; set; }
         public bool? Aktivan { get; set; }
+        public string? Spol { get; set; }
+        public string? DominantnaRuka { get; set; }
         public string? Slika { get; set; }
         public virtual ICollection<KorisnikUloge>? KorisnikUloges { get; set; }
 

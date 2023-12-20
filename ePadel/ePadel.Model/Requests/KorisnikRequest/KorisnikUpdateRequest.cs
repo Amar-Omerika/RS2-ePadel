@@ -26,6 +26,10 @@ namespace ePadel.Model.Requests.KorisnikRequest
         [MinLength(4)]
         public string? KorisnickoIme { get; set; }
 
+        public string? Spol { get; set; }
+
+        public string? DominantnaRuka { get; set; }
+
         public bool? Aktivan { get; set; }
     }
 }

@@ -14,6 +14,9 @@ namespace ePadel.Services.Database
         public string? BrTelefona { get; set; }
         public string? LozinkaHash { get; set; }
         public string? LozinkaSalt { get; set; }
+        public string? Spol { get; set; }
+        public string? DominantnaRuka { get; set; }
+
         public bool? Aktivan { get; set; }
 
         public virtual ICollection<KorisnikUloge> KorisnikUloges { get; set; }
