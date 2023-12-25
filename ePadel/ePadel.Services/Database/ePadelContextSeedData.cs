@@ -163,7 +163,7 @@ namespace ePadel.Services.Database
                 {
                     StatusId = 1,
                     Naziv = "Aktivan"
-                }        
+                }
             });
 
             modelBuilder.Entity<RezervacijaStatusi>().HasData(new RezervacijaStatusi[]

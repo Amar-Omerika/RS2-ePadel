@@ -23,6 +23,7 @@ namespace ePadel.Services.PaymentService
                 Amount = iznos * 100,
                 Currency = "EUR",
                 Description = opis,
+                //PaymentMethod = "pm_card_visa",
             };
             var service = new PaymentIntentService();
             var paymentIntent = service.Create(options);

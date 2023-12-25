@@ -12,7 +12,7 @@ using ePadel.Services.Database;
 namespace ePadel.Services.Migrations
 {
     [DbContext(typeof(IB190069_ePadelContext))]
-    [Migration("20231219133506_Migrations")]
+    [Migration("20231225201154_Migrations")]
     partial class Migrations
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -74,6 +74,9 @@ namespace ePadel.Services.Migrations
                     b.Property<string>("BrTelefona")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("DominantnaRuka")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
@@ -94,6 +97,9 @@ namespace ePadel.Services.Migrations
 
                     b.Property<string>("Slika")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Spol")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("KorisnikId");
@@ -298,7 +304,7 @@ namespace ePadel.Services.Migrations
                         new
                         {
                             RezervacijaId = 1,
-                            DatumRezervacije = new DateTime(2023, 12, 19, 14, 35, 5, 432, DateTimeKind.Local).AddTicks(7618),
+                            DatumRezervacije = new DateTime(2023, 12, 25, 21, 11, 53, 550, DateTimeKind.Local).AddTicks(4422),
                             KorisnikId = 1,
                             RezervacijaStatus = "Aktivna",
                             TerenId = 1,
@@ -389,7 +395,7 @@ namespace ePadel.Services.Migrations
                         new
                         {
                             TerminId = 1,
-                            Datum = new DateTime(2023, 12, 19, 0, 0, 0, 0, DateTimeKind.Local),
+                            Datum = new DateTime(2023, 12, 25, 0, 0, 0, 0, DateTimeKind.Local),
                             VremePočetka = new TimeSpan(0, 10, 0, 0, 0),
                             VremeZavršetka = new TimeSpan(0, 12, 0, 0, 0)
                         });

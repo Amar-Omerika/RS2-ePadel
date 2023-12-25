@@ -28,6 +28,8 @@ namespace ePadel.Services.Database
         public virtual DbSet<Termini> Terminis { get; set; } = null!;
         public virtual DbSet<TipTerena> TipTerenas { get; set; } = null!;
         public virtual DbSet<Uloga> Ulogas { get; set; } = null!;
+        public virtual DbSet<PlatiTermin> PlatiTermins { get; set; } = null!;
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

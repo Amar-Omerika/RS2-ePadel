@@ -16,7 +16,7 @@ namespace ePadel.Model.Requests.TerenRequest
         public int BrojTerena { get; set; }
 
         [Required(ErrorMessage = "Cijena je obavezna")]
-        public decimal Cijena { get; set; }
+        public int Cijena { get; set; }
 
         [Required(ErrorMessage = "Tip terena je obavezan")]
         public int TipTerenaId { get; set; }
