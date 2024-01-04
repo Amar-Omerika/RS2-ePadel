@@ -72,7 +72,7 @@ namespace ePadel.Services.TerenService
         public List<Model.Tereni> TereniRecommendedSystem()
         {
             var rezervacije = _context.Rezervacijes
-                .Include(r => r.Teren)
+                .Include(r => r.Teren).Include(r => r.Teren.TipTerena)
                 .ToList();
 
             if (rezervacije.Count < 3)
