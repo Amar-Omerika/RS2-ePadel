@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ePadel.Services.Database
 {
@@ -12,6 +13,9 @@ namespace ePadel.Services.Database
         public int? TipTerenaId { get; set; }
 
         public virtual TipTerena? TipTerena { get; set; }
-        public virtual ICollection<Rezervacije> Rezervacijes { get; set; }
+        public virtual ICollection<Rezervacije>? Rezervacijes { get; set; }
+
+        [NotMapped] // Add this attribute to indicate that Revenue is not mapped to the database
+        public float Revenue { get; internal set; }
     }
 }

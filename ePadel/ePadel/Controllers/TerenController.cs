@@ -1,6 +1,7 @@
 ﻿using ePadel.Model.Requests.TerenRequest;
 using ePadel.Model.SearchObjects;
 using ePadel.Services.TerenService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ePadel.Controllers
@@ -12,6 +13,7 @@ namespace ePadel.Controllers
         protected ITerenService? _service { get; set; }
         public TerenController(ITerenService service) : base(service)
         {
+            _service = service;
         }
         //[Authorize]
         public override Model.Tereni Insert([FromBody] TerenInsertRequest request)
@@ -23,6 +25,13 @@ namespace ePadel.Controllers
         public override Model.Tereni Update(int id, [FromBody] TerenUpdateRequest request)
         {
             return base.Update(id, request);
+        }
+
+        //[Authorize]
+        [HttpGet("recommend")]
+        public List<Model.Tereni> Recommend()
+        {
+            return _service.TereniRecommendedSystem();
         }
     }
 }

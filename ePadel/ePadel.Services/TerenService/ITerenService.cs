@@ -11,6 +11,7 @@ namespace ePadel.Services.TerenService
 {
     public interface ITerenService : IBaseCRUDService<Model.Tereni,BaseSearchObject,TerenInsertRequest,TerenUpdateRequest> 
     {
+        public List<Model.Tereni> TereniRecommendedSystem();
     }
  
 }
