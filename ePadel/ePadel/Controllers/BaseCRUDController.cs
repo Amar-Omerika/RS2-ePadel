@@ -7,6 +7,7 @@ namespace ePadel.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
     public class BaseCRUDController<T, TSearch, TInsert, TUpdate> : BaseController<T, TSearch> where T : class where TSearch : class where TInsert : class where TUpdate : class
     {
         protected new readonly IBaseCRUDService<T, TSearch, TInsert, TUpdate> _service;
@@ -15,21 +16,18 @@ namespace ePadel.Controllers
             _service = service;
         }
 
-        //[Authorize]
         [HttpPost]
         public virtual T Insert([FromBody] TInsert insert)
         {
             return _service.Insert(insert);
         }
 
-        //[Authorize]
         [HttpPut("{id}")]
         public virtual T Update(int id, [FromBody] TUpdate update)
         {
             return _service.Update(id, update);
         }
 
-        //[Authorize]
         [HttpDelete("{id}")]
         public virtual T Delete(int id)
         {

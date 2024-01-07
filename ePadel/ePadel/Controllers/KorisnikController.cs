@@ -18,13 +18,11 @@ namespace ePadel.Controllers
         {
         }
 
-        //[Authorize]
         public override Model.Korisnik Insert([FromBody] KorisnikInsertRequest request)
         {
             return base.Insert(request);
         }
 
-        //[Authorize]
         public override Model.Korisnik Update(int id, [FromBody] KorisnikUpdateRequest request)
         {
             return base.Update(id, request);

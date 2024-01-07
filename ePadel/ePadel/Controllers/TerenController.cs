@@ -15,19 +15,16 @@ namespace ePadel.Controllers
         {
             _service = service;
         }
-        //[Authorize]
         public override Model.Tereni Insert([FromBody] TerenInsertRequest request)
         {
             return base.Insert(request);
         }
 
-        //[Authorize]
         public override Model.Tereni Update(int id, [FromBody] TerenUpdateRequest request)
         {
             return base.Update(id, request);
         }
 
-        //[Authorize]
         [HttpGet("recommend")]
         public List<Model.Tereni> Recommend()
         {

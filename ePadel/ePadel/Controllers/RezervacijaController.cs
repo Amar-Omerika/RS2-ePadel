@@ -20,7 +20,6 @@ namespace ePadel.Controllers
             return base.Insert(request);
         }
 
-        //[Authorize]
         public override Model.Rezervacije Update(int id, [FromBody] RezervacijaUpdateRequest request)
         {
             return base.Update(id, request);

@@ -17,7 +17,6 @@ namespace ePadel.Controllers
             _service = service;
         }
 
-        //[Authorize]
         public override Model.PlatiTermin Insert([FromBody] PlatiInsertRequest request)
         {
             return base.Insert(request);
