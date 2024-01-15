@@ -83,4 +83,11 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+using(var scope = app.Services.CreateScope())
+{
+    string? connection = app.Configuration.GetConnectionString("DefaultConnection");
+    var dataContext = scope.ServiceProvider.GetRequiredService<IB190069_ePadelContext>();
+    dataContext.Database.Migrate();
+}
+
 app.Run();
