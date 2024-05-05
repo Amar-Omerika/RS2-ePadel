@@ -116,6 +116,7 @@ abstract class BaseProvider<T> with ChangeNotifier {
   Map<String, String> createHeaders() {
     String? username = Authorization.username;
     String? password = Authorization.password;
+    print(username.toString());
 
     String basicAuth =
         "Basic ${base64Encode(utf8.encode('$username:$password'))}";
