@@ -1,4 +1,5 @@
 import 'package:epadel_admin/providers/auth_provider.dart';
+import 'package:epadel_admin/screens/main_navigation_screen.dart';
 import 'package:epadel_admin/utils/util.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -31,10 +32,11 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Dobrodošli na ePozoriste'),
+        title: const Text('Login'),
+        backgroundColor: Colors.green,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),    
         child: Center(
           child: SizedBox(
             width: 500,
@@ -44,6 +46,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const SizedBox(height: 16.0),
+                  const Text(
+                    "Dobrodosli na ePadel", // Your custom text
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 26,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                   TextFormField(
                     onSaved: (newValue) => userName = newValue,
                     validator: (value) {
@@ -52,6 +62,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       }
                       if (!regexKorisnicko.hasMatch(value)) {
                         return 'Korisničko ime mora sadržavati namjanje 4 karaktera!';
+                      }
+                      if (loginFailed) {
+                        return "";
                       }
                       return null;
                     },
@@ -94,6 +107,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       minimumSize: const Size(double.infinity, 50),
+                      backgroundColor:
+                          Colors.green, // Set the background color to green
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(
+                            10), // Set the radius of the corners
+                      ),
                     ),
                     onPressed: () async {
                       loginFailed = false;
@@ -112,20 +131,27 @@ class _LoginScreenState extends State<LoginScreen> {
                             Authorization.username = userName;
                             Authorization.password = password;
                             Authorization.korisnikId = data.korisnikId!.toInt();
-                            // Navigator.pushReplacementNamed(
-                            //     context, MainNavigationScreen.routeName);
+                            Navigator.pushReplacementNamed(
+                                context, MainNavigationScreen.routeName);
                           }
                         } on Exception catch (error) {
                           print(error.toString());
-                          if (error.toString().contains("Bad request")) {
+                          if (error.toString().contains("Bad Request")) {
                             loginFailed = true;
                             formKey.currentState!.validate();
                           }
                         }
                       }
                     },
-                    child: const Text('Login', style: TextStyle(fontSize: 20)),
+                    child: const Text(
+                      'Login',
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.white, // Set the text color to white
+                      ),
+                    ),
                   ),
+
                 ],
               ),
             ),

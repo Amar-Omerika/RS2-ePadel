@@ -75,6 +75,12 @@ namespace ePadel.Services.AuthService
         {
             bool admin = false;
             var entity = await _context.Korisniks.Include("KorisnikUloges.Uloga").FirstOrDefaultAsync(x => x.KorisnickoIme == request.KorisnickoIme);
+
+             if (entity == null)
+            {
+                throw new KorisnikException("Kredencijali nisu ispravni", "Netacno korisnicko ime ili lozinka!");
+            }
+            
             var uloge = _context.KorisnikUloges.Include(x => x.Uloga).Where(x => x.KorisnikId == entity.KorisnikId).ToList();
 
             foreach (var uloga in uloge)
@@ -83,11 +89,6 @@ namespace ePadel.Services.AuthService
                 {
                     admin = true;
                 }
-            }
-
-            if (entity == null)
-            {
-                throw new KorisnikException("Kredencijali nisu ispravni", "Netacno korisnicko ime ili lozinka!");
             }
 
             var hash = Helper.PasswordHelper.GenerateHash(entity.LozinkaSalt, request.Lozinka);
