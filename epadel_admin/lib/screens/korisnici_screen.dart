@@ -1,16 +1,15 @@
 import 'package:epadel_admin/screens/appsidebar.dart';
-import 'package:epadel_admin/screens/korisnici_screen.dart';
 import 'package:flutter/material.dart';
 
-class TereniScreen extends StatefulWidget {
-  static const String routeName = '/tereni';
-  const TereniScreen({Key? key}) : super(key: key);
+class KorisniciScreen extends StatefulWidget {
+  static const String routeName = '/korisnici';
+  const KorisniciScreen({Key? key}) : super(key: key);
 
   @override
-  _TereniScreenState createState() => _TereniScreenState();
+  _KorisniciScreenState createState() => _KorisniciScreenState();
 }
 
-class _TereniScreenState extends State<TereniScreen> {
+class _KorisniciScreenState extends State<KorisniciScreen> {
   int _currentPage = 1; // Example pagination state
 
   @override
@@ -32,7 +31,7 @@ class _TereniScreenState extends State<TereniScreen> {
                       Expanded(
                         child: TextField(
                           decoration: InputDecoration(
-                            hintText: 'Pretraži po nazivu terena...',
+                            hintText: 'Pretraži po korisnickom imenu...',
                             prefixIcon: Icon(Icons.search),
                           ),
                         ),
@@ -41,7 +40,7 @@ class _TereniScreenState extends State<TereniScreen> {
                       Expanded(
                         child: TextField(
                           decoration: InputDecoration(
-                            hintText: 'Pretraži po vrsti podloge...',
+                            hintText: 'Pretraži po spolu...',
                             prefixIcon: Icon(Icons.search),
                           ),
                         ),

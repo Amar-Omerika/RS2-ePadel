@@ -1,3 +1,4 @@
+import 'package:epadel_admin/screens/korisnici_screen.dart';
 import 'package:epadel_admin/screens/tereni_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -9,7 +10,7 @@ class NavigationItem {
 }
 
 class MainNavigationScreen extends StatefulWidget {
-  static const routeName = "/";
+  static const routeName = "/home";
   const MainNavigationScreen({super.key});
 
   @override
@@ -23,6 +24,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
 
   final List<NavigationItem> _navigationItems = [
     NavigationItem(label: 'Tereni', widget: const TereniScreen()),
+    NavigationItem(label: 'Korisnici', widget: const KorisniciScreen()),
   ];
 
   void _onItemTapped(int index) {
@@ -34,7 +36,6 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(_navigationItems[_selectedIndex].label)),
       body: Center(
         child: _navigationItems[_selectedIndex].widget,
       ),

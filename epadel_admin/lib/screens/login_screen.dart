@@ -136,7 +136,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           }
                         } on Exception catch (error) {
                           print(error.toString());
-                          if (error.toString().contains("Bad Request")) {
+                          if (error
+                              .toString()
+                              .contains("Internal server error")) {
                             loginFailed = true;
                             formKey.currentState!.validate();
                           }

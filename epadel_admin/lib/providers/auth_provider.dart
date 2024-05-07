@@ -8,13 +8,12 @@ import 'package:http/src/response.dart';
 class AuthProvider extends BaseProvider<Korisnik> {
   // static String _username = "";
   static int? _loggedUserId = 0;
-
   HttpClient client = HttpClient();
   IOClient? http;
   static String? _baseUrl;
   AuthProvider() : super("Korisnik") {
     _baseUrl = const String.fromEnvironment("baseUrl",
-        defaultValue: "http://localhost:5192/");
+        defaultValue: "https://localhost:44342/");
     print("baseurl: $_baseUrl");
 
     if (_baseUrl!.endsWith("/") == false) {
