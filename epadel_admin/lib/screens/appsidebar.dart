@@ -53,6 +53,22 @@ class SidebarNavigation extends StatelessWidget {
             isSelected: selectedPage == 'korisnici',
             onTap: () => onPageSelected('korisnici'),
           ),
+          const SizedBox(
+            height: 10,
+          ),
+          SidebarButton(
+            title: 'Rezervacije',
+            isSelected: selectedPage == 'rezervacije',
+            onTap: () => onPageSelected('rezervacije'),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          SidebarButton(
+            title: 'Reports',
+            isSelected: selectedPage == 'report',
+            onTap: () => onPageSelected('report'),
+          ),
         ],
       ),
     );

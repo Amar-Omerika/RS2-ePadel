@@ -1,4 +1,6 @@
 import 'package:epadel_admin/screens/korisnici_screen.dart';
+import 'package:epadel_admin/screens/report_screen.dart';
+import 'package:epadel_admin/screens/rezervacije_screen.dart';
 import 'package:epadel_admin/screens/tereni_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -25,6 +27,9 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   final List<NavigationItem> _navigationItems = [
     NavigationItem(label: 'Tereni', widget: const TereniScreen()),
     NavigationItem(label: 'Korisnici', widget: const KorisniciScreen()),
+    NavigationItem(label: 'Rezervacije', widget: const RezervacijeScreen()),
+    NavigationItem(label: 'Report', widget: const ReportScreen()),
+
   ];
 
   void _onItemTapped(int index) {

@@ -1,9 +1,11 @@
 import 'package:epadel_admin/screens/appsidebar.dart';
 import 'package:epadel_admin/screens/korisnici_screen.dart';
+import 'package:epadel_admin/screens/report_screen.dart';
+import 'package:epadel_admin/screens/rezervacije_screen.dart';
 import 'package:flutter/material.dart';
 
 class TereniScreen extends StatefulWidget {
-  static const String routeName = '/Tereni';
+  static const String routeName = '/tereni';
   const TereniScreen({Key? key}) : super(key: key);
 
   @override
@@ -34,6 +36,21 @@ class _TereniScreenState extends State<TereniScreen> {
                   PageRouteBuilder(
                     transitionDuration: Duration.zero,
                     pageBuilder: (_, __, ___) => const KorisniciScreen(),
+                  ),
+                );
+              }
+              else if (page == 'rezervacije') {
+                Navigator.of(context).pushReplacement(
+                  PageRouteBuilder(
+                    transitionDuration: Duration.zero,
+                    pageBuilder: (_, __, ___) => const RezervacijeScreen(),
+                  ),
+                );
+              } else if (page == 'report') {
+                Navigator.of(context).pushReplacement(
+                  PageRouteBuilder(
+                    transitionDuration: Duration.zero,
+                    pageBuilder: (_, __, ___) => const ReportScreen(),
                   ),
                 );
               }

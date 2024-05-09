@@ -1,18 +1,18 @@
 import 'package:epadel_admin/screens/appsidebar.dart';
+import 'package:epadel_admin/screens/korisnici_screen.dart';
 import 'package:epadel_admin/screens/report_screen.dart';
-import 'package:epadel_admin/screens/rezervacije_screen.dart';
 import 'package:epadel_admin/screens/tereni_screen.dart';
 import 'package:flutter/material.dart';
 
-class KorisniciScreen extends StatefulWidget {
-  static const String routeName = '/korisnici';
-  const KorisniciScreen({Key? key}) : super(key: key);
+class RezervacijeScreen extends StatefulWidget {
+  static const String routeName = '/rezervacije';
+  const RezervacijeScreen({Key? key}) : super(key: key);
 
   @override
-  _KorisniciScreenState createState() => _KorisniciScreenState();
+  _RezervacijeScreenState createState() => _RezervacijeScreenState();
 }
 
-class _KorisniciScreenState extends State<KorisniciScreen> {
+class _RezervacijeScreenState extends State<RezervacijeScreen> {
   int _currentPage = 1; // Example pagination state
 
   @override
@@ -22,9 +22,16 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
         children: [
           // Sidebar
           SidebarNavigation(
-            selectedPage: 'korisnici',
+            selectedPage: 'rezervacije',
             onPageSelected: (page) {
-              if (page == 'korisnici') {
+              if (page == 'rezervacije') {
+                Navigator.of(context).pushReplacement(
+                  PageRouteBuilder(
+                    transitionDuration: Duration.zero,
+                    pageBuilder: (_, __, ___) => const RezervacijeScreen(),
+                  ),
+                );
+              } else if (page == 'korisnici') {
                 Navigator.of(context).pushReplacement(
                   PageRouteBuilder(
                     transitionDuration: Duration.zero,
@@ -36,14 +43,6 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
                   PageRouteBuilder(
                     transitionDuration: Duration.zero,
                     pageBuilder: (_, __, ___) => const TereniScreen(),
-                  ),
-                );
-              }
-               else if (page == 'rezervacije') {
-                Navigator.of(context).pushReplacement(
-                  PageRouteBuilder(
-                    transitionDuration: Duration.zero,
-                    pageBuilder: (_, __, ___) => const RezervacijeScreen(),
                   ),
                 );
               } else if (page == 'report') {
@@ -68,7 +67,7 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
                       Expanded(
                         child: TextField(
                           decoration: InputDecoration(
-                            hintText: 'Pretraži po korisnickom imenu...',
+                            hintText: 'Pretraži po nazivu terena...',
                             prefixIcon: Icon(Icons.search),
                           ),
                         ),
@@ -77,7 +76,7 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
                       Expanded(
                         child: TextField(
                           decoration: InputDecoration(
-                            hintText: 'Pretraži po spolu...',
+                            hintText: 'Pretraži po vrsti podloge...',
                             prefixIcon: Icon(Icons.search),
                           ),
                         ),
