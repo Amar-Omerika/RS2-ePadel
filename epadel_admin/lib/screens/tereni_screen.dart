@@ -3,7 +3,7 @@ import 'package:epadel_admin/screens/korisnici_screen.dart';
 import 'package:flutter/material.dart';
 
 class TereniScreen extends StatefulWidget {
-  static const String routeName = '/tereni';
+  static const String routeName = '/Tereni';
   const TereniScreen({Key? key}) : super(key: key);
 
   @override
@@ -19,7 +19,26 @@ class _TereniScreenState extends State<TereniScreen> {
       body: Row(
         children: [
           // Sidebar
-          const AppSidebar(),
+          SidebarNavigation(
+            selectedPage: 'tereni',
+            onPageSelected: (page) {
+              if (page == 'tereni') {
+                Navigator.of(context).pushReplacement(
+                  PageRouteBuilder(
+                    transitionDuration: Duration.zero,
+                    pageBuilder: (_, __, ___) => const TereniScreen(),
+                  ),
+                );
+              } else if (page == 'korisnici') {
+                Navigator.of(context).pushReplacement(
+                  PageRouteBuilder(
+                    transitionDuration: Duration.zero,
+                    pageBuilder: (_, __, ___) => const KorisniciScreen(),
+                  ),
+                );
+              }
+            },
+          ),
           // Main content
           Expanded(
             child: Padding(

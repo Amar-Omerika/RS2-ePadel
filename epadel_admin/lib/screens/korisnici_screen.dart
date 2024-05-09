@@ -1,4 +1,5 @@
 import 'package:epadel_admin/screens/appsidebar.dart';
+import 'package:epadel_admin/screens/tereni_screen.dart';
 import 'package:flutter/material.dart';
 
 class KorisniciScreen extends StatefulWidget {
@@ -18,7 +19,26 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
       body: Row(
         children: [
           // Sidebar
-          const AppSidebar(),
+          SidebarNavigation(
+            selectedPage: 'korisnici',
+            onPageSelected: (page) {
+              if (page == 'korisnici') {
+                Navigator.of(context).pushReplacement(
+                  PageRouteBuilder(
+                    transitionDuration: Duration.zero,
+                    pageBuilder: (_, __, ___) => const KorisniciScreen(),
+                  ),
+                );
+              } else if (page == 'tereni') {
+                Navigator.of(context).pushReplacement(
+                  PageRouteBuilder(
+                    transitionDuration: Duration.zero,
+                    pageBuilder: (_, __, ___) => const TereniScreen(),
+                  ),
+                );
+              }
+            },
+          ),
           // Main content
           Expanded(
             child: Padding(
