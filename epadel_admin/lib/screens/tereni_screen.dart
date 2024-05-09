@@ -56,25 +56,66 @@ class _TereniScreenState extends State<TereniScreen> {
               }
             },
           ),
-          // Main content
-          Expanded(
+
+          Expanded(       
             child: Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Column(
+              child: Column(                
                 children: <Widget>[
-                  const Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Expanded(
+                          child: Container(
+                        child: Column(
+                          children: [
+                            Transform.translate(
+                              offset: const Offset(-120, 0),
+                              child: const Text(
+                                'Tereni',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 20),
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            Transform.translate(
+                              offset: const Offset(-35, 0),
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  print('Button pressed');
+                                },
+                                child: Text('Dodaj'),
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          Colors.green),
+                                  foregroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          Colors.white),
+                                  minimumSize: MaterialStateProperty.all<Size>(
+                                      const Size(150, 40)),
+                                  shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      )),
+                      const Expanded(
                         child: TextField(
                           decoration: InputDecoration(
                             hintText: 'Pretraži po nazivu terena...',
                             prefixIcon: Icon(Icons.search),
                           ),
                         ),
-                      ),
-                      SizedBox(width: 10),
-                      Expanded(
+                      ),              
+                      const SizedBox(width: 10),
+                      const Expanded(
                         child: TextField(
                           decoration: InputDecoration(
                             hintText: 'Pretraži po vrsti podloge...',
