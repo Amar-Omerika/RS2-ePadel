@@ -56,72 +56,156 @@ class _TereniScreenState extends State<TereniScreen> {
               }
             },
           ),
-
-          Expanded(       
+          Expanded(
             child: Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Column(                
+              child: Column(
                 children: <Widget>[
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Expanded(
-                          child: Container(
-                        child: Column(
-                          children: [
-                            Transform.translate(
-                              offset: const Offset(-120, 0),
-                              child: const Text(
-                                'Tereni',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 20),
+                        child: Container(
+                          child: Column(
+                            children: [
+                              Transform.translate(
+                                offset: const Offset(-120, 0),
+                                child: const Text(
+                                  'Tereni',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20),
+                                ),
                               ),
-                            ),
-                            const SizedBox(width: 8),
-                            Transform.translate(
-                              offset: const Offset(-35, 0),
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  print('Button pressed');
-                                },
-                                child: Text('Dodaj'),
-                                style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                          Colors.green),
-                                  foregroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                          Colors.white),
-                                  minimumSize: MaterialStateProperty.all<Size>(
-                                      const Size(150, 40)),
-                                  shape: MaterialStateProperty.all<
-                                      RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10.0),
+                              const SizedBox(width: 8),
+                              Transform.translate(
+                                offset: const Offset(-35, 0),
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    print('Button pressed');
+                                  },
+                                  child: Text('Dodaj'),
+                                  style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            Colors.green),
+                                    foregroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            Colors.white),
+                                    minimumSize:
+                                        MaterialStateProperty.all<Size>(
+                                            const Size(150, 40)),
+                                    shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                      )),
-                      const Expanded(
-                        child: TextField(
-                          decoration: InputDecoration(
-                            hintText: 'Pretraži po nazivu terena...',
-                            prefixIcon: Icon(Icons.search),
+                            ],
                           ),
                         ),
-                      ),              
+                      ),
                       const SizedBox(width: 10),
-                      const Expanded(
-                        child: TextField(
-                          decoration: InputDecoration(
-                            hintText: 'Pretraži po vrsti podloge...',
-                            prefixIcon: Icon(Icons.search),
+                      Column(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 3.0, horizontal: 8.0),
+                            decoration: BoxDecoration(
+                              color: Colors.grey[200],
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            child: Row(
+                              children: [
+                                Container(
+                                  width: 250, // Set the desired width
+                                  padding: EdgeInsets.all(8.0),
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey[200],
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  child: TextField(
+                                    maxLines: null, // Allow multiline input
+                                    keyboardType: TextInputType.multiline,
+                                    decoration: InputDecoration(
+                                      filled: true,
+                                      fillColor: Colors.white,
+                                      hintText: 'Pretrazi po nazivu terena',
+                                      contentPadding:
+                                          EdgeInsets.symmetric(vertical: 8.0),
+                                      border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                        borderSide: BorderSide.none,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  width: 250, // Set the desired width
+                                  padding: EdgeInsets.all(8.0),
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey[200],
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  child: TextField(
+                                    maxLines: null, // Allow multiline input
+                                    keyboardType: TextInputType.multiline,
+                                    
+                                    decoration: InputDecoration(
+                                      filled: true,
+                                      fillColor: Colors.white,
+                                      hintText: 'Pretrazi po nazivu terena',
+                                      contentPadding:
+                                          EdgeInsets.symmetric(vertical: 8.0),
+                                      border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                        borderSide: BorderSide.none,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 8,
+                                ), // Adjust spacing between text field and button
+                                ElevatedButton(
+                                  onPressed: () {
+                                    print('Search Button pressed');
+                                  },
+                                  style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all<Color>(
+                                              Colors.green),
+                                      foregroundColor:
+                                          MaterialStateProperty.all<Color>(
+                                              Colors.white),
+                                      minimumSize:
+                                          MaterialStateProperty.all<Size>(
+                                              const Size(10, 45)),
+                                      shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                        ),
+                                      )),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Icon(Icons
+                                          .search), // Add the search icon here
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
-                        ),
+                        ],
                       ),
                     ],
                   ),
@@ -169,6 +253,9 @@ class _TereniScreenState extends State<TereniScreen> {
               ),
             ),
           ),
+
+
+      
         ],
       ),
     );
