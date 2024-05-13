@@ -1,8 +1,16 @@
+// ignore_for_file: prefer_const_literals_to_create_immutables
+
 import 'package:epadel_admin/screens/appsidebar.dart';
 import 'package:epadel_admin/screens/korisnici_screen.dart';
 import 'package:epadel_admin/screens/report_screen.dart';
 import 'package:epadel_admin/screens/rezervacije_screen.dart';
 import 'package:flutter/material.dart';
+
+class Tereni {
+  final String teren;
+  final String vrstaPodloge;
+  Tereni(this.teren, this.vrstaPodloge);
+}
 
 class TereniScreen extends StatefulWidget {
   static const String routeName = '/tereni';
@@ -14,6 +22,12 @@ class TereniScreen extends StatefulWidget {
 
 class _TereniScreenState extends State<TereniScreen> {
   int _currentPage = 1; // Example pagination state
+
+final List<Tereni> result = [
+    Tereni('Padel teren 1', 'Beton'),
+    Tereni('Padel teren 2', 'Trava'),
+    Tereni('Padel teren 3', 'Guma'),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -38,8 +52,7 @@ class _TereniScreenState extends State<TereniScreen> {
                     pageBuilder: (_, __, ___) => const KorisniciScreen(),
                   ),
                 );
-              }
-              else if (page == 'rezervacije') {
+              } else if (page == 'rezervacije') {
                 Navigator.of(context).pushReplacement(
                   PageRouteBuilder(
                     transitionDuration: Duration.zero,
@@ -84,7 +97,7 @@ class _TereniScreenState extends State<TereniScreen> {
                                   onPressed: () {
                                     print('Button pressed');
                                   },
-                                  child: Text('Dodaj'),
+                                  child: const Text('Dodaj'),
                                   style: ButtonStyle(
                                     backgroundColor:
                                         MaterialStateProperty.all<Color>(
@@ -123,7 +136,7 @@ class _TereniScreenState extends State<TereniScreen> {
                               children: [
                                 Container(
                                   width: 250, // Set the desired width
-                                  padding: EdgeInsets.all(8.0),
+                                  padding: const EdgeInsets.all(8.0),
                                   decoration: BoxDecoration(
                                     color: Colors.grey[200],
                                     borderRadius: BorderRadius.circular(10.0),
@@ -136,7 +149,8 @@ class _TereniScreenState extends State<TereniScreen> {
                                       fillColor: Colors.white,
                                       hintText: 'Pretrazi po nazivu terena',
                                       contentPadding:
-                                          EdgeInsets.symmetric(vertical: 8.0),
+                                          const EdgeInsets.symmetric(
+                                              vertical: 8.0),
                                       border: OutlineInputBorder(
                                         borderRadius:
                                             BorderRadius.circular(10.0),
@@ -147,7 +161,7 @@ class _TereniScreenState extends State<TereniScreen> {
                                 ),
                                 Container(
                                   width: 250, // Set the desired width
-                                  padding: EdgeInsets.all(8.0),
+                                  padding: const EdgeInsets.all(8.0),
                                   decoration: BoxDecoration(
                                     color: Colors.grey[200],
                                     borderRadius: BorderRadius.circular(10.0),
@@ -155,13 +169,13 @@ class _TereniScreenState extends State<TereniScreen> {
                                   child: TextField(
                                     maxLines: null, // Allow multiline input
                                     keyboardType: TextInputType.multiline,
-                                    
                                     decoration: InputDecoration(
                                       filled: true,
                                       fillColor: Colors.white,
                                       hintText: 'Pretrazi po nazivu terena',
                                       contentPadding:
-                                          EdgeInsets.symmetric(vertical: 8.0),
+                                          const EdgeInsets.symmetric(
+                                              vertical: 8.0),
                                       border: OutlineInputBorder(
                                         borderRadius:
                                             BorderRadius.circular(10.0),
@@ -172,7 +186,7 @@ class _TereniScreenState extends State<TereniScreen> {
                                 ),
                                 const SizedBox(
                                   width: 8,
-                                ), // Adjust spacing between text field and button
+                                ),
                                 ElevatedButton(
                                   onPressed: () {
                                     print('Search Button pressed');
@@ -194,7 +208,7 @@ class _TereniScreenState extends State<TereniScreen> {
                                               BorderRadius.circular(10.0),
                                         ),
                                       )),
-                                  child: Row(
+                                  child: const Row(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       Icon(Icons
@@ -209,40 +223,20 @@ class _TereniScreenState extends State<TereniScreen> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 20),
-                  Expanded(
-                    child: DataTable(
-                      columns: const [
-                        DataColumn(label: Text('Naziv terena')),
-                        DataColumn(label: Text('Vrsta podloge')),
-                        DataColumn(label: Text('Uredi')),
-                        DataColumn(label: Text('Obriši')),
-                      ],
-                      rows: List<DataRow>.generate(
-                        3,
-                        (index) => DataRow(
-                          cells: [
-                            DataCell(Text('Padel teren ${index + 1}')),
-                            DataCell(Text(['beton', 'trava', 'guma'][index])),
-                            DataCell(Icon(Icons.edit)),
-                            DataCell(Icon(Icons.delete)),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
+                  const SizedBox(height: 20),
+                  _buildDataListView(),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       IconButton(
-                        icon: Icon(Icons.arrow_left),
+                        icon: const Icon(Icons.arrow_left),
                         onPressed: () {
                           // Implement page change
                         },
                       ),
                       Text('$_currentPage'),
                       IconButton(
-                        icon: Icon(Icons.arrow_right),
+                        icon: const Icon(Icons.arrow_right),
                         onPressed: () {
                           // Implement page change
                         },
@@ -253,10 +247,90 @@ class _TereniScreenState extends State<TereniScreen> {
               ),
             ),
           ),
-
-
-      
         ],
+      ),
+    );
+  }
+
+  Widget _buildDataListView() {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10.0),
+        border: Border.all(
+          color: const Color(0xFFD7D2DC),
+          width: 1.0,
+        ),
+      ),
+      child: Center(
+        child: SizedBox(
+          width: double.infinity, // Expand to maximum width
+          child: Container(
+            decoration: BoxDecoration(
+              color: Color(0xFFD9D9D9),
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            child: DataTable(
+              border: const TableBorder(
+                horizontalInside: BorderSide(
+                  width: 1,
+                  color: Colors.white,
+                ),
+              ),
+              headingRowColor: MaterialStateProperty.all<Color?>(
+                Colors.green,
+              ),
+              columns: [
+                const DataColumn(
+                  label: Expanded(
+                    child: Text(
+                      'Naziv terena',
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500, color: Colors.white),
+                    ),
+                  ),
+                ),
+                const DataColumn(
+                  label: Expanded(
+                    child: Text(
+                      'Vrsta podloge',
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500, color: Colors.white),
+                    ),
+                  ),
+                ),
+                const DataColumn(
+                  label: Expanded(
+                    child: Text(
+                      'Uredi',
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500, color: Colors.white),
+                    ),
+                  ),
+                ),
+                const DataColumn(
+                  label: Expanded(
+                    child: Text(
+                      'Obrisi',
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500, color: Colors.white),
+                    ),
+                  ),
+                ),
+              ],
+              rows: result.map((Tereni teren) {
+                return DataRow(cells: [
+                  DataCell(Text(teren.teren)),
+                  DataCell(Text(teren.vrstaPodloge)),
+                  const DataCell(Icon(Icons.edit)),
+                  const DataCell(Icon(
+                    Icons.delete,
+                    color: Color(0xFFFF9A62),
+                  )),
+                ]);
+              }).toList(), // If result is null, show an empty list of rows
+            ),
+          ),
+        ),
       ),
     );
   }
