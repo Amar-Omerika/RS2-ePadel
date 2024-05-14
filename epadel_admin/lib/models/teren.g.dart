@@ -12,8 +12,10 @@ Teren _$TerenFromJson(Map<String, dynamic> json) => Teren(
       brojTerena: (json['brojTerena'] as num?)?.toInt(),
       cijena: (json['cijena'] as num?)?.toInt(),
       tipTerenaId: (json['tipTerenaId'] as num?)?.toInt(),
-      terenNaziv: json['terenNaziv'] as String?,
       slikaTerena: json['slikaTerena'] as String?,
+      tipTerena: json['tipTerena'] == null
+          ? null
+          : TipTerena.fromJson(json['tipTerena'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$TerenToJson(Teren instance) => <String, dynamic>{
@@ -22,6 +24,6 @@ Map<String, dynamic> _$TerenToJson(Teren instance) => <String, dynamic>{
       'brojTerena': instance.brojTerena,
       'cijena': instance.cijena,
       'tipTerenaId': instance.tipTerenaId,
-      'terenNaziv': instance.terenNaziv,
       'slikaTerena': instance.slikaTerena,
+      'tipTerena': instance.tipTerena,
     };

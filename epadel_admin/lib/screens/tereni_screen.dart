@@ -35,11 +35,9 @@ class _TereniScreenState extends State<TereniScreen> {
 
   void loadData() async {
     var data = await _terenProvider!.get();
-
     setState(() {
       _tereni = data;
     });
-    print('Data loaded' + _tereni!.first.terenNaziv.toString());
   }
   
   @override
@@ -291,8 +289,8 @@ class _TereniScreenState extends State<TereniScreen> {
               headingRowColor: MaterialStateProperty.all<Color?>(
                 Colors.green,
               ),
-              columns: [
-                const DataColumn(
+              columns: const [
+                DataColumn(
                   label: Expanded(
                     child: Text(
                       'Naziv terena',
@@ -301,7 +299,7 @@ class _TereniScreenState extends State<TereniScreen> {
                     ),
                   ),
                 ),
-                const DataColumn(
+                DataColumn(
                   label: Expanded(
                     child: Text(
                       'Vrsta podloge',
@@ -310,7 +308,7 @@ class _TereniScreenState extends State<TereniScreen> {
                     ),
                   ),
                 ),
-                const DataColumn(
+                DataColumn(
                   label: Expanded(
                     child: Text(
                       'Uredi',
@@ -319,7 +317,7 @@ class _TereniScreenState extends State<TereniScreen> {
                     ),
                   ),
                 ),
-                const DataColumn(
+                DataColumn(
                   label: Expanded(
                     child: Text(
                       'Obrisi',
@@ -332,7 +330,7 @@ class _TereniScreenState extends State<TereniScreen> {
               rows: _tereni?.map((Teren teren) {
                 return DataRow(cells: [
                       DataCell(Text(teren.naziv!)),
-                      DataCell(Text("test")),
+                      DataCell(Text(teren.tipTerena!.naziv!)),
                   const DataCell(Icon(Icons.edit)),
                   const DataCell(Icon(
                     Icons.delete,
