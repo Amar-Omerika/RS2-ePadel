@@ -1,19 +1,18 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables
 
+import 'package:epadel_admin/models/teren.dart';
+import 'package:epadel_admin/providers/providers.dart';
 import 'package:epadel_admin/screens/appsidebar.dart';
 import 'package:epadel_admin/screens/korisnici_screen.dart';
 import 'package:epadel_admin/screens/report_screen.dart';
 import 'package:epadel_admin/screens/rezervacije_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class Tereni {
-  final String teren;
-  final String vrstaPodloge;
-  Tereni(this.teren, this.vrstaPodloge);
-}
+
 
 class TereniScreen extends StatefulWidget {
   static const String routeName = '/tereni';
+  
   const TereniScreen({Key? key}) : super(key: key);
 
   @override
@@ -21,14 +20,28 @@ class TereniScreen extends StatefulWidget {
 }
 
 class _TereniScreenState extends State<TereniScreen> {
+  TerenProvider? _terenProvider;
+  List<Teren>? _tereni;
+  final TextEditingController _searchController = TextEditingController();
   int _currentPage = 1; // Example pagination state
 
-final List<Tereni> result = [
-    Tereni('Padel teren 1', 'Beton'),
-    Tereni('Padel teren 2', 'Trava'),
-    Tereni('Padel teren 3', 'Guma'),
-  ];
 
+  @override
+  void initState() {
+    super.initState();
+    _terenProvider = context.read<TerenProvider>();
+    loadData();
+  }
+
+  void loadData() async {
+    var data = await _terenProvider!.get();
+
+    setState(() {
+      _tereni = data;
+    });
+    print('Data loaded' + _tereni!.first.terenNaziv.toString());
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -251,7 +264,6 @@ final List<Tereni> result = [
       ),
     );
   }
-
   Widget _buildDataListView() {
     return Container(
       decoration: BoxDecoration(
@@ -317,17 +329,18 @@ final List<Tereni> result = [
                   ),
                 ),
               ],
-              rows: result.map((Tereni teren) {
+              rows: _tereni?.map((Teren teren) {
                 return DataRow(cells: [
-                  DataCell(Text(teren.teren)),
-                  DataCell(Text(teren.vrstaPodloge)),
+                      DataCell(Text(teren.naziv!)),
+                      DataCell(Text("test")),
                   const DataCell(Icon(Icons.edit)),
                   const DataCell(Icon(
                     Icons.delete,
                     color: Color(0xFFFF9A62),
                   )),
                 ]);
-              }).toList(), // If result is null, show an empty list of rows
+                  }).toList() ??
+                  [],
             ),
           ),
         ),

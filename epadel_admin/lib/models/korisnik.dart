@@ -2,6 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'korisnik.g.dart';
 
+//dart run build_runner build command to generate .g.dart files
 @JsonSerializable()
 class Korisnik {
   int? korisnikId;

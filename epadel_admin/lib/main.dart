@@ -1,4 +1,5 @@
 import 'package:epadel_admin/providers/auth_provider.dart';
+import 'package:epadel_admin/providers/providers.dart';
 import 'package:epadel_admin/screens/korisnici_screen.dart';
 import 'package:epadel_admin/screens/main_navigation_screen.dart';
 import 'package:epadel_admin/screens/tereni_screen.dart';
@@ -9,7 +10,8 @@ void main() {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => AuthProvider()),       
+        ChangeNotifierProvider(create: (_) => AuthProvider()),  
+        ChangeNotifierProvider(create: (_) => TerenProvider()),      
       ],
       child: const MyApp(),
     ),

@@ -6,9 +6,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ePadel.Controllers
 {
-    [AllowAnonymous]
+   
     [ApiController]
     [Route("[controller]")]
+    [AllowAnonymous]
     public class AuthController : Controller
     {
         private readonly IAuthService _authService;
