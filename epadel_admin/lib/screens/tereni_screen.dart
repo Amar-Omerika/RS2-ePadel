@@ -332,10 +332,13 @@ class _TereniScreenState extends State<TereniScreen> {
                       DataCell(Text(teren.naziv!)),
                       DataCell(Text(teren.tipTerena!.naziv!)),
                   const DataCell(Icon(Icons.edit)),
-                  const DataCell(Icon(
-                    Icons.delete,
-                    color: Color(0xFFFF9A62),
-                  )),
+                      DataCell(IconButton(
+                        icon:
+                            const Icon(Icons.delete, color: Color(0xFFFF9A62)),
+                        onPressed: () {
+                          openDeleteModal(teren);
+                        },
+                      )),
                 ]);
                   }).toList() ??
                   [],
@@ -345,4 +348,58 @@ class _TereniScreenState extends State<TereniScreen> {
       ),
     );
   }
+
+//delete modal
+  void openDeleteModal(Teren teren) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Obrisi'),
+          content: const Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text('Da li ste sigurni da želite da obrišete Teren?'),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('Poništi'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                try {
+                  await _terenProvider!.remove(teren.terenId!);
+                  if (context.mounted) {
+                    Navigator.pop(context);
+                    loadData();
+                  }
+                } catch (e) {
+                  if (context.mounted) {
+                    Navigator.pop(context);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        backgroundColor: Colors.red,
+                        content: Text('Ne možete obrisati ovaj Teren!'),
+                      ),
+                    );
+                  }
+                }
+              },
+              child: const Text(
+                'Obriši',
+                style: TextStyle(color: Colors.red),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+
+
 }
