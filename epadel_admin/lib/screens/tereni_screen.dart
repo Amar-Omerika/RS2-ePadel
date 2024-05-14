@@ -5,6 +5,7 @@ import 'package:epadel_admin/screens/appsidebar.dart';
 import 'package:epadel_admin/screens/korisnici_screen.dart';
 import 'package:epadel_admin/screens/report_screen.dart';
 import 'package:epadel_admin/screens/rezervacije_screen.dart';
+import 'package:epadel_admin/widgets/modals/Tereni/add_teren_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -39,7 +40,40 @@ class _TereniScreenState extends State<TereniScreen> {
       _tereni = data;
     });
   }
-  
+  void resetSearch() {
+    _searchController.text = '';
+  }
+
+  void handleAdd(
+      String? naziv, int? cijena, int? brojTerena, int? tipTerenaId) async {
+    await _terenProvider!.insert({
+      'naziv': naziv,
+      'cijena': cijena,
+      'tipTerenaId': tipTerenaId,
+      'brojTerena': brojTerena,
+    });
+    if (context.mounted) {
+      Navigator.pop(context);
+      resetSearch();
+      loadData();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Theme.of(context).primaryColor,
+          content: const Text('Uspješno ste dodali novi teren!'),
+        ),
+      );
+    }
+  }
+
+  void openAddModal() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AddTerenModal(handleAdd: handleAdd);
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -106,9 +140,9 @@ class _TereniScreenState extends State<TereniScreen> {
                                 offset: const Offset(-35, 0),
                                 child: ElevatedButton(
                                   onPressed: () {
-                                    print('Button pressed');
+                                    openAddModal();
                                   },
-                                  child: const Text('Dodaj'),
+                                  child: const Text('Dodaj Teren'),
                                   style: ButtonStyle(
                                     backgroundColor:
                                         MaterialStateProperty.all<Color>(
@@ -399,7 +433,5 @@ class _TereniScreenState extends State<TereniScreen> {
       },
     );
   }
-
-
 
 }
