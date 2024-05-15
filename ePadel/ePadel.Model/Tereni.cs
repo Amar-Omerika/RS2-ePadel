@@ -18,6 +18,9 @@ namespace ePadel.Model
         public int Cijena { get; set; }
 
         public int? TipTerenaId { get; set; }
+        public string? Lokacija { get; set; }
+        public string? Popust { get; set; }
+        public int CijenaPopusta { get; set; }
         public virtual TipTerena? TipTerena { get; set; }
 
     }
