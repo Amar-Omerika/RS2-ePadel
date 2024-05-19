@@ -12,6 +12,8 @@ class Korisnik {
   String? email;
   String? brTelefona;
   String? lozinka;
+  String? dominantnaRuka;
+  String? spol;
 
   Korisnik(
       {this.korisnikId,
@@ -20,7 +22,9 @@ class Korisnik {
       this.korisnickoIme,
       this.email,
       this.brTelefona,
-      this.lozinka});
+      this.lozinka,
+      this.dominantnaRuka,
+      this.spol});
 
   factory Korisnik.fromJson(Map<String, dynamic> json) =>
       _$KorisnikFromJson(json);

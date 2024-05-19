@@ -1,8 +1,11 @@
+import 'package:epadel_admin/models/models.dart';
+import 'package:epadel_admin/providers/providers.dart';
 import 'package:epadel_admin/screens/appsidebar.dart';
 import 'package:epadel_admin/screens/report_screen.dart';
 import 'package:epadel_admin/screens/rezervacije_screen.dart';
 import 'package:epadel_admin/screens/tereni_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class KorisniciScreen extends StatefulWidget {
   static const String routeName = '/korisnici';
@@ -13,7 +16,31 @@ class KorisniciScreen extends StatefulWidget {
 }
 
 class _KorisniciScreenState extends State<KorisniciScreen> {
+  KorisnikProvider? _korisnikProvider;
+  List<Korisnik>? _korisnik;
+  final TextEditingController _searchController = TextEditingController();
+  final TextEditingController _searchTipTerenaController =
+      TextEditingController();
   int _currentPage = 1; // Example pagination state
+
+  @override
+  void initState() {
+    super.initState();
+    _korisnikProvider = context.read<KorisnikProvider>();
+    loadData();
+  }
+
+  void loadData() async {
+    var data = await _korisnikProvider!.get();
+    setState(() {
+      _korisnik = data;
+    });
+  }
+
+  void resetSearch() {
+    _searchController.text = '';
+    _searchTipTerenaController.text = '';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,8 +65,7 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
                     pageBuilder: (_, __, ___) => const TereniScreen(),
                   ),
                 );
-              }
-               else if (page == 'rezervacije') {
+              } else if (page == 'rezervacije') {
                 Navigator.of(context).pushReplacement(
                   PageRouteBuilder(
                     transitionDuration: Duration.zero,
@@ -62,62 +88,143 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 children: <Widget>[
-                  const Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Expanded(
-                        child: TextField(
-                          decoration: InputDecoration(
-                            hintText: 'Pretraži po korisnickom imenu...',
-                            prefixIcon: Icon(Icons.search),
+                        child: Container(
+                          child: Column(
+                            children: [
+                              Transform.translate(
+                                offset: const Offset(-120, 0),
+                                child: const Text(
+                                  'Korisnici',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20),
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                            ],
                           ),
                         ),
                       ),
-                      SizedBox(width: 10),
-                      Expanded(
-                        child: TextField(
-                          decoration: InputDecoration(
-                            hintText: 'Pretraži po spolu...',
-                            prefixIcon: Icon(Icons.search),
+                      const SizedBox(width: 10),
+                      Column(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 3.0, horizontal: 8.0),
+                            decoration: BoxDecoration(
+                              color: Colors.grey[200],
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            child: Row(
+                              children: [
+                                Container(
+                                  width: 250, // Set the desired width
+                                  padding: const EdgeInsets.all(8.0),
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey[200],
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  child: TextField(
+                                    controller: _searchController,
+                                    maxLines: null, // Allow multiline input
+                                    keyboardType: TextInputType.multiline,
+                                    decoration: InputDecoration(
+                                      filled: true,
+                                      fillColor: Colors.white,
+                                      hintText: 'Pretrazi po nazivu terena',
+                                      contentPadding:
+                                          const EdgeInsets.symmetric(
+                                              vertical: 8.0),
+                                      border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                        borderSide: BorderSide.none,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  width: 250, // Set the desired width
+                                  padding: const EdgeInsets.all(8.0),
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey[200],
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  child: TextField(
+                                    controller: _searchTipTerenaController,
+                                    maxLines: null, // Allow multiline input
+                                    keyboardType: TextInputType.multiline,
+                                    decoration: InputDecoration(
+                                      filled: true,
+                                      fillColor: Colors.white,
+                                      hintText: 'Pretrazi po vrsti podloge',
+                                      contentPadding:
+                                          const EdgeInsets.symmetric(
+                                              vertical: 8.0),
+                                      border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                        borderSide: BorderSide.none,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 8),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    loadData();
+                                  },
+                                  style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            Colors.green),
+                                    foregroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            Colors.white),
+                                    minimumSize:
+                                        MaterialStateProperty.all<Size>(
+                                            const Size(10, 45)),
+                                    shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                      ),
+                                    ),
+                                  ),
+                                  child: const Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Icon(Icons
+                                          .search), // Add the search icon here
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
-                        ),
+                        ],
                       ),
                     ],
                   ),
-                  SizedBox(height: 20),
-                  Expanded(
-                    child: DataTable(
-                      columns: const [
-                        DataColumn(label: Text('Naziv terena')),
-                        DataColumn(label: Text('Vrsta podloge')),
-                        DataColumn(label: Text('Uredi')),
-                        DataColumn(label: Text('Obriši')),
-                      ],
-                      rows: List<DataRow>.generate(
-                        3,
-                        (index) => DataRow(
-                          cells: [
-                            DataCell(Text('Padel teren ${index + 1}')),
-                            DataCell(Text(['beton', 'trava', 'guma'][index])),
-                            DataCell(Icon(Icons.edit)),
-                            DataCell(Icon(Icons.delete)),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
+                  const SizedBox(height: 20),
+                  _buildDataListView(),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       IconButton(
-                        icon: Icon(Icons.arrow_left),
+                        icon: const Icon(Icons.arrow_left),
                         onPressed: () {
                           // Implement page change
                         },
                       ),
                       Text('$_currentPage'),
                       IconButton(
-                        icon: Icon(Icons.arrow_right),
+                        icon: const Icon(Icons.arrow_right),
                         onPressed: () {
                           // Implement page change
                         },
@@ -130,6 +237,173 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildDataListView() {
+    if (_korisnik == null || _korisnik!.isEmpty) {
+      return Container(
+        padding: const EdgeInsets.all(16.0),
+        child: const Text(
+          'Ne postoje podadci sa vasom pretragom. Pokusajte ponovo sa drugim kljucnim rijecima.',
+          style: TextStyle(
+              fontSize: 18, color: Color.fromARGB(255, 119, 119, 119)),
+        ),
+      );
+    }
+
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10.0),
+        border: Border.all(
+          color: const Color(0xFFD7D2DC),
+          width: 1.0,
+        ),
+      ),
+      child: Center(
+        child: SizedBox(
+          width: double.infinity, // Expand to maximum width
+          child: Container(
+            decoration: BoxDecoration(
+              color: const Color(0xFFD9D9D9),
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            child: DataTable(
+              border: const TableBorder(
+                horizontalInside: BorderSide(
+                  width: 1,
+                  color: Colors.white,
+                ),
+              ),
+              headingRowColor: MaterialStateProperty.all<Color?>(
+                Colors.green,
+              ),
+              columns: const [
+                DataColumn(
+                  label: Expanded(
+                    child: Text(
+                      'Korisnicko Ime',
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500, color: Colors.white),
+                    ),
+                  ),
+                ),
+                DataColumn(
+                  label: Expanded(
+                    child: Text(
+                      'Dominantna ruka',
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500, color: Colors.white),
+                    ),
+                  ),
+                ),
+                DataColumn(
+                  label: Expanded(
+                    child: Text(
+                      'Spol',
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500, color: Colors.white),
+                    ),
+                  ),
+                ),
+                DataColumn(
+                  label: Expanded(
+                    child: Text(
+                      'Uredi',
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500, color: Colors.white),
+                    ),
+                  ),
+                ),
+                DataColumn(
+                  label: Expanded(
+                    child: Text(
+                      'Obrisi',
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500, color: Colors.white),
+                    ),
+                  ),
+                ),
+              ],
+              rows: _korisnik!.map((Korisnik korisnik) {
+                return DataRow(cells: [
+                  DataCell(Text(korisnik.korisnickoIme!)),
+                  DataCell(Text(korisnik.dominantnaRuka == null
+                      ? 'Nepoznato'
+                      : korisnik.dominantnaRuka!)),
+                  DataCell(Text(
+                      korisnik.spol == null ? 'Nepoznato' : korisnik.spol!)),
+                  // DataCell(Text(korisnik.dominantnaRuka!)),
+                  // DataCell(Text(korisnik.spol!)),
+                  DataCell(IconButton(
+                    icon: const Icon(Icons.edit),
+                    onPressed: () {
+                      // openEditModal(teren);
+                    },
+                  )),
+                  DataCell(IconButton(
+                    icon: const Icon(Icons.delete, color: Color(0xFFFF9A62)),
+                    onPressed: () {
+                      openDeleteModal(korisnik);
+                    },
+                  )),
+                ]);
+              }).toList(),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void openDeleteModal(Korisnik korisnik) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Obrisi'),
+          content: const Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text('Da li ste sigurni da želite da obrišete Korisnika?'),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('Poništi'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                try {
+                  await _korisnikProvider!.remove(korisnik.korisnikId!);
+                  if (context.mounted) {
+                    Navigator.pop(context);
+                    loadData();
+                  }
+                } catch (e) {
+                  if (context.mounted) {
+                    Navigator.pop(context);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        backgroundColor: Colors.red,
+                        content: Text(
+                            'Ne možete obrisati ovog Korisnika jer ima Admin Privilegiju!'),
+                      ),
+                    );
+                  }
+                }
+              },
+              child: const Text(
+                'Obriši',
+                style: TextStyle(color: Colors.red),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }

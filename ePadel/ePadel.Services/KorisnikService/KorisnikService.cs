@@ -87,20 +87,20 @@ namespace ePadel.Services.KorisnikService
             var entity = _context.Korisniks.Find(id);
             var korisnikUloge = _context.KorisnikUloges.Where(e => e.KorisnikId == id).ToList();
 
+            if (korisnikUloge.Any(ku => ku.UlogaId == 1))
+            {
+                throw new KorisnikException("Brisanje korisnika", "Nije moguce obrisati korisnika jer ima Admin privilegiju");
+            }
+
             if (korisnikUloge != null && korisnikUloge.Any())
             {
-                var uloga = _context.KorisnikUloges.Where(e => e.KorisnikId == id).ToList();
-                foreach (var ulogaUloge in uloga)
+                foreach (var ulogaUloge in korisnikUloge)
                 {
                     _context.KorisnikUloges.Remove(ulogaUloge);
                 }
-                _context.Korisniks.Remove(entity);
             }
-            else if (entity == null)
-            {
-                return null;
-            }
-            else
+
+            if (entity != null)
             {
                 _context.Korisniks.Remove(entity);
             }
@@ -108,5 +108,6 @@ namespace ePadel.Services.KorisnikService
             _context.SaveChanges();
             return _mapper.Map<Model.Korisnik>(entity);
         }
+
     }
 }

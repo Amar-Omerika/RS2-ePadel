@@ -11,7 +11,9 @@ void main() {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AuthProvider()),  
-        ChangeNotifierProvider(create: (_) => TerenProvider()),      
+        ChangeNotifierProvider(create: (_) => TerenProvider()), 
+        ChangeNotifierProvider(create: (_) => KorisnikProvider()),
+
       ],
       child: const MyApp(),
     ),

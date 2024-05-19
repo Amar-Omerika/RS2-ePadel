@@ -14,6 +14,8 @@ Korisnik _$KorisnikFromJson(Map<String, dynamic> json) => Korisnik(
       email: json['email'] as String?,
       brTelefona: json['brTelefona'] as String?,
       lozinka: json['lozinka'] as String?,
+      dominantnaRuka: json['dominantnaRuka'] as String?,
+      spol: json['spol'] as String?,
     );
 
 Map<String, dynamic> _$KorisnikToJson(Korisnik instance) => <String, dynamic>{
@@ -24,4 +26,6 @@ Map<String, dynamic> _$KorisnikToJson(Korisnik instance) => <String, dynamic>{
       'email': instance.email,
       'brTelefona': instance.brTelefona,
       'lozinka': instance.lozinka,
+      'dominantnaRuka': instance.dominantnaRuka,
+      'spol': instance.spol,
     };
