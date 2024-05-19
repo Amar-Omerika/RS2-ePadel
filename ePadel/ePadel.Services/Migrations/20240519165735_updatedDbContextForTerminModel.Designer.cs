@@ -12,8 +12,8 @@ using ePadel.Services.Database;
 namespace ePadel.Services.Migrations
 {
     [DbContext(typeof(IB190069_ePadelContext))]
-    [Migration("20240505223438_NewChanges")]
-    partial class NewChanges
+    [Migration("20240519165735_updatedDbContextForTerminModel")]
+    partial class updatedDbContextForTerminModel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -344,7 +344,7 @@ namespace ePadel.Services.Migrations
                         new
                         {
                             RezervacijaId = 1,
-                            DatumRezervacije = new DateTime(2024, 5, 6, 0, 34, 37, 389, DateTimeKind.Local).AddTicks(1788),
+                            DatumRezervacije = new DateTime(2024, 5, 19, 18, 57, 34, 637, DateTimeKind.Local).AddTicks(4506),
                             KorisnikId = 1,
                             RezervacijaStatus = "Aktivna",
                             TerenId = 1,
@@ -367,7 +367,16 @@ namespace ePadel.Services.Migrations
                     b.Property<decimal?>("Cijena")
                         .HasColumnType("decimal(18,0)");
 
+                    b.Property<int>("CijenaPopusta")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Lokacija")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Naziv")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Popust")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("TipTerenaId")
@@ -387,6 +396,7 @@ namespace ePadel.Services.Migrations
                             TerenId = 1,
                             BrojTerena = 1,
                             Cijena = 20m,
+                            CijenaPopusta = 0,
                             Naziv = "Teren 1",
                             TipTerenaId = 1
                         },
@@ -395,6 +405,7 @@ namespace ePadel.Services.Migrations
                             TerenId = 2,
                             BrojTerena = 2,
                             Cijena = 15m,
+                            CijenaPopusta = 0,
                             Naziv = "Teren 2",
                             TipTerenaId = 2
                         },
@@ -403,6 +414,7 @@ namespace ePadel.Services.Migrations
                             TerenId = 3,
                             BrojTerena = 3,
                             Cijena = 20m,
+                            CijenaPopusta = 0,
                             Naziv = "Teren 3",
                             TipTerenaId = 3
                         });
@@ -435,7 +447,7 @@ namespace ePadel.Services.Migrations
                         new
                         {
                             TerminId = 1,
-                            Datum = new DateTime(2024, 5, 6, 0, 0, 0, 0, DateTimeKind.Local),
+                            Datum = new DateTime(2024, 5, 19, 0, 0, 0, 0, DateTimeKind.Local),
                             VremePočetka = new TimeSpan(0, 10, 0, 0, 0),
                             VremeZavršetka = new TimeSpan(0, 12, 0, 0, 0)
                         });

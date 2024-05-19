@@ -1,15 +1,14 @@
 
-import 'package:epadel_admin/models/teren.dart';
+import 'package:epadel_admin/models/models.dart';
 import 'package:epadel_admin/providers/providers.dart';
 import 'package:epadel_admin/screens/appsidebar.dart';
 import 'package:epadel_admin/screens/korisnici_screen.dart';
 import 'package:epadel_admin/screens/report_screen.dart';
 import 'package:epadel_admin/screens/rezervacije_screen.dart';
 import 'package:epadel_admin/widgets/modals/Tereni/add_teren_modal.dart';
+import 'package:epadel_admin/widgets/modals/Tereni/edit_teren_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-
 
 class TereniScreen extends StatefulWidget {
   static const String routeName = '/tereni';
@@ -77,7 +76,47 @@ class _TereniScreenState extends State<TereniScreen> {
       },
     );
   }
+void handleEdit(
+      int id,
+      String? naziv,
+      int? cijena,
+      int? brojTerena,
+      int? tipTerenaId,
+      String? lokacija,
+      String? popust,
+      int? cijenaPopusta) async {
+    await _terenProvider!.update(id, {
+      'naziv': naziv,
+      'cijena': cijena,
+      'brojTerena': brojTerena,
+      'tipTerenaId': tipTerenaId,
+      'lokacija': lokacija,
+      'popust': popust,
+      'cijenaPopusta': cijenaPopusta
+    });
+    if (context.mounted) {
+      Navigator.pop(context);
+      loadData();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Theme.of(context).primaryColor,
+          content: const Text('Uspješno ste editovali Teren!'),
+        ),
+      );
+    }
+  }
 
+  void openEditModal(Teren teren) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return EditTerenModal(
+          teren: teren,
+          handleEdit: handleEdit,
+        );
+      },
+    );
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -369,7 +408,12 @@ class _TereniScreenState extends State<TereniScreen> {
                 return DataRow(cells: [
                       DataCell(Text(teren.naziv!)),
                       DataCell(Text(teren.tipTerena!.naziv!)),
-                  const DataCell(Icon(Icons.edit)),
+                      DataCell(IconButton(
+                        icon: const Icon(Icons.edit),
+                        onPressed: () {
+                          openEditModal(teren);
+                        },
+                      )),
                       DataCell(IconButton(
                         icon:
                             const Icon(Icons.delete, color: Color(0xFFFF9A62)),

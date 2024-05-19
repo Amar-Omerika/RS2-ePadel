@@ -1,29 +1,32 @@
 // ignore_for_file: prefer_const_constructors
-
+import 'package:epadel_admin/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class AddTerenModal extends StatefulWidget {
-  final Function handleAdd;
+class EditTerenModal extends StatefulWidget {
+  final Teren teren;
+  final Function handleEdit;
 
-  const AddTerenModal({
+  const EditTerenModal({
     super.key,
-    required this.handleAdd,
+    required this.teren,
+    required this.handleEdit,
   });
 
   @override
-  State<AddTerenModal> createState() => _AddTerenModalState();
+  State<EditTerenModal> createState() => _EditTerenModalState();
 }
 
-class _AddTerenModalState extends State<AddTerenModal> {
-  GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  String? naziv;
-  int? brojTerena;
-  int? cijena;
-  int? tipTerenaId;
-  String? lokacija;
-  String? popust = 'Ne';
-  int? cijenaPopusta = 0;
+class _EditTerenModalState extends State<EditTerenModal> {
+  final _formKey = GlobalKey<FormState>();
+  late TextEditingController _nazivController;
+  late TextEditingController _brojTerenaController;
+  late TextEditingController _cijenaController;
+  late TextEditingController _lokacijaController;
+  late TextEditingController _cijenaPopustaController;
+
+  int? _selectedTipTerena;
+  String? _selectedPopust;
 
   final List<Map<String, dynamic>> vrstePodloge = [
     {"tipTerenaId": 1, "naziv": "Guma"},
@@ -31,11 +34,40 @@ class _AddTerenModalState extends State<AddTerenModal> {
     {"tipTerenaId": 3, "naziv": "Beton"}
   ];
 
-  bool get isDodajButtonDisabled {
-    if (popust == 'Da' && cijenaPopusta != null && cijena != null) {
-      return cijenaPopusta! > cijena!;
+  bool get isSaveButtonDisabled {
+    if (_selectedPopust == 'Da' &&
+        _cijenaPopustaController.text.isNotEmpty &&
+        _cijenaController.text.isNotEmpty) {
+      int cijenaPopusta = int.tryParse(_cijenaPopustaController.text) ?? 0;
+      int cijena = int.tryParse(_cijenaController.text) ?? 0;
+      return cijenaPopusta > cijena;
     }
     return false;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _nazivController = TextEditingController(text: widget.teren.naziv);
+    _brojTerenaController =
+        TextEditingController(text: widget.teren.brojTerena?.toString());
+    _cijenaController =
+        TextEditingController(text: widget.teren.cijena?.toString());
+    _lokacijaController = TextEditingController(text: widget.teren.lokacija);
+    _cijenaPopustaController =
+        TextEditingController(text: widget.teren.cijenaPopusta?.toString());
+    _selectedTipTerena = widget.teren.tipTerenaId;
+    _selectedPopust = widget.teren.popust ?? 'Ne';
+  }
+
+  @override
+  void dispose() {
+    _nazivController.dispose();
+    _brojTerenaController.dispose();
+    _cijenaController.dispose();
+    _lokacijaController.dispose();
+    _cijenaPopustaController.dispose();
+    super.dispose();
   }
 
   @override
@@ -43,9 +75,9 @@ class _AddTerenModalState extends State<AddTerenModal> {
     return AlertDialog(
       backgroundColor: Colors.grey[300],
       content: SizedBox(
-        width: MediaQuery.of(context).size.width * 0.6, // 60% of screen width
+        width: MediaQuery.of(context).size.width * 0.6,
         child: Form(
-          key: formKey,
+          key: _formKey,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -70,21 +102,16 @@ class _AddTerenModalState extends State<AddTerenModal> {
                               Container(
                                 decoration: BoxDecoration(
                                   color: Colors.white,
-                                  borderRadius: BorderRadius.circular(
-                                      12.0), 
+                                  borderRadius: BorderRadius.circular(12.0),
                                 ),
                                 child: TextFormField(
+                                  controller: _nazivController,
                                   decoration: InputDecoration(
                                     contentPadding: EdgeInsets.all(8.0),
                                     border: InputBorder.none,
-                                    enabledBorder: InputBorder
-                                        .none,
-                                    focusedBorder: InputBorder
-                                        .none,
+                                    enabledBorder: InputBorder.none,
+                                    focusedBorder: InputBorder.none,
                                   ),
-                                  onChanged: (value) {
-                                    naziv = value;
-                                  },
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
                                       return 'Ovo polje je obavezno';
@@ -121,6 +148,7 @@ class _AddTerenModalState extends State<AddTerenModal> {
                                     enabledBorder: InputBorder.none,
                                     focusedBorder: InputBorder.none,
                                   ),
+                                  value: _selectedTipTerena,
                                   items: vrstePodloge.map((podloga) {
                                     return DropdownMenuItem<int>(
                                       value: podloga['tipTerenaId'],
@@ -129,7 +157,7 @@ class _AddTerenModalState extends State<AddTerenModal> {
                                   }).toList(),
                                   onChanged: (value) {
                                     setState(() {
-                                      tipTerenaId = value;
+                                      _selectedTipTerena = value;
                                     });
                                   },
                                   validator: (value) {
@@ -162,24 +190,18 @@ class _AddTerenModalState extends State<AddTerenModal> {
                                   borderRadius: BorderRadius.circular(12.0),
                                 ),
                                 child: TextFormField(
+                                  controller: _cijenaController,
                                   maxLength: 3,
                                   decoration: InputDecoration(
                                     contentPadding: EdgeInsets.all(8.0),
-                                    border: InputBorder.none, 
-                                    enabledBorder: InputBorder
-                                        .none, 
-                                    focusedBorder: InputBorder
-                                        .none,
+                                    border: InputBorder.none,
+                                    enabledBorder: InputBorder.none,
+                                    focusedBorder: InputBorder.none,
                                   ),
                                   keyboardType: TextInputType.number,
                                   inputFormatters: <TextInputFormatter>[
                                     FilteringTextInputFormatter.digitsOnly
                                   ],
-                                  onChanged: (value) {
-                                    setState(() {
-                                      cijena = int.tryParse(value);
-                                    });
-                                  },
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
                                       return 'Ovo polje je obavezno';
@@ -210,21 +232,17 @@ class _AddTerenModalState extends State<AddTerenModal> {
                                   borderRadius: BorderRadius.circular(12.0),
                                 ),
                                 child: TextFormField(
+                                  controller: _brojTerenaController,
                                   decoration: InputDecoration(
                                     contentPadding: EdgeInsets.all(8.0),
-                                    border: InputBorder.none, // No border
-                                    enabledBorder: InputBorder
-                                        .none, // No underline when enabled
-                                    focusedBorder: InputBorder
-                                        .none, // No underline when focused
+                                    border: InputBorder.none,
+                                    enabledBorder: InputBorder.none,
+                                    focusedBorder: InputBorder.none,
                                   ),
                                   keyboardType: TextInputType.number,
                                   inputFormatters: <TextInputFormatter>[
                                     FilteringTextInputFormatter.digitsOnly
                                   ],
-                                  onChanged: (value) {
-                                    brojTerena = int.tryParse(value);
-                                  },
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
                                       return 'Ovo polje je obavezno';
@@ -258,19 +276,16 @@ class _AddTerenModalState extends State<AddTerenModal> {
                               SizedBox(height: 8),
                               Container(
                                 decoration: BoxDecoration(
-                                  color: Colors.white, // Background color
-                                  borderRadius: BorderRadius.circular(
-                                      12.0), // Border radius
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(12.0),
                                 ),
                                 child: TextFormField(
+                                  controller: _lokacijaController,
                                   decoration: const InputDecoration(
                                     border: InputBorder.none,
                                     enabledBorder: InputBorder.none,
                                     focusedBorder: InputBorder.none,
                                   ),
-                                  onChanged: (value) {
-                                    lokacija = value;
-                                  },
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
                                       return 'Ovo polje je obavezno';
@@ -307,7 +322,7 @@ class _AddTerenModalState extends State<AddTerenModal> {
                                     enabledBorder: InputBorder.none,
                                     focusedBorder: InputBorder.none,
                                   ),
-                                  value: popust,
+                                  value: _selectedPopust,
                                   items: ['Da', 'Ne']
                                       .map((label) => DropdownMenuItem(
                                             child: Text(label),
@@ -316,7 +331,7 @@ class _AddTerenModalState extends State<AddTerenModal> {
                                       .toList(),
                                   onChanged: (value) {
                                     setState(() {
-                                      popust = value;
+                                      _selectedPopust = value;
                                     });
                                   },
                                 ),
@@ -324,7 +339,7 @@ class _AddTerenModalState extends State<AddTerenModal> {
                             ],
                           ),
                         ),
-                        if (popust == 'Da')
+                        if (_selectedPopust == 'Da')
                           Container(
                             padding: const EdgeInsets.all(8.0),
                             child: Column(
@@ -344,26 +359,20 @@ class _AddTerenModalState extends State<AddTerenModal> {
                                     borderRadius: BorderRadius.circular(12.0),
                                   ),
                                   child: TextFormField(
+                                    controller: _cijenaPopustaController,
                                     maxLength: 3,
                                     decoration: InputDecoration(
                                       contentPadding: EdgeInsets.all(8.0),
-                                      border: InputBorder.none, // No border
-                                      enabledBorder: InputBorder
-                                          .none, // No underline when enabled
-                                      focusedBorder: InputBorder
-                                          .none, // No underline when focused
+                                      border: InputBorder.none,
+                                      enabledBorder: InputBorder.none,
+                                      focusedBorder: InputBorder.none,
                                     ),
                                     keyboardType: TextInputType.number,
                                     inputFormatters: <TextInputFormatter>[
                                       FilteringTextInputFormatter.digitsOnly
                                     ],
-                                    onChanged: (value) {
-                                      setState(() {
-                                        cijenaPopusta = int.tryParse(value);
-                                      });
-                                    },
                                     validator: (value) {
-                                      if (popust == 'Da' &&
+                                      if (_selectedPopust == 'Da' &&
                                           (value == null || value.isEmpty)) {
                                         return 'Ovo polje je obavezno';
                                       }
@@ -392,6 +401,7 @@ class _AddTerenModalState extends State<AddTerenModal> {
             backgroundColor: Colors.red,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20.0),
+              side: BorderSide(color: Colors.blue),
             ),
             padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           ),
@@ -403,18 +413,19 @@ class _AddTerenModalState extends State<AddTerenModal> {
           ),
         ),
         ElevatedButton(
-          onPressed: isDodajButtonDisabled
+          onPressed: isSaveButtonDisabled
               ? null
               : () {
-                  if (formKey.currentState!.validate()) {
-                    widget.handleAdd(
-                      naziv,
-                      cijena,
-                      brojTerena,
-                      tipTerenaId,
-                      lokacija,
-                      popust,
-                      cijenaPopusta,
+                  if (_formKey.currentState!.validate()) {
+                    widget.handleEdit(
+                      widget.teren.terenId!,
+                      _nazivController.text,
+                      int.tryParse(_cijenaController.text),
+                      int.tryParse(_brojTerenaController.text),
+                      _selectedTipTerena,
+                      _lokacijaController.text,
+                      _selectedPopust,
+                      int.tryParse(_cijenaPopustaController.text),
                     );
                   }
                 },
@@ -433,7 +444,6 @@ class _AddTerenModalState extends State<AddTerenModal> {
           ),
         ),
       ],
-
     );
   }
 }

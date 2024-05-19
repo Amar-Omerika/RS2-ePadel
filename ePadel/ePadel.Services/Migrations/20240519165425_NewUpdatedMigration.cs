@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ePadel.Services.Migrations
 {
-    public partial class Migrations : Migration
+    public partial class NewUpdatedMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -166,6 +166,40 @@ namespace ePadel.Services.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "PlatiTermins",
+                columns: table => new
+                {
+                    PlatiTerminId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Cijena = table.Column<int>(type: "int", nullable: false),
+                    DatumKupovine = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    PaymentIntentId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Placena = table.Column<bool>(type: "bit", nullable: true),
+                    KorisnikId = table.Column<int>(type: "int", nullable: true),
+                    TerminId = table.Column<int>(type: "int", nullable: true),
+                    TerenId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PlatiTermins", x => x.PlatiTerminId);
+                    table.ForeignKey(
+                        name: "FK_PlatiTermins_Korisnik_KorisnikId",
+                        column: x => x.KorisnikId,
+                        principalTable: "Korisnik",
+                        principalColumn: "KorisnikId");
+                    table.ForeignKey(
+                        name: "FK_PlatiTermins_Tereni_TerenId",
+                        column: x => x.TerenId,
+                        principalTable: "Tereni",
+                        principalColumn: "TerenID");
+                    table.ForeignKey(
+                        name: "FK_PlatiTermins_Termini_TerminId",
+                        column: x => x.TerminId,
+                        principalTable: "Termini",
+                        principalColumn: "TerminID");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Rezervacije",
                 columns: table => new
                 {
@@ -260,7 +294,7 @@ namespace ePadel.Services.Migrations
             migrationBuilder.InsertData(
                 table: "Termini",
                 columns: new[] { "TerminID", "Datum", "VremePočetka", "VremeZavršetka" },
-                values: new object[] { 1, new DateTime(2023, 12, 25, 0, 0, 0, 0, DateTimeKind.Local), new TimeSpan(0, 10, 0, 0, 0), new TimeSpan(0, 12, 0, 0, 0) });
+                values: new object[] { 1, new DateTime(2024, 5, 19, 0, 0, 0, 0, DateTimeKind.Local), new TimeSpan(0, 10, 0, 0, 0), new TimeSpan(0, 12, 0, 0, 0) });
 
             migrationBuilder.InsertData(
                 table: "TipTerena",
@@ -308,7 +342,7 @@ namespace ePadel.Services.Migrations
             migrationBuilder.InsertData(
                 table: "Rezervacije",
                 columns: new[] { "RezervacijaID", "DatumRezervacije", "KorisnikID", "RezervacijaStatus", "TerenID", "TerminID" },
-                values: new object[] { 1, new DateTime(2023, 12, 25, 21, 11, 53, 550, DateTimeKind.Local).AddTicks(4422), 1, "Aktivna", 1, 1 });
+                values: new object[] { 1, new DateTime(2024, 5, 19, 18, 54, 24, 866, DateTimeKind.Local).AddTicks(4957), 1, "Aktivna", 1, 1 });
 
             migrationBuilder.InsertData(
                 table: "Ocijene",
@@ -339,6 +373,21 @@ namespace ePadel.Services.Migrations
                 name: "IX_Plaćanja_RezervacijaID",
                 table: "Plaćanja",
                 column: "RezervacijaID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PlatiTermins_KorisnikId",
+                table: "PlatiTermins",
+                column: "KorisnikId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PlatiTermins_TerenId",
+                table: "PlatiTermins",
+                column: "TerenId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PlatiTermins_TerminId",
+                table: "PlatiTermins",
+                column: "TerminId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Rezervacije_KorisnikID",
@@ -374,6 +423,9 @@ namespace ePadel.Services.Migrations
 
             migrationBuilder.DropTable(
                 name: "Plaćanja");
+
+            migrationBuilder.DropTable(
+                name: "PlatiTermins");
 
             migrationBuilder.DropTable(
                 name: "RezervacijaStatusi");

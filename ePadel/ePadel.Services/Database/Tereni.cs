@@ -10,6 +10,9 @@ namespace ePadel.Services.Database
         public string? Naziv { get; set; }
         public int? BrojTerena { get; set; }
         public int? Cijena { get; set; }
+        public string? Lokacija { get; set; }
+        public string? Popust { get; set; }
+        public int CijenaPopusta { get; set; }
         public int? TipTerenaId { get; set; }
 
         public virtual TipTerena? TipTerena { get; set; }

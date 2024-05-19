@@ -11,6 +11,9 @@ class Teren {
   int? cijena;
   int? tipTerenaId;
   String? slikaTerena;
+  String? lokacija;
+  String? popust;
+  int? cijenaPopusta;
   TipTerena? tipTerena;
 
   Teren(
@@ -20,7 +23,10 @@ class Teren {
       this.cijena,
       this.tipTerenaId,
       this.slikaTerena,
-      this.tipTerena});
+      this.tipTerena,
+      this.lokacija,
+      this.popust,
+      this.cijenaPopusta});
 
   factory Teren.fromJson(Map<String, dynamic> json) => _$TerenFromJson(json);
   Map<String, dynamic> toJson() => _$TerenToJson(this);
