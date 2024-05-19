@@ -23,6 +23,8 @@ class _TereniScreenState extends State<TereniScreen> {
   TerenProvider? _terenProvider;
   List<Teren>? _tereni;
   final TextEditingController _searchController = TextEditingController();
+  final TextEditingController _searchTipTerenaController =
+      TextEditingController();
   int _currentPage = 1; // Example pagination state
 
 
@@ -34,13 +36,24 @@ class _TereniScreenState extends State<TereniScreen> {
   }
 
   void loadData() async {
-    var data = await _terenProvider!.get();
+    Map<String, String> filters = {};
+
+    if (_searchController.text.isNotEmpty) {
+      filters['Tekst'] = _searchController.text;
+    }
+    if (_searchTipTerenaController.text.isNotEmpty) {
+      filters['TipTerenaTekst'] = _searchTipTerenaController.text;
+    }
+
+    var data = await _terenProvider!.get(filters);
+
     setState(() {
       _tereni = data;
     });
   }
   void resetSearch() {
     _searchController.text = '';
+    _searchTipTerenaController.text = '';
   }
 
   void handleAdd(
@@ -230,6 +243,7 @@ void handleEdit(
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
                                   child: TextField(
+                                    controller: _searchController,
                                     maxLines: null, // Allow multiline input
                                     keyboardType: TextInputType.multiline,
                                     decoration: InputDecoration(
@@ -255,12 +269,13 @@ void handleEdit(
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
                                   child: TextField(
+                                    controller: _searchTipTerenaController,
                                     maxLines: null, // Allow multiline input
                                     keyboardType: TextInputType.multiline,
                                     decoration: InputDecoration(
                                       filled: true,
                                       fillColor: Colors.white,
-                                      hintText: 'Pretrazi po nazivu terena',
+                                      hintText: 'Pretrazi po vrsti podloge',
                                       contentPadding:
                                           const EdgeInsets.symmetric(
                                               vertical: 8.0),
@@ -277,7 +292,7 @@ void handleEdit(
                                 ),
                                 ElevatedButton(
                                   onPressed: () {
-                                    print('Search Button pressed');
+                                    loadData();
                                   },
                                   style: ButtonStyle(
                                       backgroundColor:
@@ -339,7 +354,18 @@ void handleEdit(
       ),
     );
   }
-  Widget _buildDataListView() {
+Widget _buildDataListView() {
+    if (_tereni == null || _tereni!.isEmpty) {
+      return Container(
+        padding: const EdgeInsets.all(16.0),
+        child: const Text(
+          'Ne postoje podadci sa vasom pretragom. Pokusajte ponovo sa drugim kljucnim rijecima.',
+          style: TextStyle(
+              fontSize: 18, color: Color.fromARGB(255, 119, 119, 119)),
+        ),
+      );
+    }
+
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.0),
@@ -353,7 +379,7 @@ void handleEdit(
           width: double.infinity, // Expand to maximum width
           child: Container(
             decoration: BoxDecoration(
-              color: Color(0xFFD9D9D9),
+              color: const Color(0xFFD9D9D9),
               borderRadius: BorderRadius.circular(10.0),
             ),
             child: DataTable(
@@ -404,32 +430,31 @@ void handleEdit(
                   ),
                 ),
               ],
-              rows: _tereni?.map((Teren teren) {
+              rows: _tereni!.map((Teren teren) {
                 return DataRow(cells: [
-                      DataCell(Text(teren.naziv!)),
-                      DataCell(Text(teren.tipTerena!.naziv!)),
-                      DataCell(IconButton(
-                        icon: const Icon(Icons.edit),
-                        onPressed: () {
-                          openEditModal(teren);
-                        },
-                      )),
-                      DataCell(IconButton(
-                        icon:
-                            const Icon(Icons.delete, color: Color(0xFFFF9A62)),
-                        onPressed: () {
-                          openDeleteModal(teren);
-                        },
-                      )),
+                  DataCell(Text(teren.naziv!)),
+                  DataCell(Text(teren.tipTerena!.naziv!)),
+                  DataCell(IconButton(
+                    icon: const Icon(Icons.edit),
+                    onPressed: () {
+                      openEditModal(teren);
+                    },
+                  )),
+                  DataCell(IconButton(
+                    icon: const Icon(Icons.delete, color: Color(0xFFFF9A62)),
+                    onPressed: () {
+                      openDeleteModal(teren);
+                    },
+                  )),
                 ]);
-                  }).toList() ??
-                  [],
+              }).toList(),
             ),
           ),
         ),
       ),
     );
   }
+
 
 //delete modal
   void openDeleteModal(Teren teren) {

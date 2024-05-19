@@ -12,26 +12,32 @@ using Microsoft.ML.Trainers;
 
 namespace ePadel.Services.TerenService
 {
-    public class TerenService : BaseCRUDService<Model.Tereni, Database.Tereni, BaseSearchObject, TerenInsertRequest, TerenUpdateRequest>, ITerenService
+    public class TerenService : BaseCRUDService<Model.Tereni, Database.Tereni, TerenSearchObject, TerenInsertRequest, TerenUpdateRequest>, ITerenService
     {
         public TerenService(IB190069_ePadelContext context, IMapper mapper) : base(context, mapper)
         {
         }
 
-        public override IQueryable<ePadel.Services.Database.Tereni> AddInclude(IQueryable<ePadel.Services.Database.Tereni> query, BaseSearchObject search = null)
+        public override IQueryable<ePadel.Services.Database.Tereni> AddInclude(IQueryable<ePadel.Services.Database.Tereni> query, TerenSearchObject search = null)
         {
             query = query.Include(x => x.TipTerena);
             return base.AddInclude(query, search);
         }
-        public override IQueryable<ePadel.Services.Database.Tereni> AddFilter(IQueryable<ePadel.Services.Database.Tereni> query, BaseSearchObject search = null)
+        public override IQueryable<ePadel.Services.Database.Tereni> AddFilter(IQueryable<ePadel.Services.Database.Tereni> query, TerenSearchObject search = null)
         {
             var filteredQuery = base.AddFilter(query, search);
 
             if (!string.IsNullOrWhiteSpace(search?.Tekst))
+            {
                 filteredQuery = filteredQuery.Where(x => x.Naziv.ToLower().Contains(search.Tekst.ToLower()));
-            return filteredQuery;
+            }
 
-           
+            if (!string.IsNullOrWhiteSpace(search?.TipTerenaTekst))
+            {
+                filteredQuery = filteredQuery.Where(x => x.TipTerena.Naziv.ToLower().Contains(search.TipTerenaTekst.ToLower()));
+            }
+
+            return filteredQuery;
         }
         public override Model.Tereni Insert(TerenInsertRequest request)
         {

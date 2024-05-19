@@ -8,7 +8,7 @@ namespace ePadel.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class TerenController : BaseCRUDController<Model.Tereni,BaseSearchObject,TerenInsertRequest,TerenUpdateRequest>
+    public class TerenController : BaseCRUDController<Model.Tereni,TerenSearchObject,TerenInsertRequest,TerenUpdateRequest>
     {
         protected ITerenService? _service { get; set; }
         public TerenController(ITerenService service) : base(service)
