@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'ePadel Admin',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primaryColor: const Color.fromARGB(255, 59, 96, 61),
       ),
       initialRoute: LoginScreen.routeName,
       routes: {

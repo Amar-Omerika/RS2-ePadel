@@ -54,6 +54,7 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
   void handleEdit(int id, String? korisnickoIme, String? email,
       String? dominantnaRuka,
       String? spol) async {
+    try {
     await _korisnikProvider!.update(id, {
       'korisnickoIme': korisnickoIme,
       'email': email,
@@ -69,6 +70,18 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
           content: const Text('Uspješno ste editovali korisnika!'),
         ),
       );
+      }
+    } catch (e) {
+      if (context.mounted) {
+        Navigator.pop(context);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            backgroundColor: Colors.red,
+            content: Text(
+                'Nije moguce editovati korisnika jer ima Admin privilegiju!'),
+          ),
+        );
+      }
     }
   }
 

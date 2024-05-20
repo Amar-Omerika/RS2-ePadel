@@ -4,11 +4,9 @@ namespace ePadel.Model.Requests.KorisnikRequest
 {
     public class KorisnikInsertRequest
     {
-        [Required(AllowEmptyStrings = false)]
         public string? Ime { get; set; }
 
 
-        [Required(AllowEmptyStrings = false)]
         public string? Prezime { get; set; }
 
 
@@ -22,7 +20,6 @@ namespace ePadel.Model.Requests.KorisnikRequest
         public string? Email { get; set; }
 
 
-        [Required(AllowEmptyStrings = false)]
         [RegularExpression("^\\d{3}-\\d{3}-(\\d{4}|\\d{3})$", ErrorMessage = "Broj telefona mora biti u obliku 06X-XXX-XXX !")]
         public string? BrTelefona { get; set; }
 

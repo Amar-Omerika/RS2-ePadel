@@ -70,6 +70,13 @@ namespace ePadel.Services.KorisnikService
         }
         public override Model.Korisnik Update(int id, KorisnikUpdateRequest request)
         {
+            var entity = _context.Korisniks.Find(id);
+            var korisnikUloge = _context.KorisnikUloges.Where(e => e.KorisnikId == id).ToList();
+
+            if (korisnikUloge.Any(ku => ku.UlogaId == 1))
+            {
+                throw new KorisnikException("Editovanje korisnika", "Nije moguce editovati korisnika jer ima Admin privilegiju");
+            }
             var korisnikSaKorisnickimImenom = _context.Korisniks.Where(x => x.KorisnikId != id && x.KorisnickoIme == request.KorisnickoIme).ToList();
             if (korisnikSaKorisnickimImenom != null && korisnikSaKorisnickimImenom.Count > 0)
             {
