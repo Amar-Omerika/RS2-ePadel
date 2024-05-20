@@ -6,7 +6,7 @@ import 'package:epadel_admin/screens/rezervacije_screen.dart';
 import 'package:epadel_admin/screens/tereni_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
+import 'package:epadel_admin/widgets/modals/Korisnici/edit_korisnici_modal.dart';
 class KorisniciScreen extends StatefulWidget {
   static const String routeName = '/korisnici';
   const KorisniciScreen({Key? key}) : super(key: key);
@@ -17,10 +17,9 @@ class KorisniciScreen extends StatefulWidget {
 
 class _KorisniciScreenState extends State<KorisniciScreen> {
   KorisnikProvider? _korisnikProvider;
-  List<Korisnik>? _korisnik;
+  List<Korisnik>? _korisnici;
   final TextEditingController _searchController = TextEditingController();
-  final TextEditingController _searchTipTerenaController =
-      TextEditingController();
+  final TextEditingController _searchSpolController = TextEditingController();
   int _currentPage = 1; // Example pagination state
 
   @override
@@ -31,15 +30,55 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
   }
 
   void loadData() async {
-    var data = await _korisnikProvider!.get();
+    Map<String, String> filters = {};
+
+    if (_searchController.text.isNotEmpty) {
+      filters['korisnickoIme'] = _searchController.text;
+    }
+    if (_searchSpolController.text.isNotEmpty) {
+      filters['Spol'] = _searchSpolController.text;
+    }
+
+    var data = await _korisnikProvider!.get(filters);
     setState(() {
-      _korisnik = data;
+      _korisnici = data;
     });
   }
 
   void resetSearch() {
     _searchController.text = '';
-    _searchTipTerenaController.text = '';
+    _searchSpolController.text = '';
+  }
+
+  void handleEdit(int id, String? korisnickoIme, String? dominantnaRuka,
+      String? spol) async {
+    await _korisnikProvider!.update(id, {
+      'korisnickoIme': korisnickoIme,
+      'dominantnaRuka': dominantnaRuka,
+      'spol': spol,
+    });
+    if (context.mounted) {
+      Navigator.pop(context);
+      loadData();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Theme.of(context).primaryColor,
+          content: const Text('Uspješno ste editovali korisnika!'),
+        ),
+      );
+    }
+  }
+
+  void openEditModal(Korisnik korisnik) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return EditKorisnikModal(
+          korisnik: korisnik,
+          handleEdit: handleEdit,
+        );
+      },
+    );
   }
 
   @override
@@ -135,7 +174,7 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
                                     decoration: InputDecoration(
                                       filled: true,
                                       fillColor: Colors.white,
-                                      hintText: 'Pretrazi po nazivu terena',
+                                      hintText: 'Pretrazi po korisnickom imenu',
                                       contentPadding:
                                           const EdgeInsets.symmetric(
                                               vertical: 8.0),
@@ -148,20 +187,20 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
                                   ),
                                 ),
                                 Container(
-                                  width: 250, // Set the desired width
+                                  width: 250,
                                   padding: const EdgeInsets.all(8.0),
                                   decoration: BoxDecoration(
                                     color: Colors.grey[200],
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
                                   child: TextField(
-                                    controller: _searchTipTerenaController,
-                                    maxLines: null, // Allow multiline input
+                                    controller: _searchSpolController,
+                                    maxLines: null,
                                     keyboardType: TextInputType.multiline,
                                     decoration: InputDecoration(
                                       filled: true,
                                       fillColor: Colors.white,
-                                      hintText: 'Pretrazi po vrsti podloge',
+                                      hintText: 'Pretrazi po spolu',
                                       contentPadding:
                                           const EdgeInsets.symmetric(
                                               vertical: 8.0),
@@ -199,8 +238,7 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
                                   child: const Row(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
-                                      Icon(Icons
-                                          .search), // Add the search icon here
+                                      Icon(Icons.search),
                                     ],
                                   ),
                                 )
@@ -241,11 +279,11 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
   }
 
   Widget _buildDataListView() {
-    if (_korisnik == null || _korisnik!.isEmpty) {
+    if (_korisnici == null || _korisnici!.isEmpty) {
       return Container(
         padding: const EdgeInsets.all(16.0),
         child: const Text(
-          'Ne postoje podadci sa vasom pretragom. Pokusajte ponovo sa drugim kljucnim rijecima.',
+          'Ne postoje podaci sa vasom pretragom. Pokusajte ponovo sa drugim kljucnim rijecima.',
           style: TextStyle(
               fontSize: 18, color: Color.fromARGB(255, 119, 119, 119)),
         ),
@@ -325,7 +363,7 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
                   ),
                 ),
               ],
-              rows: _korisnik!.map((Korisnik korisnik) {
+              rows: _korisnici!.map((Korisnik korisnik) {
                 return DataRow(cells: [
                   DataCell(Text(korisnik.korisnickoIme!)),
                   DataCell(Text(korisnik.dominantnaRuka == null
@@ -333,12 +371,10 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
                       : korisnik.dominantnaRuka!)),
                   DataCell(Text(
                       korisnik.spol == null ? 'Nepoznato' : korisnik.spol!)),
-                  // DataCell(Text(korisnik.dominantnaRuka!)),
-                  // DataCell(Text(korisnik.spol!)),
                   DataCell(IconButton(
                     icon: const Icon(Icons.edit),
                     onPressed: () {
-                      // openEditModal(teren);
+                      openEditModal(korisnik);
                     },
                   )),
                   DataCell(IconButton(
@@ -407,3 +443,4 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
     );
   }
 }
+       
