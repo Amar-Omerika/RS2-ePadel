@@ -4,9 +4,10 @@ import 'package:epadel_admin/screens/appsidebar.dart';
 import 'package:epadel_admin/screens/report_screen.dart';
 import 'package:epadel_admin/screens/rezervacije_screen.dart';
 import 'package:epadel_admin/screens/tereni_screen.dart';
+import 'package:epadel_admin/widgets/modals/Korisnici/edit_korisnici_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:epadel_admin/widgets/modals/Korisnici/edit_korisnici_modal.dart';
+
 class KorisniciScreen extends StatefulWidget {
   static const String routeName = '/korisnici';
   const KorisniciScreen({Key? key}) : super(key: key);
@@ -33,7 +34,7 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
     Map<String, String> filters = {};
 
     if (_searchController.text.isNotEmpty) {
-      filters['korisnickoIme'] = _searchController.text;
+      filters['Tekst'] = _searchController.text;
     }
     if (_searchSpolController.text.isNotEmpty) {
       filters['Spol'] = _searchSpolController.text;
@@ -50,10 +51,12 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
     _searchSpolController.text = '';
   }
 
-  void handleEdit(int id, String? korisnickoIme, String? dominantnaRuka,
+  void handleEdit(int id, String? korisnickoIme, String? email,
+      String? dominantnaRuka,
       String? spol) async {
     await _korisnikProvider!.update(id, {
       'korisnickoIme': korisnickoIme,
+      'email': email,
       'dominantnaRuka': dominantnaRuka,
       'spol': spol,
     });
@@ -347,6 +350,15 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
                 DataColumn(
                   label: Expanded(
                     child: Text(
+                      'Email',
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500, color: Colors.white),
+                    ),
+                  ),
+                ),
+                DataColumn(
+                  label: Expanded(
+                    child: Text(
                       'Uredi',
                       style: TextStyle(
                           fontWeight: FontWeight.w500, color: Colors.white),
@@ -371,6 +383,8 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
                       : korisnik.dominantnaRuka!)),
                   DataCell(Text(
                       korisnik.spol == null ? 'Nepoznato' : korisnik.spol!)),
+                  DataCell(Text(
+                      korisnik.email == null ? 'Nepoznato' : korisnik.email!)),
                   DataCell(IconButton(
                     icon: const Icon(Icons.edit),
                     onPressed: () {
@@ -383,6 +397,7 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
                       openDeleteModal(korisnik);
                     },
                   )),
+                  
                 ]);
               }).toList(),
             ),
@@ -443,4 +458,3 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
     );
   }
 }
-       

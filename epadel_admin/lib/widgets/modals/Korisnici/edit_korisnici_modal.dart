@@ -21,6 +21,7 @@ class EditKorisnikModal extends StatefulWidget {
 class _EditKorisnikModalState extends State<EditKorisnikModal> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _korisnickoImeController;
+  late TextEditingController _emailController;
   late TextEditingController _dominantnaRukaController;
   late TextEditingController _spolController;
 
@@ -29,6 +30,7 @@ class _EditKorisnikModalState extends State<EditKorisnikModal> {
     super.initState();
     _korisnickoImeController =
         TextEditingController(text: widget.korisnik.korisnickoIme);
+    _emailController = TextEditingController(text: widget.korisnik.email);
     _dominantnaRukaController =
         TextEditingController(text: widget.korisnik.dominantnaRuka);
     _spolController = TextEditingController(text: widget.korisnik.spol);
@@ -37,6 +39,7 @@ class _EditKorisnikModalState extends State<EditKorisnikModal> {
   @override
   void dispose() {
     _korisnickoImeController.dispose();
+    _emailController.dispose();
     _dominantnaRukaController.dispose();
     _spolController.dispose();
     super.dispose();
@@ -96,6 +99,46 @@ class _EditKorisnikModalState extends State<EditKorisnikModal> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
+                      'Email',
+                      style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: 8),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                      child: TextFormField(
+                        controller: _emailController,
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.all(8.0),
+                          border: InputBorder.none,
+                          enabledBorder: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Ovo polje je obavezno';
+                          }
+                          if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+                            return 'Unesite važeću email adresu (npr:user@example.com)';
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
                       'Dominantna Ruka',
                       style: TextStyle(
                           fontSize: 16,
@@ -116,6 +159,12 @@ class _EditKorisnikModalState extends State<EditKorisnikModal> {
                           enabledBorder: InputBorder.none,
                           focusedBorder: InputBorder.none,
                         ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Ovo polje je obavezno';
+                          }
+                          return null;
+                        },
                       ),
                     ),
                   ],
@@ -188,6 +237,7 @@ class _EditKorisnikModalState extends State<EditKorisnikModal> {
               widget.handleEdit(
                 widget.korisnik.korisnikId!,
                 _korisnickoImeController.text,
+                _emailController.text,
                 _dominantnaRukaController.text,
                 _spolController.text,
               );

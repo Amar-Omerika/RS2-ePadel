@@ -31,7 +31,7 @@ namespace ePadel.Services.KorisnikService
             var filteredQuery = base.AddFilter(query, search);
 
             if (!string.IsNullOrWhiteSpace(search?.Tekst))
-                filteredQuery = filteredQuery.Where(x => x.Ime.ToLower().Contains(search.Tekst.ToLower()) || x.Prezime.ToLower().Contains(search.Tekst.ToLower()) || x.KorisnickoIme.ToLower().Contains(search.Tekst.ToLower()));
+                filteredQuery = filteredQuery.Where(x =>  x.KorisnickoIme.ToLower().Contains(search.Tekst.ToLower()));
             return filteredQuery;
         }
 
