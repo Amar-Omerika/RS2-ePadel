@@ -2,7 +2,6 @@
 
 import 'package:epadel_admin/models/models.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class EditKorisnikModal extends StatefulWidget {
   final Korisnik korisnik;
@@ -22,8 +21,12 @@ class _EditKorisnikModalState extends State<EditKorisnikModal> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _korisnickoImeController;
   late TextEditingController _emailController;
-  late TextEditingController _dominantnaRukaController;
-  late TextEditingController _spolController;
+
+  String? _selectedDominantnaRuka;
+  String? _selectedSpol;
+
+  final List<String> ruke = ['Lijeva', 'Desna'];
+  final List<String> spolovi = ['Musko', 'Zensko'];
 
   @override
   void initState() {
@@ -31,17 +34,14 @@ class _EditKorisnikModalState extends State<EditKorisnikModal> {
     _korisnickoImeController =
         TextEditingController(text: widget.korisnik.korisnickoIme);
     _emailController = TextEditingController(text: widget.korisnik.email);
-    _dominantnaRukaController =
-        TextEditingController(text: widget.korisnik.dominantnaRuka);
-    _spolController = TextEditingController(text: widget.korisnik.spol);
+    _selectedDominantnaRuka = widget.korisnik.dominantnaRuka ?? ruke.first;
+    _selectedSpol = widget.korisnik.spol ?? spolovi.first;
   }
 
   @override
   void dispose() {
     _korisnickoImeController.dispose();
     _emailController.dispose();
-    _dominantnaRukaController.dispose();
-    _spolController.dispose();
     super.dispose();
   }
 
@@ -124,7 +124,7 @@ class _EditKorisnikModalState extends State<EditKorisnikModal> {
                             return 'Ovo polje je obavezno';
                           }
                           if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
-                            return 'Unesite važeću email adresu (npr:user@example.com)';
+                            return 'Unesite važeću email adresu';
                           }
                           return null;
                         },
@@ -151,20 +151,25 @@ class _EditKorisnikModalState extends State<EditKorisnikModal> {
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(12.0),
                       ),
-                      child: TextFormField(
-                        controller: _dominantnaRukaController,
+                      child: DropdownButtonFormField<String>(
+                        value: _selectedDominantnaRuka,
+                        items: ruke.map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                        onChanged: (newValue) {
+                          setState(() {
+                            _selectedDominantnaRuka = newValue;
+                          });
+                        },
                         decoration: InputDecoration(
                           contentPadding: EdgeInsets.all(8.0),
                           border: InputBorder.none,
                           enabledBorder: InputBorder.none,
                           focusedBorder: InputBorder.none,
                         ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Ovo polje je obavezno';
-                          }
-                          return null;
-                        },
                       ),
                     ),
                   ],
@@ -188,20 +193,25 @@ class _EditKorisnikModalState extends State<EditKorisnikModal> {
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(12.0),
                       ),
-                      child: TextFormField(
-                        controller: _spolController,
+                      child: DropdownButtonFormField<String>(
+                        value: _selectedSpol,
+                        items: spolovi.map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                        onChanged: (newValue) {
+                          setState(() {
+                            _selectedSpol = newValue;
+                          });
+                        },
                         decoration: InputDecoration(
                           contentPadding: EdgeInsets.all(8.0),
                           border: InputBorder.none,
                           enabledBorder: InputBorder.none,
                           focusedBorder: InputBorder.none,
                         ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Ovo polje je obavezno';
-                          }
-                          return null;
-                        },
                       ),
                     ),
                   ],
@@ -238,8 +248,8 @@ class _EditKorisnikModalState extends State<EditKorisnikModal> {
                 widget.korisnik.korisnikId!,
                 _korisnickoImeController.text,
                 _emailController.text,
-                _dominantnaRukaController.text,
-                _spolController.text,
+                _selectedDominantnaRuka,
+                _selectedSpol,
               );
             }
           },
