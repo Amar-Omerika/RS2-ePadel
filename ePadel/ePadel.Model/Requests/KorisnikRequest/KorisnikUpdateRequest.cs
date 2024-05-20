@@ -8,6 +8,7 @@ namespace ePadel.Model.Requests.KorisnikRequest
 
         public string? Prezime { get; set; }
 
+        [Required(AllowEmptyStrings = false)]
         [EmailAddress()]
         public string? Email { get; set; }
 

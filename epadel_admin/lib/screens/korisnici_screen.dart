@@ -382,7 +382,9 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
                       ? 'Nepoznato'
                       : korisnik.dominantnaRuka!)),
                   DataCell(Text(
-                      korisnik.spol == null ? 'Nepoznato' : korisnik.spol!)),
+                      korisnik.spol == null
+                      ? 'Nepoznato'
+                      : korisnik.spol!.toLowerCase())),
                   DataCell(Text(
                       korisnik.email == null ? 'Nepoznato' : korisnik.email!)),
                   DataCell(IconButton(

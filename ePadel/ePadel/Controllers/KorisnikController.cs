@@ -11,7 +11,7 @@ namespace ePadel.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class KorisnikController : BaseCRUDController<Model.Korisnik, BaseSearchObject, KorisnikInsertRequest, KorisnikUpdateRequest>
+    public class KorisnikController : BaseCRUDController<Model.Korisnik, KorisnikSearchObject, KorisnikInsertRequest, KorisnikUpdateRequest>
     {
         protected IKorisnikService? _service { get; set; }
         public KorisnikController(IKorisnikService service) : base(service)

@@ -5,34 +5,34 @@ using ePadel.Model.SearchObjects;
 using ePadel.Services.BaseService;
 using ePadel.Services.Database;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ePadel.Services.KorisnikService
 {
-    public class KorisnikService : BaseCRUDService<Model.Korisnik, Database.Korisnik, BaseSearchObject, KorisnikInsertRequest, KorisnikUpdateRequest>, IKorisnikService
+    public class KorisnikService : BaseCRUDService<Model.Korisnik, Database.Korisnik, KorisnikSearchObject, KorisnikInsertRequest, KorisnikUpdateRequest>, IKorisnikService
     {
         public KorisnikService(IB190069_ePadelContext context, IMapper mapper) : base(context, mapper)
         {
 
         }
-        public override IQueryable<ePadel.Services.Database.Korisnik> AddInclude(IQueryable<ePadel.Services.Database.Korisnik> query, BaseSearchObject search = null)
+        public override IQueryable<ePadel.Services.Database.Korisnik> AddInclude(IQueryable<ePadel.Services.Database.Korisnik> query, KorisnikSearchObject search = null)
         {
             query = query.Include(x => x.KorisnikUloges);
             return base.AddInclude(query, search);
         }
 
-        public override IQueryable<ePadel.Services.Database.Korisnik> AddFilter(IQueryable<ePadel.Services.Database.Korisnik> query, BaseSearchObject search = null)
+        public override IQueryable<ePadel.Services.Database.Korisnik> AddFilter(IQueryable<ePadel.Services.Database.Korisnik> query, KorisnikSearchObject search = null)
         {
             var filteredQuery = base.AddFilter(query, search);
 
             if (!string.IsNullOrWhiteSpace(search?.Tekst))
                 filteredQuery = filteredQuery.Where(x =>  x.KorisnickoIme.ToLower().Contains(search.Tekst.ToLower()));
+
+            if (!string.IsNullOrWhiteSpace(search?.Spol))
+                filteredQuery = filteredQuery.Where(x => x.Spol.ToLower().Contains(search.Spol.ToLower()));
+
             return filteredQuery;
+
+       
         }
 
         public override void BeforeInsert(KorisnikInsertRequest insert, Database.Korisnik entity)
