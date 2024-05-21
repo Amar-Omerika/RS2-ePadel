@@ -26,7 +26,6 @@ namespace ePadel.Services.Mapping
             CreateMap<Database.RezervacijaStatusi, Model.RezervacijaStatusi>();
             CreateMap<Database.Termini, Model.Termini>();
             CreateMap<Database.PlatiTermin, Model.PlatiTermin>();
-            CreateMap<Database.Ocijene, Model.Ocijene>();
 
 
 

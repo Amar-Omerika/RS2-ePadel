@@ -146,17 +146,7 @@ namespace ePadel.Services.Database
                     DatumRezervacije = DateTime.Now
                 }
             });
-            modelBuilder.Entity<Ocijene>().HasData(new Ocijene[]
-            {
-                new Ocijene()
-                {
-                    OcijeneId = 1,
-                    RezervacijaId = 1, // Postavite odgovarajući ID rezervacije
-                    Ocijena = 5,
-                    Komentar = "Ocijena 5"
-                }
-                // Dodajte ostale ocene prema potrebi
-            });
+      
             modelBuilder.Entity<TerminStatusi>().HasData(new TerminStatusi[]
             {
                 new TerminStatusi()

@@ -25,6 +25,5 @@ namespace ePadel.Model.Requests.RezervacijaRequest
         public virtual Korisnik? Korisnik { get; set; }
         public virtual Tereni? Teren { get; set; }
         public virtual Termini? Termin { get; set; }
-        public virtual ICollection<Ocijene>? Ocijenes { get; set; }
     }
 }

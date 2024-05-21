@@ -19,7 +19,6 @@ namespace ePadel.Services.Database
         public virtual DbSet<Korisnik> Korisniks { get; set; } = null!;
         public virtual DbSet<KorisnikUloge> KorisnikUloges { get; set; } = null!;
         public virtual DbSet<KorisničkePreferencije> KorisničkePreferencijes { get; set; } = null!;
-        public virtual DbSet<Ocijene> Ocijenes { get; set; } = null!;
         public virtual DbSet<Plaćanja> Plaćanjas { get; set; } = null!;
         public virtual DbSet<RezervacijaStatusi> RezervacijaStatusis { get; set; } = null!;
         public virtual DbSet<Rezervacije> Rezervacijes { get; set; } = null!;
@@ -81,19 +80,7 @@ namespace ePadel.Services.Database
                     .HasConstraintName("FK__Korisničk__TipTe__412EB0B6");
             });
 
-            modelBuilder.Entity<Ocijene>(entity =>
-            {
-                entity.ToTable("Ocijene");
 
-                entity.Property(e => e.OcijeneId).HasColumnName("OcijeneID");
-
-                entity.Property(e => e.RezervacijaId).HasColumnName("RezervacijaID");
-
-                entity.HasOne(d => d.Rezervacija)
-                    .WithMany(p => p.Ocijenes)
-                    .HasForeignKey(d => d.RezervacijaId)
-                    .HasConstraintName("FK__Ocijene__Rezerva__3A81B327");
-            });
 
             modelBuilder.Entity<Plaćanja>(entity =>
             {
