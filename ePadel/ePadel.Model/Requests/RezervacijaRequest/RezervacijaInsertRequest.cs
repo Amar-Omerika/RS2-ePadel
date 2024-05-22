@@ -16,12 +16,18 @@ namespace ePadel.Model.Requests.RezervacijaRequest
         [Required(ErrorMessage = "Teren je obavezan")]
         public int? TerenId { get; set; }
 
-        [Required(ErrorMessage = "Potrebno je odabrati termin.")]
-        public int TerminId { get; set; }
-        public string? RezervacijaStatus { get; set; }
+        [Required]
+        public string? VrijemeRezervacije { get; set; }
 
         [Required(ErrorMessage = "Datum je obavezan.")]
-        public DateTime? DatumRezervacije { get; set; }
+        public string? DatumRezervacije { get; set; }
+
+        [Required]
+        public string PaymentMethod { get; set; }
+
+        public int? Cijena { get; set; }
+        public string? PotrebnaReketa { get; set; }
+        public int? BrojReketa { get; set; }
 
         //public virtual ICollection<Ocijene>? Ocijenes { get; set; }
     }

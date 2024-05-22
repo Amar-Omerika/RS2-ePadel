@@ -21,7 +21,7 @@ namespace ePadel.Services.RezervacijaService
         }
         public override IQueryable<ePadel.Services.Database.Rezervacije> AddInclude(IQueryable<ePadel.Services.Database.Rezervacije> query, BaseSearchObject search = null)
         {
-            query = query.Include(x => x.Korisnik).Include(x => x.Teren.TipTerena);
+            query = query.Include(x => x.Korisnik).Include(x => x.Teren);
             return base.AddInclude(query, search);
         }
         //public override IQueryable<ePadel.Services.Database.Rezervacije> AddFilter(IQueryable<ePadel.Services.Database.Rezervacije> query, BaseSearchObject search = null)

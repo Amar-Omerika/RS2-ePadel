@@ -9,21 +9,22 @@ namespace ePadel.Model.Requests.RezervacijaRequest
 {
     public class RezervacijaUpdateRequest
     {
-        public int RezervacijaId { get; set; }
-
         [Required]
         public int? KorisnikId { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Teren je obavezan")]
         public int? TerenId { get; set; }
-        public int? TerminId { get; set; }
-        public string? RezervacijaStatus { get; set; }
 
         [Required]
-        public DateTime? DatumRezervacije { get; set; }
+        public string? VrijemeRezervacije { get; set; }
 
-        public virtual Korisnik? Korisnik { get; set; }
-        public virtual Tereni? Teren { get; set; }
-        public virtual Termini? Termin { get; set; }
+        [Required(ErrorMessage = "Datum je obavezan.")]
+        public string? DatumRezervacije { get; set; }
+
+        [Required]
+        public string PaymentMethod { get; set; }
+
+        public string? PotrebnaReketa { get; set; }
+        public int? BrojReketa { get; set; }
     }
 }

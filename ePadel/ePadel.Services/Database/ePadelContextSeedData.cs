@@ -143,7 +143,7 @@ namespace ePadel.Services.Database
                     TerenId = 1, // Postavite odgovarajući ID terena
                     TerminId = 1, // Postavite odgovarajući ID termina
                     RezervacijaStatus = "Aktivna", // Postavite stvaran status rezervacije
-                    DatumRezervacije = DateTime.Now
+                    //DatumRezervacije = DateTime.Now
                 }
             });
       
@@ -164,16 +164,7 @@ namespace ePadel.Services.Database
                 Naziv = "Potvrđena"
             }
             });
-            modelBuilder.Entity<KorisničkePreferencije>().HasData(new KorisničkePreferencije[]
-            {
-                new KorisničkePreferencije()
-                {
-                    KorisnikId = 1, // Postavite odgovarajući ID korisnika
-                    TipTerenaId = 1, // Postavite odgovarajući ID tipa terena
-                    MaksimalnaCena = 20, // Postavite stvarnu maksimalnu cenu
-                    Lokacija = "Mostar"
-                }
-            });
+     
         }
     }
 }

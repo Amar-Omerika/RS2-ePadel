@@ -19,7 +19,6 @@ namespace ePadel.Services.Database
         public virtual DbSet<Korisnik> Korisniks { get; set; } = null!;
         public virtual DbSet<KorisnikUloge> KorisnikUloges { get; set; } = null!;
         public virtual DbSet<KorisničkePreferencije> KorisničkePreferencijes { get; set; } = null!;
-        public virtual DbSet<Plaćanja> Plaćanjas { get; set; } = null!;
         public virtual DbSet<RezervacijaStatusi> RezervacijaStatusis { get; set; } = null!;
         public virtual DbSet<Rezervacije> Rezervacijes { get; set; } = null!;
         public virtual DbSet<Tereni> Terenis { get; set; } = null!;
@@ -82,26 +81,7 @@ namespace ePadel.Services.Database
 
 
 
-            modelBuilder.Entity<Plaćanja>(entity =>
-            {
-                entity.HasKey(e => e.PlaćanjeId)
-                    .HasName("PK__Plaćanja__EDE8DB5F36AD4BEE");
-
-                entity.ToTable("Plaćanja");
-
-                entity.Property(e => e.PlaćanjeId).HasColumnName("PlaćanjeID");
-
-                entity.Property(e => e.DatumPlaćanja).HasColumnType("datetime");
-
-                entity.Property(e => e.Iznos).HasColumnType("decimal(18, 0)");
-
-                entity.Property(e => e.RezervacijaId).HasColumnName("RezervacijaID");
-
-                entity.HasOne(d => d.Rezervacija)
-                    .WithMany(p => p.Plaćanjas)
-                    .HasForeignKey(d => d.RezervacijaId)
-                    .HasConstraintName("FK__Plaćanja__Rezerv__37A5467C");
-            });
+           
 
             modelBuilder.Entity<RezervacijaStatusi>(entity =>
             {
@@ -122,7 +102,7 @@ namespace ePadel.Services.Database
 
                 entity.Property(e => e.RezervacijaId).HasColumnName("RezervacijaID");
 
-                entity.Property(e => e.DatumRezervacije).HasColumnType("datetime");
+                entity.Property(e => e.DatumRezervacije).HasColumnType("nvarchar(255)");
 
                 entity.Property(e => e.KorisnikId).HasColumnName("KorisnikID");
 

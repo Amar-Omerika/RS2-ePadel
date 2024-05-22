@@ -12,8 +12,8 @@ using ePadel.Services.Database;
 namespace ePadel.Services.Migrations
 {
     [DbContext(typeof(IB190069_ePadelContext))]
-    [Migration("20240521200516_RemoveOcjeneModel")]
-    partial class RemoveOcjeneModel
+    [Migration("20240522220817_update")]
+    partial class update
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -49,15 +49,6 @@ namespace ePadel.Services.Migrations
                     b.HasIndex("TipTerenaId");
 
                     b.ToTable("KorisničkePreferencije", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            KorisnikId = 1,
-                            Lokacija = "Mostar",
-                            MaksimalnaCena = 20m,
-                            TipTerenaId = 1
-                        });
                 });
 
             modelBuilder.Entity("ePadel.Services.Database.Korisnik", b =>
@@ -172,36 +163,6 @@ namespace ePadel.Services.Migrations
                         });
                 });
 
-            modelBuilder.Entity("ePadel.Services.Database.Plaćanja", b =>
-                {
-                    b.Property<int>("PlaćanjeId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("PlaćanjeID");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PlaćanjeId"), 1L, 1);
-
-                    b.Property<DateTime?>("DatumPlaćanja")
-                        .HasColumnType("datetime");
-
-                    b.Property<decimal?>("Iznos")
-                        .HasColumnType("decimal(18,0)");
-
-                    b.Property<string>("MetodaPlaćanja")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("RezervacijaId")
-                        .HasColumnType("int")
-                        .HasColumnName("RezervacijaID");
-
-                    b.HasKey("PlaćanjeId")
-                        .HasName("PK__Plaćanja__EDE8DB5F36AD4BEE");
-
-                    b.HasIndex("RezervacijaId");
-
-                    b.ToTable("Plaćanja", (string)null);
-                });
-
             modelBuilder.Entity("ePadel.Services.Database.PlatiTermin", b =>
                 {
                     b.Property<int>("PlatiTerminId")
@@ -276,12 +237,24 @@ namespace ePadel.Services.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RezervacijaId"), 1L, 1);
 
-                    b.Property<DateTime?>("DatumRezervacije")
-                        .HasColumnType("datetime");
+                    b.Property<int?>("BrojReketa")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Cijena")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DatumKreiranja")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DatumRezervacije")
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<int?>("KorisnikId")
                         .HasColumnType("int")
                         .HasColumnName("KorisnikID");
+
+                    b.Property<string>("PotrebnaReketa")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RezervacijaStatus")
                         .HasColumnType("nvarchar(max)");
@@ -293,6 +266,9 @@ namespace ePadel.Services.Migrations
                     b.Property<int?>("TerminId")
                         .HasColumnType("int")
                         .HasColumnName("TerminID");
+
+                    b.Property<string>("VrijemeRezervacije")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("RezervacijaId")
                         .HasName("PK__Rezervac__CABA44FDC98EB446");
@@ -309,7 +285,7 @@ namespace ePadel.Services.Migrations
                         new
                         {
                             RezervacijaId = 1,
-                            DatumRezervacije = new DateTime(2024, 5, 21, 22, 5, 15, 521, DateTimeKind.Local).AddTicks(465),
+                            DatumKreiranja = new DateTime(2024, 5, 23, 0, 8, 16, 355, DateTimeKind.Local).AddTicks(7959),
                             KorisnikId = 1,
                             RezervacijaStatus = "Aktivna",
                             TerenId = 1,
@@ -403,6 +379,9 @@ namespace ePadel.Services.Migrations
                     b.Property<TimeSpan?>("VremeZavršetka")
                         .HasColumnType("time");
 
+                    b.Property<bool?>("rezervisan")
+                        .HasColumnType("bit");
+
                     b.HasKey("TerminId")
                         .HasName("PK__Termini__42126CB556013045");
 
@@ -412,7 +391,7 @@ namespace ePadel.Services.Migrations
                         new
                         {
                             TerminId = 1,
-                            Datum = new DateTime(2024, 5, 21, 0, 0, 0, 0, DateTimeKind.Local),
+                            Datum = new DateTime(2024, 5, 23, 0, 0, 0, 0, DateTimeKind.Local),
                             VremePočetka = new TimeSpan(0, 10, 0, 0, 0),
                             VremeZavršetka = new TimeSpan(0, 12, 0, 0, 0)
                         });
@@ -538,16 +517,6 @@ namespace ePadel.Services.Migrations
                     b.Navigation("Uloga");
                 });
 
-            modelBuilder.Entity("ePadel.Services.Database.Plaćanja", b =>
-                {
-                    b.HasOne("ePadel.Services.Database.Rezervacije", "Rezervacija")
-                        .WithMany("Plaćanjas")
-                        .HasForeignKey("RezervacijaId")
-                        .HasConstraintName("FK__Plaćanja__Rezerv__37A5467C");
-
-                    b.Navigation("Rezervacija");
-                });
-
             modelBuilder.Entity("ePadel.Services.Database.PlatiTermin", b =>
                 {
                     b.HasOne("ePadel.Services.Database.Korisnik", "Korisnik")
@@ -607,11 +576,6 @@ namespace ePadel.Services.Migrations
                     b.Navigation("KorisnikUloges");
 
                     b.Navigation("Rezervacijes");
-                });
-
-            modelBuilder.Entity("ePadel.Services.Database.Rezervacije", b =>
-                {
-                    b.Navigation("Plaćanjas");
                 });
 
             modelBuilder.Entity("ePadel.Services.Database.Tereni", b =>

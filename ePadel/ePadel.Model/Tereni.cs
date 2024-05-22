@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ePadel.Model
 {
-    public class Tereni
+    public partial class Tereni
     {
         public int TerenId { get; set; }
 

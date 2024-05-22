@@ -11,14 +11,33 @@ namespace ePadel.Model
         public int RezervacijaId { get; set; }
         public int? KorisnikId { get; set; }
         public int? TerenId { get; set; }
-        public int? TerminId { get; set; }
+
+        //public int? TerminId { get; set; }
+        public int? Cijena { get; set; }
         public string? RezervacijaStatus { get; set; }
-        public DateTime? DatumRezervacije { get; set; }
+        public string? DatumRezervacije { get; set; }
+        public string? VrijemeRezervacije { get; set; }
         public string? PotrebnaReketa { get; set; }
         public int? BrojReketa { get; set; }
+        public string? TerenNaziv
+        {
+            get
+            {
+                return Teren?.Naziv;
+            }
+        }
+        public string? KorisnickoIme
+        {
+            get
+            {
+                return Korisnik?.KorisnickoIme;
+            }
+        }
         public virtual Korisnik? Korisnik { get; set; }
         public virtual Tereni? Teren { get; set; }
+        public virtual PlatiTermin? PlatiTermin { get; set; }
         public virtual Termini? Termin { get; set; }
+
 
         //public virtual ICollection<Plaćanja>? Plaćanjas { get; set; }
     }

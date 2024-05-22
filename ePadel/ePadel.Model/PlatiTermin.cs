@@ -9,11 +9,13 @@ namespace ePadel.Model
     public class PlatiTermin
     {
         public int PlatiTerminId { get; set; }
-        public int Cijena { get; set; }
-        public DateTime? DatumKupovine { get; set; }
         public string? PaymentIntentId { get; set; }
+        public int CijenaTermina { get; set; }
         public bool? Placena { get; set; }
+        public bool Izbrisan { get; set; }
+        public string PaymentMethod { get; set; }
         public int? KorisnikId { get; set; }
+        public int? RezervacijaId { get; set; }
         public virtual Korisnik? Korisnik { get; set; }
         public int? TerminId { get; set; }
         public virtual Termini? Termin { get; set; }

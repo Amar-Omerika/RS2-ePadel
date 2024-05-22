@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ePadel.Services.Migrations
 {
-    public partial class NewUpdatedMigration : Migration
+    public partial class update : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -53,7 +53,8 @@ namespace ePadel.Services.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Datum = table.Column<DateTime>(type: "date", nullable: true),
                     VremePočetka = table.Column<TimeSpan>(type: "time", nullable: true),
-                    VremeZavršetka = table.Column<TimeSpan>(type: "time", nullable: true)
+                    VremeZavršetka = table.Column<TimeSpan>(type: "time", nullable: true),
+                    rezervisan = table.Column<bool>(type: "bit", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -129,6 +130,9 @@ namespace ePadel.Services.Migrations
                     Naziv = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     BrojTerena = table.Column<int>(type: "int", nullable: true),
                     Cijena = table.Column<decimal>(type: "decimal(18,0)", nullable: true),
+                    Lokacija = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Popust = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CijenaPopusta = table.Column<int>(type: "int", nullable: false),
                     TipTerenaID = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -208,8 +212,13 @@ namespace ePadel.Services.Migrations
                     KorisnikID = table.Column<int>(type: "int", nullable: true),
                     TerenID = table.Column<int>(type: "int", nullable: true),
                     TerminID = table.Column<int>(type: "int", nullable: true),
+                    Cijena = table.Column<int>(type: "int", nullable: true),
                     RezervacijaStatus = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DatumRezervacije = table.Column<DateTime>(type: "datetime", nullable: true)
+                    PotrebnaReketa = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BrojReketa = table.Column<int>(type: "int", nullable: true),
+                    DatumRezervacije = table.Column<string>(type: "nvarchar(255)", nullable: true),
+                    VrijemeRezervacije = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DatumKreiranja = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -229,47 +238,6 @@ namespace ePadel.Services.Migrations
                         column: x => x.TerminID,
                         principalTable: "Termini",
                         principalColumn: "TerminID");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Ocijene",
-                columns: table => new
-                {
-                    OcijeneID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    RezervacijaID = table.Column<int>(type: "int", nullable: true),
-                    Ocijena = table.Column<int>(type: "int", nullable: true),
-                    Komentar = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Ocijene", x => x.OcijeneID);
-                    table.ForeignKey(
-                        name: "FK__Ocijene__Rezerva__3A81B327",
-                        column: x => x.RezervacijaID,
-                        principalTable: "Rezervacije",
-                        principalColumn: "RezervacijaID");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Plaćanja",
-                columns: table => new
-                {
-                    PlaćanjeID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    RezervacijaID = table.Column<int>(type: "int", nullable: true),
-                    Iznos = table.Column<decimal>(type: "decimal(18,0)", nullable: true),
-                    MetodaPlaćanja = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DatumPlaćanja = table.Column<DateTime>(type: "datetime", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK__Plaćanja__EDE8DB5F36AD4BEE", x => x.PlaćanjeID);
-                    table.ForeignKey(
-                        name: "FK__Plaćanja__Rezerv__37A5467C",
-                        column: x => x.RezervacijaID,
-                        principalTable: "Rezervacije",
-                        principalColumn: "RezervacijaID");
                 });
 
             migrationBuilder.InsertData(
@@ -293,8 +261,8 @@ namespace ePadel.Services.Migrations
 
             migrationBuilder.InsertData(
                 table: "Termini",
-                columns: new[] { "TerminID", "Datum", "VremePočetka", "VremeZavršetka" },
-                values: new object[] { 1, new DateTime(2024, 5, 19, 0, 0, 0, 0, DateTimeKind.Local), new TimeSpan(0, 10, 0, 0, 0), new TimeSpan(0, 12, 0, 0, 0) });
+                columns: new[] { "TerminID", "Datum", "VremePočetka", "VremeZavršetka", "rezervisan" },
+                values: new object[] { 1, new DateTime(2024, 5, 23, 0, 0, 0, 0, DateTimeKind.Local), new TimeSpan(0, 10, 0, 0, 0), new TimeSpan(0, 12, 0, 0, 0), null });
 
             migrationBuilder.InsertData(
                 table: "TipTerena",
@@ -325,29 +293,19 @@ namespace ePadel.Services.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "KorisničkePreferencije",
-                columns: new[] { "KorisnikID", "Lokacija", "MaksimalnaCena", "TipTerenaID" },
-                values: new object[] { 1, "Mostar", 20m, 1 });
-
-            migrationBuilder.InsertData(
                 table: "Tereni",
-                columns: new[] { "TerenID", "BrojTerena", "Cijena", "Naziv", "TipTerenaID" },
+                columns: new[] { "TerenID", "BrojTerena", "Cijena", "CijenaPopusta", "Lokacija", "Naziv", "Popust", "TipTerenaID" },
                 values: new object[,]
                 {
-                    { 1, 1, 20m, "Teren 1", 1 },
-                    { 2, 2, 15m, "Teren 2", 2 },
-                    { 3, 3, 20m, "Teren 3", 3 }
+                    { 1, 1, 20m, 0, null, "Teren 1", null, 1 },
+                    { 2, 2, 15m, 0, null, "Teren 2", null, 2 },
+                    { 3, 3, 20m, 0, null, "Teren 3", null, 3 }
                 });
 
             migrationBuilder.InsertData(
                 table: "Rezervacije",
-                columns: new[] { "RezervacijaID", "DatumRezervacije", "KorisnikID", "RezervacijaStatus", "TerenID", "TerminID" },
-                values: new object[] { 1, new DateTime(2024, 5, 19, 18, 54, 24, 866, DateTimeKind.Local).AddTicks(4957), 1, "Aktivna", 1, 1 });
-
-            migrationBuilder.InsertData(
-                table: "Ocijene",
-                columns: new[] { "OcijeneID", "Komentar", "Ocijena", "RezervacijaID" },
-                values: new object[] { 1, "Ocijena 5", 5, 1 });
+                columns: new[] { "RezervacijaID", "BrojReketa", "Cijena", "DatumKreiranja", "DatumRezervacije", "KorisnikID", "PotrebnaReketa", "RezervacijaStatus", "TerenID", "TerminID", "VrijemeRezervacije" },
+                values: new object[] { 1, null, null, new DateTime(2024, 5, 23, 0, 8, 16, 355, DateTimeKind.Local).AddTicks(7959), null, 1, null, "Aktivna", 1, 1, null });
 
             migrationBuilder.CreateIndex(
                 name: "IX_KorisničkePreferencije_TipTerenaID",
@@ -363,16 +321,6 @@ namespace ePadel.Services.Migrations
                 name: "IX_KorisnikUloge_UlogaId",
                 table: "KorisnikUloge",
                 column: "UlogaId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Ocijene_RezervacijaID",
-                table: "Ocijene",
-                column: "RezervacijaID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Plaćanja_RezervacijaID",
-                table: "Plaćanja",
-                column: "RezervacijaID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PlatiTermins_KorisnikId",
@@ -419,25 +367,19 @@ namespace ePadel.Services.Migrations
                 name: "KorisnikUloge");
 
             migrationBuilder.DropTable(
-                name: "Ocijene");
-
-            migrationBuilder.DropTable(
-                name: "Plaćanja");
-
-            migrationBuilder.DropTable(
                 name: "PlatiTermins");
 
             migrationBuilder.DropTable(
                 name: "RezervacijaStatusi");
 
             migrationBuilder.DropTable(
+                name: "Rezervacije");
+
+            migrationBuilder.DropTable(
                 name: "TerminStatusi");
 
             migrationBuilder.DropTable(
                 name: "Uloga");
-
-            migrationBuilder.DropTable(
-                name: "Rezervacije");
 
             migrationBuilder.DropTable(
                 name: "Korisnik");
