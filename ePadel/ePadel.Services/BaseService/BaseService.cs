@@ -25,6 +25,8 @@ namespace ePadel.Services.BaseService
             var entity = _context.Set<TDb>().AsQueryable();
             entity = AddFilter(entity, search);
             entity = AddInclude(entity, search);
+            if (search?.Page.HasValue == true && search?.PageSize.HasValue == true)
+                entity = entity.Skip(search.Page.Value * search.PageSize.Value).Take(search.PageSize.Value);
             var list = entity.ToList();
             return _mapper.Map<IList<T>>(list);
         }
