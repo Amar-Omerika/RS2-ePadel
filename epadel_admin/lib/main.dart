@@ -2,6 +2,7 @@ import 'package:epadel_admin/providers/auth_provider.dart';
 import 'package:epadel_admin/providers/providers.dart';
 import 'package:epadel_admin/screens/korisnici_screen.dart';
 import 'package:epadel_admin/screens/main_navigation_screen.dart';
+import 'package:epadel_admin/screens/rezervacije_screen.dart';
 import 'package:epadel_admin/screens/tereni_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:epadel_admin/screens/login_screen.dart';
@@ -13,7 +14,7 @@ void main() {
         ChangeNotifierProvider(create: (_) => AuthProvider()),  
         ChangeNotifierProvider(create: (_) => TerenProvider()), 
         ChangeNotifierProvider(create: (_) => KorisnikProvider()),
-
+        ChangeNotifierProvider(create: (_) => RezervacijaProvider()),
       ],
       child: const MyApp(),
     ),
@@ -37,6 +38,7 @@ class MyApp extends StatelessWidget {
             const MainNavigationScreen(),
         TereniScreen.routeName: (context) => const TereniScreen(),
         KorisniciScreen.routeName: (context) => const KorisniciScreen(),
+        RezervacijeScreen.routeName: (context) => const RezervacijeScreen(),
       },
     );
   }
