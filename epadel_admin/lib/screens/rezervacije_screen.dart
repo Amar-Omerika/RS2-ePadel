@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:epadel_admin/models/models.dart';
 import 'package:epadel_admin/providers/rezervacije_provider.dart';
 import 'package:epadel_admin/screens/appsidebar.dart';
@@ -18,9 +20,8 @@ class RezervacijeScreen extends StatefulWidget {
 class _RezervacijeScreenState extends State<RezervacijeScreen> {
   RezervacijaProvider? _rezervacijeProvider;
   List<Rezervacija>? _rezervacije;
-  final TextEditingController _searchController = TextEditingController();
-  final TextEditingController _searchSpolController = TextEditingController();
   int _currentPage = 1; // Example pagination state
+  String _selectedFilter = 'Svi';
 
   @override
   void initState() {
@@ -30,24 +31,10 @@ class _RezervacijeScreenState extends State<RezervacijeScreen> {
   }
 
   void loadData() async {
-    // Map<String, String> filters = {};
-
-    // if (_searchController.text.isNotEmpty) {
-    //   filters['Tekst'] = _searchController.text;
-    // }
-    // if (_searchSpolController.text.isNotEmpty) {
-    //   filters['Spol'] = _searchSpolController.text;
-    // }
-
     var data = await _rezervacijeProvider!.get();
     setState(() {
       _rezervacije = data;
     });
-  }
-
-  void resetSearch() {
-    _searchController.text = '';
-    _searchSpolController.text = '';
   }
 
   @override
@@ -99,124 +86,115 @@ class _RezervacijeScreenState extends State<RezervacijeScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Expanded(
-                        child: Container(
+                      Text(
+                        'Pregled rezervacija',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 20),
+                      ),
+                      const SizedBox(width: 8),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 3.0, horizontal: 8.0),
+                        decoration: BoxDecoration(
+                          color: Colors.grey[200],
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        child: Row(
+                          children: [
+                            Text('Filter: '),
+                            PopupMenuButton<String>(
+                              icon: Icon(Icons.filter_list),
+                              onSelected: (String result) {
+                                setState(() {
+                                  _selectedFilter = result;
+                                  // Implement filter logic
+                                  loadData(); // Call loadData() after setting the filter
+                                });
+                              },
+                              itemBuilder: (BuildContext context) =>
+                                  <PopupMenuEntry<String>>[
+                                const PopupMenuItem<String>(
+                                  value: 'Svi',
+                                  child: Text('Svi'),
+                                ),
+                                const PopupMenuItem<String>(
+                                  value: 'Padel teren 1',
+                                  child: Text('Padel teren 1'),
+                                ),
+                                const PopupMenuItem<String>(
+                                  value: 'Padel teren 2',
+                                  child: Text('Padel teren 2'),
+                                ),
+                                const PopupMenuItem<String>(
+                                  value: 'Padel teren 3',
+                                  child: Text('Padel teren 3'),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFD7D2DC),
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    padding: const EdgeInsets.all(16.0),
+                    child: Row(
+                      children: [
+                        Expanded(
                           child: Column(
                             children: [
-                              Transform.translate(
-                                offset: const Offset(-120, 0),
-                                child: const Text(
-                                  'Rezervacije',
+                              Text('Ukupan broj rezervacija',
+                                  style: TextStyle(fontSize: 16)),
+                              Container(
+                                width: 300,
+                                height: 100,
+                                padding: const EdgeInsets.all(8.0),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                child: Text(
+                                  '320',
                                   style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20),
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold),
+                                  textAlign: TextAlign.center,
                                 ),
                               ),
-                              const SizedBox(width: 8),
                             ],
                           ),
                         ),
-                      ),
-                      const SizedBox(width: 10),
-                      Column(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 3.0, horizontal: 8.0),
-                            decoration: BoxDecoration(
-                              color: Colors.grey[200],
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            child: Row(
-                              children: [
-                                Container(
-                                  width: 250, // Set the desired width
-                                  padding: const EdgeInsets.all(8.0),
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey[200],
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  child: TextField(
-                                    controller: _searchController,
-                                    maxLines: null, // Allow multiline input
-                                    keyboardType: TextInputType.multiline,
-                                    decoration: InputDecoration(
-                                      filled: true,
-                                      fillColor: Colors.white,
-                                      hintText: 'Pretraži po nazivu terena',
-                                      contentPadding:
-                                          const EdgeInsets.symmetric(
-                                              vertical: 8.0),
-                                      border: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10.0),
-                                        borderSide: BorderSide.none,
-                                      ),
-                                    ),
-                                  ),
+                        Expanded(
+                          child: Column(
+                            children: [
+                              Text('Broj iznajmljenih reketa',
+                                  style: TextStyle(fontSize: 16)),
+                              Container(
+                                width: 300,
+                                height: 100,
+                                padding: const EdgeInsets.all(8.0),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10.0),
                                 ),
-                                Container(
-                                  width: 250,
-                                  padding: const EdgeInsets.all(8.0),
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey[200],
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  child: TextField(
-                                    controller: _searchSpolController,
-                                    maxLines: null,
-                                    keyboardType: TextInputType.multiline,
-                                    decoration: InputDecoration(
-                                      filled: true,
-                                      fillColor: Colors.white,
-                                      hintText: 'Pretraži po vrsti podloge',
-                                      contentPadding:
-                                          const EdgeInsets.symmetric(
-                                              vertical: 8.0),
-                                      border: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10.0),
-                                        borderSide: BorderSide.none,
-                                      ),
-                                    ),
-                                  ),
+                                child: Text(
+                                  '100',
+                                  style: TextStyle(
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold),
+                                  textAlign: TextAlign.center,
                                 ),
-                                const SizedBox(width: 8),
-                                ElevatedButton(
-                                  onPressed: () {
-                                    loadData();
-                                  },
-                                  style: ButtonStyle(
-                                    backgroundColor:
-                                        MaterialStateProperty.all<Color>(
-                                            Colors.green),
-                                    foregroundColor:
-                                        MaterialStateProperty.all<Color>(
-                                            Colors.white),
-                                    minimumSize:
-                                        MaterialStateProperty.all<Size>(
-                                            const Size(10, 45)),
-                                    shape: MaterialStateProperty.all<
-                                        RoundedRectangleBorder>(
-                                      RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10.0),
-                                      ),
-                                    ),
-                                  ),
-                                  child: const Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Icon(Icons.search),
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                    ],
+                        ),
+                      ],
+                    ),
                   ),
                   const SizedBox(height: 20),
                   _buildDataListView(),
@@ -289,7 +267,7 @@ class _RezervacijeScreenState extends State<RezervacijeScreen> {
                 DataColumn(
                   label: Expanded(
                     child: Text(
-                      'Naziv terena',
+                      'Ime terena',
                       style: TextStyle(
                           fontWeight: FontWeight.w500, color: Colors.white),
                     ),
@@ -298,7 +276,7 @@ class _RezervacijeScreenState extends State<RezervacijeScreen> {
                 DataColumn(
                   label: Expanded(
                     child: Text(
-                      'Korisničko ime',
+                      'Korisnik',
                       style: TextStyle(
                           fontWeight: FontWeight.w500, color: Colors.white),
                     ),
@@ -307,7 +285,7 @@ class _RezervacijeScreenState extends State<RezervacijeScreen> {
                 DataColumn(
                   label: Expanded(
                     child: Text(
-                      'Cijena (KM)',
+                      'Cijena(KM)',
                       style: TextStyle(
                           fontWeight: FontWeight.w500, color: Colors.white),
                     ),
