@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:epadel_admin/models/models.dart';
 import 'package:epadel_admin/providers/rezervacije_provider.dart';
 import 'package:epadel_admin/screens/appsidebar.dart';
@@ -19,21 +17,61 @@ class RezervacijeScreen extends StatefulWidget {
 
 class _RezervacijeScreenState extends State<RezervacijeScreen> {
   RezervacijaProvider? _rezervacijeProvider;
-  List<Rezervacija>? _rezervacije;
-  int _currentPage = 1; // Example pagination state
+  SearchResult<Rezervacija>? result;
+  int _currentPage = 1;
+  int _pageSize = 5;
   String _selectedFilter = 'Svi';
 
   @override
   void initState() {
     super.initState();
     _rezervacijeProvider = context.read<RezervacijaProvider>();
-    loadData();
+    _initializeData();
   }
 
-  void loadData() async {
-    var data = await _rezervacijeProvider!.get();
+  Future<void> _initializeData() async {
+    Map<String, String> filters = {
+      'page': (_currentPage - 1).toString(),
+      'pageSize': _pageSize.toString(),
+      'filter': _selectedFilter,
+    };
+
+    var data = await _rezervacijeProvider!.get(filters);
     setState(() {
-      _rezervacije = data;
+      result = data;
+    });
+  }
+
+  void _resetPage() {
+    setState(() {
+      _currentPage = 1;
+      _initializeData();
+    });
+  }
+
+  void _previousPage() {
+    setState(() {
+      _currentPage--;
+      _initializeData();
+    });
+  }
+
+  bool _canGoToPreviousPage() {
+    return _currentPage > 1;
+  }
+
+  bool _canGoToNextPage() {
+    if (result != null) {
+      int totalPages = (result!.totalCount / _pageSize).ceil();
+      return _currentPage < totalPages;
+    }
+    return false;
+  }
+
+  void _nextPage() {
+    setState(() {
+      _currentPage++;
+      _initializeData();
     });
   }
 
@@ -127,7 +165,7 @@ class _RezervacijeScreenState extends State<RezervacijeScreen> {
                                       borderRadius: BorderRadius.circular(10.0),
                                     ),
                                     child: Text(
-                                      '320',
+                                      result?.totalCount.toString() ?? '0',
                                       style: TextStyle(
                                           fontSize: 24,
                                           fontWeight: FontWeight.bold),
@@ -151,7 +189,7 @@ class _RezervacijeScreenState extends State<RezervacijeScreen> {
                                       borderRadius: BorderRadius.circular(10.0),
                                     ),
                                     child: Text(
-                                      '100',
+                                      '100', // Replace with actual data
                                       style: TextStyle(
                                           fontSize: 24,
                                           fontWeight: FontWeight.bold),
@@ -172,8 +210,7 @@ class _RezervacijeScreenState extends State<RezervacijeScreen> {
                           onSelected: (String result) {
                             setState(() {
                               _selectedFilter = result;
-                              // Implement filter logic
-                              loadData(); // Call loadData() after setting the filter
+                              _resetPage(); // Reset page after setting the filter
                             });
                           },
                           itemBuilder: (BuildContext context) =>
@@ -201,24 +238,7 @@ class _RezervacijeScreenState extends State<RezervacijeScreen> {
                   ),
                   const SizedBox(height: 20),
                   _buildDataListView(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      IconButton(
-                        icon: const Icon(Icons.arrow_left),
-                        onPressed: () {
-                          // Implement page change
-                        },
-                      ),
-                      Text('$_currentPage'),
-                      IconButton(
-                        icon: const Icon(Icons.arrow_right),
-                        onPressed: () {
-                          // Implement page change
-                        },
-                      ),
-                    ],
-                  ),
+                  _buildPaginationControls(),
                 ],
               ),
             ),
@@ -229,7 +249,7 @@ class _RezervacijeScreenState extends State<RezervacijeScreen> {
   }
 
   Widget _buildDataListView() {
-    if (_rezervacije == null || _rezervacije!.isEmpty) {
+    if (result == null || result!.result.isEmpty) {
       return Container(
         padding: const EdgeInsets.all(16.0),
         child: const Text(
@@ -295,7 +315,7 @@ class _RezervacijeScreenState extends State<RezervacijeScreen> {
                   ),
                 ),
               ],
-              rows: _rezervacije!.map((Rezervacija rezervacija) {
+              rows: result!.result.map((Rezervacija rezervacija) {
                 return DataRow(cells: [
                   DataCell(Text(rezervacija.terenNaziv ?? 'Nepoznato')),
                   DataCell(Text(rezervacija.korisnickoIme ?? 'Nepoznato')),
@@ -305,6 +325,35 @@ class _RezervacijeScreenState extends State<RezervacijeScreen> {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildPaginationControls() {
+    return Center(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.arrow_left),
+            onPressed: _canGoToPreviousPage() ? _previousPage : null,
+          ),
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+              color: Color(0xFF870000),
+            ),
+            child: Text(
+              '$_currentPage',
+              style: const TextStyle(fontSize: 24, color: Colors.white),
+            ),
+          ),
+          IconButton(
+            icon: const Icon(Icons.arrow_right),
+            onPressed: _canGoToNextPage() ? _nextPage : null,
+          ),
+        ],
       ),
     );
   }

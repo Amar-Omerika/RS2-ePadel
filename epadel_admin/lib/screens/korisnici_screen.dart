@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:epadel_admin/models/models.dart';
 import 'package:epadel_admin/providers/providers.dart';
 import 'package:epadel_admin/screens/appsidebar.dart';
@@ -5,7 +6,6 @@ import 'package:epadel_admin/screens/report_screen.dart';
 import 'package:epadel_admin/screens/rezervacije_screen.dart';
 import 'package:epadel_admin/screens/tereni_screen.dart';
 import 'package:epadel_admin/widgets/modals/Korisnici/edit_korisnici_modal.dart';
-import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class KorisniciScreen extends StatefulWidget {
@@ -18,20 +18,24 @@ class KorisniciScreen extends StatefulWidget {
 
 class _KorisniciScreenState extends State<KorisniciScreen> {
   KorisnikProvider? _korisnikProvider;
-  List<Korisnik>? _korisnici;
+  SearchResult<Korisnik>? result;
   final TextEditingController _searchController = TextEditingController();
   final TextEditingController _searchSpolController = TextEditingController();
-  int _currentPage = 1; // Example pagination state
+  int _currentPage = 1;
+  int _pageSize = 5;
 
   @override
   void initState() {
     super.initState();
     _korisnikProvider = context.read<KorisnikProvider>();
-    loadData();
+    _initializeData();
   }
 
-  void loadData() async {
-    Map<String, String> filters = {};
+  Future<void> _initializeData() async {
+    Map<String, String> filters = {
+      'page': (_currentPage - 1).toString(),
+      'pageSize': _pageSize.toString()
+    };
 
     if (_searchController.text.isNotEmpty) {
       filters['Tekst'] = _searchController.text;
@@ -42,34 +46,61 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
 
     var data = await _korisnikProvider!.get(filters);
     setState(() {
-      _korisnici = data;
+      result = data;
     });
   }
 
-  void resetSearch() {
-    _searchController.text = '';
-    _searchSpolController.text = '';
+  void _resetPage() {
+    setState(() {
+      _currentPage = 1;
+      _initializeData();
+    });
+  }
+
+  void _previousPage() {
+    setState(() {
+      _currentPage--;
+      _initializeData();
+    });
+  }
+
+  bool _canGoToPreviousPage() {
+    return _currentPage > 1;
+  }
+
+  bool _canGoToNextPage() {
+    if (result != null) {
+      int totalPages = (result!.totalCount / _pageSize).ceil();
+      return _currentPage < totalPages;
+    }
+    return false;
+  }
+
+  void _nextPage() {
+    setState(() {
+      _currentPage++;
+      _initializeData();
+    });
   }
 
   void handleEdit(int id, String? korisnickoIme, String? email,
-      String? dominantnaRuka,
-      String? spol) async {
+      String? dominantnaRuka, String? spol) async {
     try {
-    await _korisnikProvider!.update(id, {
-      'korisnickoIme': korisnickoIme,
-      'email': email,
-      'dominantnaRuka': dominantnaRuka,
-      'spol': spol,
-    });
-    if (context.mounted) {
-      Navigator.pop(context);
-      loadData();
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: Theme.of(context).primaryColor,
-          content: const Text('Uspješno ste editovali korisnika!'),
-        ),
-      );
+      await _korisnikProvider!.update(id, {
+        'korisnickoIme': korisnickoIme,
+        'email': email,
+        'dominantnaRuka': dominantnaRuka,
+        'spol': spol,
+      });
+      if (context.mounted) {
+        Navigator.pop(context);
+        _initializeData();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Theme.of(context).primaryColor,
+            content: const Text('Uspješno ste editovali korisnika!'),
+          ),
+        );
       }
     } catch (e) {
       if (context.mounted) {
@@ -231,7 +262,7 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
                                 const SizedBox(width: 8),
                                 ElevatedButton(
                                   onPressed: () {
-                                    loadData();
+                                    _resetPage();
                                   },
                                   style: ButtonStyle(
                                     backgroundColor:
@@ -267,24 +298,7 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
                   ),
                   const SizedBox(height: 20),
                   _buildDataListView(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      IconButton(
-                        icon: const Icon(Icons.arrow_left),
-                        onPressed: () {
-                          // Implement page change
-                        },
-                      ),
-                      Text('$_currentPage'),
-                      IconButton(
-                        icon: const Icon(Icons.arrow_right),
-                        onPressed: () {
-                          // Implement page change
-                        },
-                      ),
-                    ],
-                  ),
+                  _buildPaginationControls(),
                 ],
               ),
             ),
@@ -295,7 +309,7 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
   }
 
   Widget _buildDataListView() {
-    if (_korisnici == null || _korisnici!.isEmpty) {
+    if (result == null || result!.result.isEmpty) {
       return Container(
         padding: const EdgeInsets.all(16.0),
         child: const Text(
@@ -388,7 +402,7 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
                   ),
                 ),
               ],
-              rows: _korisnici!.map((Korisnik korisnik) {
+              rows: result!.result.map((Korisnik korisnik) {
                 return DataRow(cells: [
                   DataCell(Text(korisnik.korisnickoIme!)),
                   DataCell(Text(korisnik.dominantnaRuka == null
@@ -412,7 +426,6 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
                       openDeleteModal(korisnik);
                     },
                   )),
-                  
                 ]);
               }).toList(),
             ),
@@ -447,7 +460,7 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
                   await _korisnikProvider!.remove(korisnik.korisnikId!);
                   if (context.mounted) {
                     Navigator.pop(context);
-                    loadData();
+                    _initializeData();
                   }
                 } catch (e) {
                   if (context.mounted) {
@@ -470,6 +483,35 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
           ],
         );
       },
+    );
+  }
+
+  Widget _buildPaginationControls() {
+    return Center(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.arrow_left),
+            onPressed: _canGoToPreviousPage() ? _previousPage : null,
+          ),
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+              color: Color(0xFF870000),
+            ),
+            child: Text(
+              '$_currentPage',
+              style: const TextStyle(fontSize: 24, color: Colors.white),
+            ),
+          ),
+          IconButton(
+            icon: const Icon(Icons.arrow_right),
+            onPressed: _canGoToNextPage() ? _nextPage : null,
+          ),
+        ],
+      ),
     );
   }
 }

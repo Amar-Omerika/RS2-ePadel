@@ -1,4 +1,3 @@
-
 import 'package:epadel_admin/models/models.dart';
 import 'package:epadel_admin/providers/providers.dart';
 import 'package:epadel_admin/screens/appsidebar.dart';
@@ -21,22 +20,25 @@ class TereniScreen extends StatefulWidget {
 
 class _TereniScreenState extends State<TereniScreen> {
   TerenProvider? _terenProvider;
-  List<Teren>? _tereni;
+  SearchResult<Teren>? result;
   final TextEditingController _searchController = TextEditingController();
   final TextEditingController _searchTipTerenaController =
       TextEditingController();
-  int _currentPage = 1; // Example pagination state
-
+  int _currentPage = 1;
+  int _pageSize = 5;
 
   @override
   void initState() {
     super.initState();
     _terenProvider = context.read<TerenProvider>();
-    loadData();
+    _initializeData();
   }
 
-  void loadData() async {
-    Map<String, String> filters = {};
+  Future<void> _initializeData() async {
+    Map<String, String> filters = {
+      'page': (_currentPage - 1).toString(),
+      'pageSize': _pageSize.toString()
+    };
 
     if (_searchController.text.isNotEmpty) {
       filters['Tekst'] = _searchController.text;
@@ -46,18 +48,50 @@ class _TereniScreenState extends State<TereniScreen> {
     }
 
     var data = await _terenProvider!.get(filters);
-
     setState(() {
-      _tereni = data;
+      result = data;
     });
   }
+
+  void _resetPage() {
+    setState(() {
+      _currentPage = 1;
+      _initializeData();
+    });
+  }
+
+  void _previousPage() {
+    setState(() {
+      _currentPage--;
+      _initializeData();
+    });
+  }
+
+  bool _canGoToPreviousPage() {
+    return _currentPage > 1;
+  }
+
+  bool _canGoToNextPage() {
+    if (result != null) {
+      int totalPages = (result!.totalCount / _pageSize).ceil();
+      return _currentPage < totalPages;
+    }
+    return false;
+  }
+
+  void _nextPage() {
+    setState(() {
+      _currentPage++;
+      _initializeData();
+    });
+  }
+
   void resetSearch() {
     _searchController.text = '';
     _searchTipTerenaController.text = '';
   }
 
-  void handleAdd(
-      String? naziv, int? cijena, int? brojTerena, int? tipTerenaId,
+  void handleAdd(String? naziv, int? cijena, int? brojTerena, int? tipTerenaId, 
       String? lokacija, String? popust, int? cijenaPopusta) async {
     await _terenProvider!.insert({
       'naziv': naziv,
@@ -71,7 +105,7 @@ class _TereniScreenState extends State<TereniScreen> {
     if (context.mounted) {
       Navigator.pop(context);
       resetSearch();
-      loadData();
+      _initializeData();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           backgroundColor: Theme.of(context).primaryColor,
@@ -89,7 +123,8 @@ class _TereniScreenState extends State<TereniScreen> {
       },
     );
   }
-void handleEdit(
+
+  void handleEdit(
       int id,
       String? naziv,
       int? cijena,
@@ -109,7 +144,7 @@ void handleEdit(
     });
     if (context.mounted) {
       Navigator.pop(context);
-      loadData();
+      _initializeData();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           backgroundColor: Theme.of(context).primaryColor,
@@ -130,6 +165,57 @@ void handleEdit(
       },
     );
   }
+
+  void openDeleteModal(Teren teren) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Obrisi'),
+          content: const Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text('Da li ste sigurni da želite da obrišete Teren?'),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('Poništi'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                try {
+                  await _terenProvider!.remove(teren.terenId!);
+                  if (context.mounted) {
+                    Navigator.pop(context);
+                    _initializeData();
+                  }
+                } catch (e) {
+                  if (context.mounted) {
+                    Navigator.pop(context);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        backgroundColor: Colors.red,
+                        content: Text('Ne možete obrisati ovaj Teren!'),
+                      ),
+                    );
+                  }
+                }
+              },
+              child: const Text(
+                'Obriši',
+                style: TextStyle(color: Colors.red),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -292,7 +378,7 @@ void handleEdit(
                                 ),
                                 ElevatedButton(
                                   onPressed: () {
-                                    loadData();
+                                    _resetPage();
                                   },
                                   style: ButtonStyle(
                                       backgroundColor:
@@ -328,24 +414,7 @@ void handleEdit(
                   ),
                   const SizedBox(height: 20),
                   _buildDataListView(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      IconButton(
-                        icon: const Icon(Icons.arrow_left),
-                        onPressed: () {
-                          // Implement page change
-                        },
-                      ),
-                      Text('$_currentPage'),
-                      IconButton(
-                        icon: const Icon(Icons.arrow_right),
-                        onPressed: () {
-                          // Implement page change
-                        },
-                      ),
-                    ],
-                  ),
+                  _buildPaginationControls(),
                 ],
               ),
             ),
@@ -354,8 +423,9 @@ void handleEdit(
       ),
     );
   }
-Widget _buildDataListView() {
-    if (_tereni == null || _tereni!.isEmpty) {
+
+  Widget _buildDataListView() {
+    if (result == null || result!.result.isEmpty) {
       return Container(
         padding: const EdgeInsets.all(16.0),
         child: const Text(
@@ -430,7 +500,7 @@ Widget _buildDataListView() {
                   ),
                 ),
               ],
-              rows: _tereni!.map((Teren teren) {
+              rows: result!.result.map((Teren teren) {
                 return DataRow(cells: [
                   DataCell(Text(teren.naziv!)),
                   DataCell(Text(teren.tipTerena!.naziv!)),
@@ -455,56 +525,32 @@ Widget _buildDataListView() {
     );
   }
 
-
-//delete modal
-  void openDeleteModal(Teren teren) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Obrisi'),
-          content: const Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text('Da li ste sigurni da želite da obrišete Teren?'),
-            ],
+  Widget _buildPaginationControls() {
+    return Center(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.arrow_left),
+            onPressed: _canGoToPreviousPage() ? _previousPage : null,
           ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text('Poništi'),
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+              color: Color(0xFF870000),
             ),
-            ElevatedButton(
-              onPressed: () async {
-                try {
-                  await _terenProvider!.remove(teren.terenId!);
-                  if (context.mounted) {
-                    Navigator.pop(context);
-                    loadData();
-                  }
-                } catch (e) {
-                  if (context.mounted) {
-                    Navigator.pop(context);
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        backgroundColor: Colors.red,
-                        content: Text('Ne možete obrisati ovaj Teren!'),
-                      ),
-                    );
-                  }
-                }
-              },
-              child: const Text(
-                'Obriši',
-                style: TextStyle(color: Colors.red),
-              ),
+            child: Text(
+              '$_currentPage',
+              style: const TextStyle(fontSize: 24, color: Colors.white),
             ),
-          ],
-        );
-      },
+          ),
+          IconButton(
+            icon: const Icon(Icons.arrow_right),
+            onPressed: _canGoToNextPage() ? _nextPage : null,
+          ),
+        ],
+      ),
     );
   }
-
 }
