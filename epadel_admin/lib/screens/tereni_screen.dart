@@ -538,7 +538,7 @@ class _TereniScreenState extends State<TereniScreen> {
             padding: const EdgeInsets.all(8),
             decoration: const BoxDecoration(
               shape: BoxShape.circle,
-              color: Color(0xFF870000),
+              color: Colors.green,
             ),
             child: Text(
               '$_currentPage',

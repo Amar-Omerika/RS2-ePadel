@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:epadel_admin/models/models.dart';
 import 'package:epadel_admin/providers/rezervacije_provider.dart';
 import 'package:epadel_admin/screens/appsidebar.dart';
@@ -154,8 +156,13 @@ class _RezervacijeScreenState extends State<RezervacijeScreen> {
                             Expanded(
                               child: Column(
                                 children: [
-                                  Text('Ukupan broj rezervacija',
-                                      style: TextStyle(fontSize: 16)),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text('Ukupan broj rezervacija',
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500)),
+                                  ),
                                   Container(
                                     width: 300,
                                     height: 100,
@@ -164,12 +171,14 @@ class _RezervacijeScreenState extends State<RezervacijeScreen> {
                                       color: Colors.white,
                                       borderRadius: BorderRadius.circular(10.0),
                                     ),
-                                    child: Text(
-                                      result?.totalCount.toString() ?? '0',
-                                      style: TextStyle(
-                                          fontSize: 24,
-                                          fontWeight: FontWeight.bold),
-                                      textAlign: TextAlign.center,
+                                    child: Center(
+                                      child: Text(
+                                        result?.totalCount.toString() ?? '0',
+                                        style: TextStyle(
+                                            fontSize: 24,
+                                            fontWeight: FontWeight.bold),
+                                        textAlign: TextAlign.center,
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -178,8 +187,13 @@ class _RezervacijeScreenState extends State<RezervacijeScreen> {
                             Expanded(
                               child: Column(
                                 children: [
-                                  Text('Broj iznajmljenih reketa',
-                                      style: TextStyle(fontSize: 16)),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text('Broj iznajmljenih reketa',
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500)),
+                                  ),
                                   Container(
                                     width: 300,
                                     height: 100,
@@ -188,17 +202,21 @@ class _RezervacijeScreenState extends State<RezervacijeScreen> {
                                       color: Colors.white,
                                       borderRadius: BorderRadius.circular(10.0),
                                     ),
-                                    child: Text(
-                                      '100', // Replace with actual data
-                                      style: TextStyle(
-                                          fontSize: 24,
-                                          fontWeight: FontWeight.bold),
-                                      textAlign: TextAlign.center,
+                                    child: Center(
+                                      child: Text(
+                                        result?.ukupanBrojReketa.toString() ??
+                                            '0', // Replace with actual data
+                                        style: TextStyle(
+                                            fontSize: 24,
+                                            fontWeight: FontWeight.bold),
+                                        textAlign: TextAlign.center,
+                                      ),
                                     ),
                                   ),
                                 ],
                               ),
                             ),
+
                           ],
                         ),
                       ),
@@ -342,7 +360,7 @@ class _RezervacijeScreenState extends State<RezervacijeScreen> {
             padding: const EdgeInsets.all(8),
             decoration: const BoxDecoration(
               shape: BoxShape.circle,
-              color: Color(0xFF870000),
+              color: Colors.green,
             ),
             child: Text(
               '$_currentPage',
