@@ -17,9 +17,9 @@ namespace ePadel.Controllers
         }
 
         [HttpGet]
-        public virtual IEnumerable<T> GetAll([FromQuery] TSearch search = null)
+        public async Task<PagedResult<T>> GetAll([FromQuery] TSearch? search = null)
         {
-            return _service.GetAll(search);
+            return await _service.Get(search);
         }
 
         [HttpGet("{id}")]

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ePadel.Model;
 using ePadel.Model.SearchObjects;
 using ePadel.Services.Database;
 using Microsoft.EntityFrameworkCore;
@@ -20,15 +21,68 @@ namespace ePadel.Services.BaseService
             _mapper = mapper;
         }
 
-        public virtual IEnumerable<T> GetAll(TSearch? search = null)
+        public virtual async Task<PagedResult<T>> Get(TSearch? search = null)
         {
-            var entity = _context.Set<TDb>().AsQueryable();
-            entity = AddFilter(entity, search);
-            entity = AddInclude(entity, search);
+            var query = _context.Set<TDb>().AsQueryable();
+
+            PagedResult<T> result = new PagedResult<T>();
+
+            result.TotalCount = await query.CountAsync();
+
+            if (typeof(TDb) == typeof(Database.Tereni))
+            {
+                var queryReservation = query as IQueryable<Database.Tereni>;
+
+                if (queryReservation != null)
+                {
+                    result.TotalCount = await queryReservation.CountAsync();
+                }
+            }
+
+            if (typeof(TDb) == typeof(Database.Korisnik))
+            {
+                var queryReservation = query as IQueryable<Database.Korisnik>;
+
+                if (queryReservation != null)
+                {
+                    result.TotalCount = await queryReservation.CountAsync();
+                }
+            }
+
+            if (typeof(TDb) == typeof(Database.Rezervacije))
+            {
+                var queryReservation = query as IQueryable<Database.Rezervacije>;
+
+                if (queryReservation != null)
+                {
+                    result.TotalCount = await queryReservation.CountAsync();
+
+                    result.UkupanBrojReketa = await queryReservation.SumAsync(x => x.BrojReketa);
+                }
+            }
+            else
+            {
+                result.UkupanBrojReketa = 0;
+            }
+
+            query = AddFilter(query, search);
+
+            query = AddInclude(query, search);
+
+            result.Count = await query.CountAsync();
+
+
             if (search?.Page.HasValue == true && search?.PageSize.HasValue == true)
-                entity = entity.Skip(search.Page.Value * search.PageSize.Value).Take(search.PageSize.Value);
-            var list = entity.ToList();
-            return _mapper.Map<IList<T>>(list);
+            {
+                query = query.Skip(search.Page.Value * search.PageSize.Value).Take(search.PageSize.Value);
+            }
+
+            var list = await query.ToListAsync();
+
+
+            var tmp = _mapper.Map<List<T>>(list);
+            result.Result = tmp;
+            return result;
         }
 
         public virtual IQueryable<TDb> AddInclude(IQueryable<TDb> query, TSearch search = null)
