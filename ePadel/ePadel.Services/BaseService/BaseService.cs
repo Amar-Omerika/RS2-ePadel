@@ -29,6 +29,7 @@ namespace ePadel.Services.BaseService
 
             result.TotalCount = await query.CountAsync();
 
+
             if (typeof(TDb) == typeof(Database.Tereni))
             {
                 var queryReservation = query as IQueryable<Database.Tereni>;

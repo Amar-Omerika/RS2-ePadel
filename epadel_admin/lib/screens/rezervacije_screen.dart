@@ -192,7 +192,10 @@ class _RezervacijeScreenState extends State<RezervacijeScreen> {
                                     ),
                                     child: Center(
                                       child: Text(
-                                        result?.totalCount.toString() ?? '0',
+                                        _selectedTerenId == -1
+                                            ? result?.totalCount.toString() ??
+                                                '0'
+                                            : result?.count.toString() ?? '0',
                                         style: TextStyle(
                                             fontSize: 24,
                                             fontWeight: FontWeight.bold),
@@ -223,8 +226,13 @@ class _RezervacijeScreenState extends State<RezervacijeScreen> {
                                     ),
                                     child: Center(
                                       child: Text(
-                                        result?.ukupanBrojReketa.toString() ??
-                                            '0', // Replace with actual data
+                                        _selectedTerenId == -1
+                                            ? result?.ukupanBrojReketa
+                                                    .toString() ??
+                                                '0'
+                                            : result?.ukupanBrojReketa
+                                                    .toString() ??
+                                                '0',
                                         style: TextStyle(
                                             fontSize: 24,
                                             fontWeight: FontWeight.bold),
