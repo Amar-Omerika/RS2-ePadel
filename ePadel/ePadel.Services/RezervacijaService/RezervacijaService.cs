@@ -14,26 +14,28 @@ using System.Threading.Tasks;
 
 namespace ePadel.Services.RezervacijaService
 {
-    public class RezervacijaService : BaseCRUDService<Model.Rezervacije, Database.Rezervacije, BaseSearchObject, RezervacijaInsertRequest, RezervacijaUpdateRequest>, IRezervacijaService
+    public class RezervacijaService : BaseCRUDService<Model.Rezervacije, Database.Rezervacije, RezervacijaSearchObject, RezervacijaInsertRequest, RezervacijaUpdateRequest>, IRezervacijaService
     {
         public RezervacijaService(IB190069_ePadelContext context, IMapper mapper) : base(context, mapper)
         {
         }
-        public override IQueryable<ePadel.Services.Database.Rezervacije> AddInclude(IQueryable<ePadel.Services.Database.Rezervacije> query, BaseSearchObject search = null)
+        public override IQueryable<ePadel.Services.Database.Rezervacije> AddInclude(IQueryable<ePadel.Services.Database.Rezervacije> query, RezervacijaSearchObject search = null)
         {
             query = query.Include(x => x.Korisnik).Include(x => x.Teren);
             return base.AddInclude(query, search);
         }
-        //public override IQueryable<ePadel.Services.Database.Rezervacije> AddFilter(IQueryable<ePadel.Services.Database.Rezervacije> query, BaseSearchObject search = null)
-        //{
-        //    var filteredQuery = base.AddFilter(query, search);
+        public override IQueryable<ePadel.Services.Database.Rezervacije> AddFilter(IQueryable<ePadel.Services.Database.Rezervacije> query, RezervacijaSearchObject search = null)
+        {
+            var filteredQuery = base.AddFilter(query, search);
 
-        //    if (!string.IsNullOrWhiteSpace(search?.Tekst))
-        //        filteredQuery = filteredQuery.Where(x => x.Naziv.ToLower().Contains(search.Tekst.ToLower()));
-        //    return filteredQuery;
+            if (search != null && search.terenId != null)
+            {
+                filteredQuery = filteredQuery.Where(x => x.TerenId == search.terenId);
+            }
+            return filteredQuery;
 
 
-        //}
+        }
         public override Model.Rezervacije Insert(RezervacijaInsertRequest request)
         {
             try

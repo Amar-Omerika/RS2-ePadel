@@ -9,7 +9,7 @@ namespace ePadel.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class RezervacijaController : BaseCRUDController<Model.Rezervacije, BaseSearchObject, RezervacijaInsertRequest, RezervacijaUpdateRequest>
+    public class RezervacijaController : BaseCRUDController<Model.Rezervacije, RezervacijaSearchObject, RezervacijaInsertRequest, RezervacijaUpdateRequest>
     {
         protected IRezervacijaService? _service { get; set; }
         public RezervacijaController(IRezervacijaService service) : base(service)

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ePadel.Services.RezervacijaService
 {
-    public interface IRezervacijaService : IBaseCRUDService<Model.Rezervacije, BaseSearchObject, RezervacijaInsertRequest, RezervacijaUpdateRequest> 
+    public interface IRezervacijaService : IBaseCRUDService<Model.Rezervacije, RezervacijaSearchObject, RezervacijaInsertRequest, RezervacijaUpdateRequest> 
     {
     }
 }
