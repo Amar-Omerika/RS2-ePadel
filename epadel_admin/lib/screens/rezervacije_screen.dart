@@ -1,6 +1,7 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:epadel_admin/models/models.dart';
+import 'package:epadel_admin/providers/providers.dart';
 import 'package:epadel_admin/providers/rezervacije_provider.dart';
 import 'package:epadel_admin/screens/appsidebar.dart';
 import 'package:epadel_admin/screens/korisnici_screen.dart';
@@ -19,24 +20,42 @@ class RezervacijeScreen extends StatefulWidget {
 
 class _RezervacijeScreenState extends State<RezervacijeScreen> {
   RezervacijaProvider? _rezervacijeProvider;
+  TerenProvider? _tereniProvider;
   SearchResult<Rezervacija>? result;
+  SearchResult<Teren>? resultTeren;
   int _currentPage = 1;
   int _pageSize = 5;
+  int? _selectedTerenId;
   String _selectedFilter = 'Svi';
 
   @override
   void initState() {
     super.initState();
+    _selectedTerenId = -1;
     _rezervacijeProvider = context.read<RezervacijaProvider>();
+    _tereniProvider = context.read<TerenProvider>();
     _initializeData();
   }
 
   Future<void> _initializeData() async {
+    var dataTeren = await _tereniProvider!.get();
+    setState(() {
+      resultTeren = dataTeren;
+    });
+
+    _fetchRezervacije();
+  }
+
+  Future<void> _fetchRezervacije() async {
     Map<String, String> filters = {
       'page': (_currentPage - 1).toString(),
       'pageSize': _pageSize.toString(),
       'filter': _selectedFilter,
     };
+
+    if (_selectedTerenId != -1) {
+      filters['terenId'] = _selectedTerenId.toString();
+    }
 
     var data = await _rezervacijeProvider!.get(filters);
     setState(() {
@@ -47,14 +66,14 @@ class _RezervacijeScreenState extends State<RezervacijeScreen> {
   void _resetPage() {
     setState(() {
       _currentPage = 1;
-      _initializeData();
+      _fetchRezervacije();
     });
   }
 
   void _previousPage() {
     setState(() {
       _currentPage--;
-      _initializeData();
+      _fetchRezervacije();
     });
   }
 
@@ -73,7 +92,15 @@ class _RezervacijeScreenState extends State<RezervacijeScreen> {
   void _nextPage() {
     setState(() {
       _currentPage++;
-      _initializeData();
+      _fetchRezervacije();
+    });
+  }
+
+  void _onFilterSelected(String filter) {
+    setState(() {
+      _selectedFilter = filter;
+      _selectedTerenId = filter == 'Svi' ? -1 : int.parse(filter);
+      _resetPage();
     });
   }
 
@@ -131,15 +158,7 @@ class _RezervacijeScreenState extends State<RezervacijeScreen> {
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 20),
                       ),
-                      const SizedBox(width: 8),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 3.0, horizontal: 8.0),
-                        decoration: BoxDecoration(
-                          color: Colors.grey[200],
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                      ),
+                      const SizedBox(width: 8)               
                     ],
                   ),
                   const SizedBox(height: 20),
@@ -216,40 +235,31 @@ class _RezervacijeScreenState extends State<RezervacijeScreen> {
                                 ],
                               ),
                             ),
-
                           ],
                         ),
                       ),
                       Positioned(
                         top: 10,
                         right: 10,
-                        child: PopupMenuButton<String>(
+                        child: PopupMenuButton<int>(
                           icon: Icon(Icons.filter_list),
-                          onSelected: (String result) {
-                            setState(() {
-                              _selectedFilter = result;
-                              _resetPage(); // Reset page after setting the filter
-                            });
+                          onSelected: (int result) {
+                            _onFilterSelected(result.toString());
                           },
-                          itemBuilder: (BuildContext context) =>
-                              <PopupMenuEntry<String>>[
-                            const PopupMenuItem<String>(
-                              value: 'Svi',
-                              child: Text('Svi'),
-                            ),
-                            const PopupMenuItem<String>(
-                              value: 'Padel teren 1',
-                              child: Text('Padel teren 1'),
-                            ),
-                            const PopupMenuItem<String>(
-                              value: 'Padel teren 2',
-                              child: Text('Padel teren 2'),
-                            ),
-                            const PopupMenuItem<String>(
-                              value: 'Padel teren 3',
-                              child: Text('Padel teren 3'),
-                            ),
-                          ],
+                          itemBuilder: (BuildContext context) {
+                            return [
+                              PopupMenuItem<int>(
+                                value: -1,
+                                child: Text('Svi'),
+                              ),
+                              ...?resultTeren?.result.map((teren) {
+                                return PopupMenuItem<int>(
+                                  value: teren.terenId!,
+                                  child: Text(teren.naziv!),
+                                );
+                              }).toList(),
+                            ];
+                          },
                         ),
                       ),
                     ],
