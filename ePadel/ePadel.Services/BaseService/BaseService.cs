@@ -50,6 +50,13 @@ namespace ePadel.Services.BaseService
                 }
             }
 
+         
+            query = AddFilter(query, search);
+
+            query = AddInclude(query, search);
+
+            result.Count = await query.CountAsync();
+
             if (typeof(TDb) == typeof(Database.Rezervacije))
             {
                 var queryReservation = query as IQueryable<Database.Rezervacije>;
@@ -65,13 +72,6 @@ namespace ePadel.Services.BaseService
             {
                 result.UkupanBrojReketa = 0;
             }
-
-            query = AddFilter(query, search);
-
-            query = AddInclude(query, search);
-
-            result.Count = await query.CountAsync();
-
 
             if (search?.Page.HasValue == true && search?.PageSize.HasValue == true)
             {
