@@ -33,11 +33,10 @@ namespace ePadel.Services.Database
             new Korisnik()
             {
                 KorisnikId = 1,
-                Ime = "Amar",
-                Prezime = "Omerika",
-                KorisnickoIme = "AmarTapia",
+                Ime = "Admin",
+                Prezime = "Admin",
+                KorisnickoIme = "Admin",
                 Email = "amaaromerika00@gmal.com",
-                BrTelefona = "061-072-172",
                 LozinkaHash = "523l3SXvXt/OIGacFmI0PUlXkJM=", // Ovde trebate postaviti stvarnu hash vrednost lozinke
                 LozinkaSalt = "ORNOSgr59Nd5PGJx/GNMKg==", // Ovde trebate postaviti stvarnu vrednost soli
                 Slika = profilnaSlikaKorisnika,
@@ -46,11 +45,10 @@ namespace ePadel.Services.Database
             new Korisnik()
             {
                     KorisnikId = 2,
-                    Ime = "Admin",
-                    Prezime = "Admin",
-                    KorisnickoIme = "admin",
-                    Email = "admin@gmail.com",
-                    BrTelefona = "064-222-222",
+                    Ime = "Amar",
+                    Prezime = "Omerika",
+                    KorisnickoIme = "AmarTapia",
+                    Email = "amartapia@gmail.com",
                     LozinkaHash = "523l3SXvXt/OIGacFmI0PUlXkJM=", // Ovde trebate postaviti stvarnu hash vrednost lozinke
                     LozinkaSalt = "ORNOSgr59Nd5PGJx/GNMKg==", // Ovde trebate postaviti stvarnu vrednost soli
                     Slika = profilnaSlikaKorisnika,
@@ -63,13 +61,13 @@ namespace ePadel.Services.Database
             new KorisnikUloge()
             {
                 KorisnikUlogeId = 1,
-                UlogaId = 2, // Postavite odgovarajući ID uloge
+                UlogaId = 1, // Postavite odgovarajući ID uloge
                 KorisnikId = 1 // Postavite odgovarajući ID korisnika
             },
                new KorisnikUloge()
             {
                 KorisnikUlogeId = 2,
-                UlogaId = 1, // Postavite odgovarajući ID uloge
+                UlogaId = 2, // Postavite odgovarajući ID uloge
                 KorisnikId = 2 // Postavite odgovarajući ID korisnika
             }
             });

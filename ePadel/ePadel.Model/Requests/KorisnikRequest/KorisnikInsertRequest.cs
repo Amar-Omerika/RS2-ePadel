@@ -6,7 +6,6 @@ namespace ePadel.Model.Requests.KorisnikRequest
     {
         public string? Ime { get; set; }
 
-
         public string? Prezime { get; set; }
 
 
@@ -18,10 +17,6 @@ namespace ePadel.Model.Requests.KorisnikRequest
         [Required(AllowEmptyStrings = false)]
         [EmailAddress()]
         public string? Email { get; set; }
-
-
-        [RegularExpression("^\\d{3}-\\d{3}-(\\d{4}|\\d{3})$", ErrorMessage = "Broj telefona mora biti u obliku 06X-XXX-XXX !")]
-        public string? BrTelefona { get; set; }
 
         [Required]
         [MinLength(8, ErrorMessage = "Lozinka mora sadržavati najmanje 8 karaktera!")]

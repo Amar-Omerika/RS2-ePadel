@@ -12,9 +12,6 @@ namespace ePadel.Model.Requests.KorisnikRequest
         [EmailAddress()]
         public string? Email { get; set; }
 
-        [RegularExpression("^\\d{3}-\\d{3}-(\\d{4}|\\d{3})$")]
-        public string? BrTelefona { get; set; }
-
 
         [Required(AllowEmptyStrings = false)]
         [MinLength(4)]

@@ -18,8 +18,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
   String? password;
   String? firstName;
   String? lastName;
-  String? gender = 'Muško';
+  String? spol = 'Musko';
   String? dominantnaRuka = 'Desna';
+  List<int> uloge = [2];
   bool registrationFailed = false;
 
   @override
@@ -124,8 +125,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     const SizedBox(height: 20),
                     DropdownButtonFormField<String>(
-                      value: gender,
-                      items: ['Muško', 'Žensko']
+                      value: spol,
+                      items: ['Musko', 'Zensko']
                           .map((label) => DropdownMenuItem(
                                 child: Text(label),
                                 value: label,
@@ -133,7 +134,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           .toList(),
                       onChanged: (value) {
                         setState(() {
-                          gender = value!;
+                          spol = value!;
                         });
                       },
                       decoration: const InputDecoration(
@@ -181,13 +182,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         });
                         if (formKey.currentState!.validate()) {
                           formKey.currentState!.save();
-                          Map<String, String> user = {
+                          Map user = {
                             'ime': firstName!,
                             'prezime': lastName!,
                             'korisnickoIme': userName!,
                             'lozinka': password!,
-                            'spol': gender!,
-                            'dominantnaRuka': dominantnaRuka!
+                            'spol': spol!,
+                            'dominantnaRuka': dominantnaRuka!,
+                            'uloge': [2]
                           };
                           try {
                             var data = await _authProvider.register(user);

@@ -13,7 +13,6 @@ namespace ePadel.Model
         public string? Prezime { get; set; }
         public string? KorisnickoIme { get; set; }
         public string? Email { get; set; }
-        public string? BrTelefona { get; set; }
         public bool? Aktivan { get; set; }
         public string? Spol { get; set; }
         public string? DominantnaRuka { get; set; }
