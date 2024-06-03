@@ -29,6 +29,7 @@ namespace ePadel.Controllers
         }
 
         [HttpPost("login")]
+        [AllowAnonymous]
         public async Task<Model.Korisnik> Login([FromBody] LoginRequest body)
         {
             var user = await _authService.Login(body);

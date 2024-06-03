@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:async';
-import 'package:epadel_mobile/models/models.dart';
 import 'package:http/http.dart';
 import 'package:http/io_client.dart';
 import 'package:flutter/foundation.dart';
+
 import '../utils/util.dart';
 
 abstract class BaseProvider<T> with ChangeNotifier {
@@ -16,7 +16,7 @@ abstract class BaseProvider<T> with ChangeNotifier {
 
   BaseProvider(String endpoint) {
     _baseUrl = const String.fromEnvironment("baseUrl",
-        defaultValue: "https://localhost:44342/");
+        defaultValue: "http://10.0.2.2:5258/");
     print("baseurl: $_baseUrl");
 
     if (_baseUrl!.endsWith("/") == false) {
@@ -43,7 +43,7 @@ abstract class BaseProvider<T> with ChangeNotifier {
     }
   }
 
-  Future<SearchResult<T>> get([dynamic search]) async {
+  Future<List<T>> get([dynamic search]) async {
     var url = "$_baseUrl$_endpoint";
 
     if (search != null) {
@@ -59,16 +59,7 @@ abstract class BaseProvider<T> with ChangeNotifier {
     print("done $response");
     if (isValidResponseCode(response)) {
       var data = jsonDecode(response.body);
-      var result = SearchResult<T>();
-      result.count = data['count'];
-      result.totalCount = data['totalCount'];
-      result.ukupanBrojReketa = data['ukupanBrojReketa'];
-
-      for (var item in data['result']) {
-        result.result.add(fromJson(item));
-      }
-
-      return result;
+      return data.map((x) => fromJson(x)).cast<T>().toList();
     } else {
       throw Exception("Exception... handle this gracefully");
     }
@@ -107,28 +98,13 @@ abstract class BaseProvider<T> with ChangeNotifier {
     }
   }
 
-  Future<T?> remove(int id) {
-    var url = "$_baseUrl$_endpoint/$id";
-    var uri = Uri.parse(url);
-
-    Map<String, String> headers = createHeaders();
-
-    return http!.delete(uri, headers: headers).then((response) {
-      if (isValidResponseCode(response)) {
-        var data = jsonDecode(response.body);
-        return fromJson(data);
-      } else {
-        return null;
-      }
-    });
-  }
-
   Map<String, String> createHeaders() {
     String? username = Authorization.username;
     String? password = Authorization.password;
 
     String basicAuth =
         "Basic ${base64Encode(utf8.encode('$username:$password'))}";
+
     var headers = {
       "Content-Type": "application/json",
       "Authorization": basicAuth
@@ -174,7 +150,11 @@ abstract class BaseProvider<T> with ChangeNotifier {
 
   bool isValidResponseCode(Response response) {
     if (response.statusCode == 200) {
-      return true;
+      if (response.body != "") {
+        return true;
+      } else {
+        return false;
+      }
     } else if (response.statusCode == 204) {
       return true;
     } else if (response.statusCode == 400) {

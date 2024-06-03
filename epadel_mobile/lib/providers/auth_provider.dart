@@ -8,12 +8,13 @@ import 'package:http/src/response.dart';
 class AuthProvider extends BaseProvider<Korisnik> {
   // static String _username = "";
   static int? _loggedUserId = 0;
+
   HttpClient client = HttpClient();
   IOClient? http;
   static String? _baseUrl;
   AuthProvider() : super("Korisnik") {
     _baseUrl = const String.fromEnvironment("baseUrl",
-        defaultValue: "https://localhost:44342/");
+        defaultValue: "http://10.0.2.2:5258/");
     print("baseurl: $_baseUrl");
 
     if (_baseUrl!.endsWith("/") == false) {
@@ -36,7 +37,7 @@ class AuthProvider extends BaseProvider<Korisnik> {
   }
 
   Future<Korisnik?> login(dynamic request) async {
-    var url = "$_baseUrl" + "login";
+    var url = "$_baseUrl" + "Auth/login";
     var headers = createHeaders();
     var uri = Uri.parse(url);
     var jsonRequest = jsonEncode(request);
@@ -50,7 +51,7 @@ class AuthProvider extends BaseProvider<Korisnik> {
   }
 
   Future<Korisnik?> register(dynamic request) async {
-    var url = "$_baseUrl" + "register";
+    var url = "$_baseUrl" + "Auth/register";
     var headers = createHeaders();
     var uri = Uri.parse(url);
     var jsonRequest = jsonEncode(request);

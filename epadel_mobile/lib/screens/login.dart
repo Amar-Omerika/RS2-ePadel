@@ -121,22 +121,21 @@ class _LoginScreenState extends State<LoginScreen> {
                           'lozinka': password!
                         };
                         try {
-                          var data = await _authProvider.login(user);
-
+                          var data = await _authProvider!.login(user);
                           if (context.mounted) {
-                            _authProvider
+                            _authProvider!
                                 .setParameters(data!.korisnikId!.toInt());
                             Authorization.username = userName;
                             Authorization.password = password;
-                            Authorization.korisnikId = data.korisnikId!.toInt();
                             Navigator.popAndPushNamed(
                                 context, RegisterScreen.routeName);
                           }
                         } on Exception catch (error) {
-                          setState(() {
-                            loginFailed = true;
-                          });
                           print(error.toString());
+                          if (error.toString().contains("Bad request")) {
+                            loginFailed = true;
+                            formKey.currentState!.validate();
+                          }
                         }
                       }
                     },
