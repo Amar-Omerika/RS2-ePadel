@@ -13,9 +13,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  TerenProvider _terenProvider = TerenProvider();
+  late TerenProvider _terenProvider;
   SearchResult<Teren> _tereni = SearchResult<Teren>();
-
+  String _filter = '';
   @override
   void initState() {
     super.initState();
@@ -24,7 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> loadData() async {
-    var tmpData = await _terenProvider.get({});
+    var tmpData = await _terenProvider.get({'Tekst': _filter});
     setState(() {
       _tereni = tmpData as SearchResult<Teren>;
     });
@@ -43,31 +43,14 @@ class _HomeScreenState extends State<HomeScreen> {
               margin: const EdgeInsets.only(top: 80.0),
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: TextField(
-                  decoration: InputDecoration(
-                    hintText: 'Pretraga po imenu...',
-                    suffixIcon: const Icon(Icons.search),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(100),
-                      borderSide:
-                          const BorderSide(color: Colors.black, width: 2.0),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(100),
-                      borderSide:
-                          const BorderSide(color: Colors.black, width: 2.0),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(100),
-                      borderSide:
-                          const BorderSide(color: Colors.black, width: 2.0),
-                    ),
-                    filled: true,
-                    fillColor: Colors.white,
-                    contentPadding: const EdgeInsets.symmetric(
-                        vertical: 0, horizontal: 16.0),
-                  ),
-                ),
+                child: TerenInput(
+                    filter: _filter,
+                    onFilterChanged: (value) {
+                      setState(() {
+                        _filter = value;
+                      });
+                      loadData();
+                    }),
               ),
             ),
             const SizedBox(height: 5.0),
@@ -84,6 +67,40 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class TerenInput extends StatelessWidget {
+  final String filter;
+  final ValueChanged<String> onFilterChanged;
+  const TerenInput(
+      {super.key, required this.filter, required this.onFilterChanged});
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      onSubmitted: onFilterChanged,
+      decoration: InputDecoration(
+        hintText: 'Pretraga po nazivu...',
+        suffixIcon: const Icon(Icons.search),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(100),
+          borderSide: BorderSide(color: Colors.black, width: 2.0),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(100),
+          borderSide: const BorderSide(color: Colors.black, width: 2.0),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(100),
+          borderSide: const BorderSide(color: Colors.black, width: 2.0),
+        ),
+        filled: true,
+        fillColor: Colors.white,
+        contentPadding:
+            const EdgeInsets.symmetric(vertical: 0, horizontal: 16.0),
       ),
     );
   }
