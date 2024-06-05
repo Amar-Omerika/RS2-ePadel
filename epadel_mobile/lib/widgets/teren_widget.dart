@@ -1,3 +1,4 @@
+import 'package:epadel_mobile/utils/util.dart';
 import 'package:flutter/material.dart';
 import '../models/teren.dart'; // Adjust the import as per your project structure
 
@@ -12,7 +13,7 @@ class TerenCard extends StatelessWidget {
       margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
       decoration: BoxDecoration(
         color: Colors.green[200],
-        borderRadius: BorderRadius.circular(15.0),
+        borderRadius: BorderRadius.circular(25.0),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.2),
@@ -27,13 +28,8 @@ class TerenCard extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(12.0),
-              child: Image.network(
-                "https://www.shutterstock.com/image-photo/padel-blue-court-white-lines-260nw-2194207723.jpg", // Replace with your image URL
-                width: 100,
-                height: 100,
-                fit: BoxFit.cover,
-              ),
+              borderRadius: BorderRadius.circular(25.0),
+              child: imageFromBase64String(teren.tipTerena!.slika!, 120, 100),
             ),
           ),
           const SizedBox(width: 8.0),
