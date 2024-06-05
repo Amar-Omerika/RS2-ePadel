@@ -16,6 +16,7 @@ class _HomeScreenState extends State<HomeScreen> {
   SearchResult<Teren> _tereni = SearchResult<Teren>();
   String _filter = '';
   String _selectedType = 'Svi';
+  bool _showFilters = false;
 
   @override
   void initState() {
@@ -47,6 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void _onTypeSelected(String type) {
     setState(() {
       _selectedType = type;
+      _showFilters = false;
     });
     loadData();
   }
@@ -55,61 +57,98 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.green[900],
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            Container(
-              margin: const EdgeInsets.only(top: 80.0),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: TerenInput(
-                        filter: _filter,
-                        onFilterChanged: _onFilterChanged,
+      body: Stack(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                Container(
+                  margin: const EdgeInsets.only(top: 80.0),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: TerenInput(
+                            filter: _filter,
+                            onFilterChanged: _onFilterChanged,
+                          ),
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.filter_list,
+                              color: Colors.white),
+                          onPressed: () {
+                            setState(() {
+                              _showFilters = !_showFilters;
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 5.0),
+                Expanded(
+                  child: _tereni.result.isEmpty &&
+                          (_filter.isNotEmpty || _selectedType != 'Svi')
+                      ? const Center(
+                          child: Text(
+                            'Nema rezultata za vasu pretragu...',
+                            style: TextStyle(color: Colors.white, fontSize: 18),
+                          ),
+                        )
+                      : ListView.builder(
+                          itemCount: _tereni.result.length, // Number of items
+                          itemBuilder: (context, index) {
+                            final teren = _tereni.result[index];
+                            return TerenCard(
+                              teren: teren,
+                            );
+                          },
+                        ),
+                ),
+              ],
+            ),
+          ),
+          if (_showFilters)
+            Positioned(
+              top: 120.0,
+              left: 90.0,
+              right: 90.0,
+              child: Container(
+                padding: const EdgeInsets.all(8.0),
+                decoration: BoxDecoration(
+                  color: Colors.green[300],
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                child: Column(
+                  children:
+                      ['Svi', 'Beton', 'Trava', 'Guma'].map((String type) {
+                    return GestureDetector(
+                      onTap: () => _onTypeSelected(type),
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(vertical: 5.0),
+                        decoration: BoxDecoration(
+                          color: type == _selectedType
+                              ? Colors.green[600]
+                              : Colors.white,
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        padding: const EdgeInsets.symmetric(vertical: 10.0),
+                        child: Center(
+                          child: Text(
+                            type,
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        ),
                       ),
-                    ),
-                    PopupMenuButton<String>(
-                      icon: const Icon(Icons.filter_list, color: Colors.white),
-                      onSelected: _onTypeSelected,
-                      itemBuilder: (context) {
-                        return ['Svi', 'Beton', 'Trava', 'Guma']
-                            .map((String type) {
-                          return PopupMenuItem<String>(
-                            value: type,
-                            child: Text(type),
-                          );
-                        }).toList();
-                      },
-                    ),
-                  ],
+                    );
+                  }).toList(),
                 ),
               ),
             ),
-            const SizedBox(height: 5.0),
-            Expanded(
-              child: _tereni.result.isEmpty &&
-                      (_filter.isNotEmpty || _selectedType != 'Svi')
-                  ? const Center(
-                      child: Text(
-                        'Nema rezultata za vasu pretragu...',
-                        style: TextStyle(color: Colors.white, fontSize: 18),
-                      ),
-                    )
-                  : ListView.builder(
-                      itemCount: _tereni.result.length, // Number of items
-                      itemBuilder: (context, index) {
-                        final teren = _tereni.result[index];
-                        return TerenCard(
-                          teren: teren,
-                        );
-                      },
-                    ),
-            ),
-          ],
-        ),
+        ],
       ),
     );
   }
