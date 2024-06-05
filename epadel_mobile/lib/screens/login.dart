@@ -28,6 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
     _authProvider = context.read<AuthProvider>();
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,7 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 children: [
                   const SizedBox(height: 16.0),
                   const Text(
-                    "Dobrodosli na ePadel", // Your custom text
+                    "Dobrodošli na ePadel", // Your custom text
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 26,
@@ -128,13 +129,14 @@ class _LoginScreenState extends State<LoginScreen> {
                             Authorization.username = userName;
                             Authorization.password = password;
                             Navigator.popAndPushNamed(
-                                context, RegisterScreen.routeName);
+                                context, NavScreen.routeName);
                           }
                         } on Exception catch (error) {
                           print(error.toString());
                           if (error.toString().contains("Bad request")) {
-                            loginFailed = true;
-                            formKey.currentState!.validate();
+                            setState(() {
+                              loginFailed = true;
+                            });
                           }
                         }
                       }
