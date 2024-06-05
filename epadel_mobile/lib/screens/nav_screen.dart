@@ -12,8 +12,8 @@ class NavScreen extends StatefulWidget {
 class _NavScreenState extends State<NavScreen> {
   final List<Widget> _screens = [
     const HomeScreen(),
-    const HomeScreen(),
-    const HomeScreen()
+    const HomeScreen(), // Replace with your actual LeaderboardScreen
+    const HomeScreen() // Replace with your actual ProfileScreen
   ];
 
   final List<IconData> _icons = const [
@@ -43,9 +43,9 @@ class _NavScreenState extends State<NavScreen> {
             label: '', // Add labels if needed
           );
         }).toList(),
-        selectedItemColor: Colors.black,
-        unselectedItemColor: Colors.grey.shade600,
-        backgroundColor: Colors.grey.shade400,
+        selectedItemColor: Colors.green[900],
+        unselectedItemColor: Colors.white,
+        backgroundColor: Colors.green[500],
       ),
     );
   }
