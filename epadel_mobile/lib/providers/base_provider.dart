@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:async';
+import 'package:epadel_mobile/models/models.dart';
 import 'package:http/http.dart';
 import 'package:http/io_client.dart';
 import 'package:flutter/foundation.dart';
@@ -43,7 +44,7 @@ abstract class BaseProvider<T> with ChangeNotifier {
     }
   }
 
-  Future<List<T>> get([dynamic search]) async {
+  Future<SearchResult<T>> get([dynamic search]) async {
     var url = "$_baseUrl$_endpoint";
 
     if (search != null) {
@@ -59,7 +60,12 @@ abstract class BaseProvider<T> with ChangeNotifier {
     print("done $response");
     if (isValidResponseCode(response)) {
       var data = jsonDecode(response.body);
-      return data.map((x) => fromJson(x)).cast<T>().toList();
+      var result = SearchResult<T>();
+      for (var item in data['result']) {
+        result.result.add(fromJson(item));
+      }
+
+      return result;
     } else {
       throw Exception("Exception... handle this gracefully");
     }

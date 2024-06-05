@@ -1,4 +1,9 @@
+import 'package:epadel_mobile/models/models.dart';
+import 'package:epadel_mobile/models/search_result.dart';
+import 'package:epadel_mobile/providers/providers.dart';
+import 'package:epadel_mobile/widgets/teren_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -8,6 +13,24 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  TerenProvider _terenProvider = TerenProvider();
+  SearchResult<Teren> _tereni = SearchResult<Teren>();
+
+  @override
+  void initState() {
+    super.initState();
+    _terenProvider = context.read<TerenProvider>();
+    loadData();
+  }
+
+  Future<void> loadData() async {
+    var tmpData = await _terenProvider.get({});
+    setState(() {
+      _tereni = tmpData as SearchResult<Teren>;
+    });
+    print(_tereni.result);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,56 +73,11 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(height: 5.0),
             Expanded(
               child: ListView.builder(
-                itemCount: 3, // Number of items
+                itemCount: _tereni.result.length, // Number of items
                 itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: Card(
-                      margin: const EdgeInsets.symmetric(horizontal: 20.0),
-                      color: Colors.green[200],
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15.0),
-                      ),
-                      child: Row(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(12.0),
-                              child: Image.network(
-                                'https://hr.bloombergadria.com/data/images/2023-07-27/37098_teren-u-centru-padel-bros-u-beogradu-1_iff.jpeg?t=1690447670g', // Replace with your image URL
-                                width: 100,
-                                height: 100,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 8.0),
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Naziv: Padel teren ${index + 1}',
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  const Text(
-                                      'Tip: Trava'), // Replace with actual type
-                                  const Text(
-                                      'Cijena: 50KM'), // Replace with actual price
-                                  const Text(
-                                      'Lokacija: Mostar'), // Replace with actual location
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                  final teren = _tereni.result[index];
+                  return TerenCard(
+                    teren: teren,
                   );
                 },
               ),
