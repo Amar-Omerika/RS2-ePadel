@@ -1,9 +1,8 @@
 import 'package:epadel_mobile/models/models.dart';
 import 'package:epadel_mobile/providers/providers.dart';
-import 'package:epadel_mobile/widgets/teren_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
+import 'package:epadel_mobile/widgets/teren_popust_widget.dart';
 class TereniSaPopustom extends StatefulWidget {
   const TereniSaPopustom({super.key});
 
@@ -56,7 +55,7 @@ class _TereniSaPopustomState extends State<TereniSaPopustom> {
                         itemCount: _tereni.result.length,
                         itemBuilder: (context, index) {
                           final teren = _tereni.result[index];
-                          return TerenCard(
+                          return TerenPopustCard(
                             teren: teren,
                           );
                         },

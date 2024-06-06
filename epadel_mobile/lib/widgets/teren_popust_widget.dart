@@ -2,10 +2,10 @@ import 'package:epadel_mobile/utils/util.dart';
 import 'package:flutter/material.dart';
 import '../models/teren.dart'; // Adjust the import as per your project structure
 
-class TerenCard extends StatelessWidget {
+class TerenPopustCard extends StatelessWidget {
   final Teren teren;
 
-  const TerenCard({super.key, required this.teren});
+  const TerenPopustCard({super.key, required this.teren});
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +48,7 @@ class TerenCard extends StatelessWidget {
                   Text('Tip: ${teren.tipTerena!.naziv}'),
                   Text('Cijena: ${teren.cijena} KM'),
                   Text('Lokacija: ${teren.lokacija}'),
+                  Text('Cijena Popusta: ${teren.cijenaPopusta} KM'),
                 ],
               ),
             ),
