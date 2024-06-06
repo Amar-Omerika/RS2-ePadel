@@ -9,5 +9,6 @@ namespace ePadel.Model.SearchObjects
     public class TerenSearchObject : BaseSearchObject
     {
         public string? TipTerenaTekst { get; set; }
+        public string? Popust { get; set; }
     }
 }

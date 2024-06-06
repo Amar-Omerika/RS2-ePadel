@@ -12,13 +12,13 @@ class NavScreen extends StatefulWidget {
 class _NavScreenState extends State<NavScreen> {
   final List<Widget> _screens = [
     const HomeScreen(),
-    const HomeScreen(), // Replace with your actual LeaderboardScreen
-    const HomeScreen() // Replace with your actual ProfileScreen
+    const TereniSaPopustom(),
+    const HomeScreen() 
   ];
 
   final List<IconData> _icons = const [
     Icons.home,
-    Icons.bar_chart_outlined,
+    Icons.discount_rounded,
     Icons.account_circle
   ];
 

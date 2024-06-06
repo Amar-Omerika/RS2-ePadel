@@ -36,6 +36,10 @@ namespace ePadel.Services.TerenService
             {
                 filteredQuery = filteredQuery.Where(x => x.TipTerena.Naziv.ToLower().Contains(search.TipTerenaTekst.ToLower()));
             }
+            if (!string.IsNullOrWhiteSpace(search?.Popust))
+            {
+                filteredQuery = filteredQuery.Where(x => x.Popust.ToLower().Contains(search.Popust.ToLower()));
+            }
 
             return filteredQuery;
         }
