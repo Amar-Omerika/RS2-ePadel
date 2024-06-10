@@ -31,7 +31,7 @@ class _TereniSaPopustomState extends State<TereniSaPopustom> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.green[900],
+      backgroundColor: const Color(0xFF618264),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(8.0),

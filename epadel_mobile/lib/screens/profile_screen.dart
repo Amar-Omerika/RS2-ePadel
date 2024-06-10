@@ -20,9 +20,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
   late KorisnikProvider _korisnikProvider;
   Korisnik? _korisnik;
   AuthProvider? _authProvider;
-  final TextEditingController _nicknameController = TextEditingController();
+  final TextEditingController _korisnickoImeController =
+      TextEditingController();
   final TextEditingController _emailController = TextEditingController();
-  String _dominantHand = 'Desna';
+  String _dominantnaRuka = 'Desna';
 
   @override
   void initState() {
@@ -37,9 +38,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
         await _korisnikProvider.getById(_authProvider!.getLoggedUserId());
     setState(() {
       _korisnik = korisnik;
-      _nicknameController.text = korisnik.korisnickoIme ?? '';
+      _korisnickoImeController.text = korisnik.korisnickoIme ?? '';
       _emailController.text = korisnik.email ?? '';
-      _dominantHand = korisnik.dominantnaRuka ?? 'Desna';
+      _dominantnaRuka = korisnik.dominantnaRuka ?? 'Desna';
     });
   }
 
@@ -60,9 +61,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
 
     return Scaffold(
+      backgroundColor: const Color(0xFF618264),
       appBar: AppBar(
         title: const Text('Profile'),
-        backgroundColor: Colors.green[900],
+        backgroundColor: const Color(0xFF618264),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -77,65 +79,122 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
             const SizedBox(height: 20),
-            TextField(
-              controller: _nicknameController,
-              decoration: InputDecoration(
-                labelText: 'Nickname',
-                border: OutlineInputBorder(),
+            Text(
+              'Korisnicko Ime',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: TextField(
+                  controller: _korisnickoImeController,
+                  enabled: false,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                  ),
+                ),
               ),
             ),
             const SizedBox(height: 20),
-            TextField(
-              controller: _emailController,
-              decoration: InputDecoration(
-                labelText: 'Email',
-                border: OutlineInputBorder(),
+            Text(
+              'Email',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextField(
+                  controller: _emailController,
+                  enabled: false,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                  ),
+                ),
               ),
             ),
             const SizedBox(height: 20),
-            DropdownButtonFormField<String>(
-              value: _dominantHand,
-              items: ['Desna', 'Lijeva'].map((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-              onChanged: (newValue) {
-                setState(() {
-                  _dominantHand = newValue!;
-                });
-              },
-              decoration: InputDecoration(
-                labelText: 'Dominantna ruka',
-                border: OutlineInputBorder(),
+            Text(
+              'Dominantna Ruka',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: DropdownButtonFormField<String>(
+                  value: _dominantnaRuka,
+                  items: ['Desna', 'Lijeva'].map((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                  onChanged: null,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                  ),
+                  disabledHint: Text(_dominantnaRuka),
+                ),
               ),
             ),
             const SizedBox(height: 20),
-            Positioned(
-                right: 10,
-                bottom: 10,
-                child: InkWell(
-                  onTap: () {
-                    _authProvider!.logout();
-                    Navigator.pushNamed(context, LoginScreen.routeName);
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.circular(5)),
-                    child: const Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 8.0, vertical: 10),
-                      child: Center(
-                        child: Text(
-                          'Log out',
-                          style: TextStyle(color: Colors.white),
-                        ),
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 10),
+              child: InkWell(
+                onTap: () {
+                  _authProvider!.logout();
+                  Navigator.pushNamed(context, LoginScreen.routeName);
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Colors.black,
+                      borderRadius: BorderRadius.circular(5)),
+                  child: const Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 8.0, vertical: 10),
+                    child: Center(
+                      child: Text(
+                        'Log out',
+                        style: TextStyle(color: Colors.white),
                       ),
                     ),
                   ),
-                )),
+                ),
+              ),
+            ),
           ],
         ),
       ),
