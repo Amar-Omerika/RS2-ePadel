@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_constructors
 import 'dart:convert';
-import 'dart:ffi';
 import 'package:epadel_mobile/screens/login.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -77,7 +76,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             onPressed: () {},
           ),
         ],
-),
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -99,7 +98,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            KorisnickoImeInputWIdget(
+            KorisnickoImeInputWidget(
                 korisnickoImeController: _korisnickoImeController),
             const SizedBox(height: 20),
             Text(
@@ -153,8 +152,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 }
 
-class KorisnickoImeInputWIdget extends StatelessWidget {
-  const KorisnickoImeInputWIdget({
+class KorisnickoImeInputWidget extends StatelessWidget {
+  const KorisnickoImeInputWidget({
     super.key,
     required TextEditingController korisnickoImeController,
   }) : _korisnickoImeController = korisnickoImeController;
@@ -169,15 +168,13 @@ class KorisnickoImeInputWIdget extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(10.0),
+        padding: const EdgeInsets.all(5.0),
         child: TextField(
           controller: _korisnickoImeController,
           enabled: false,
           decoration: InputDecoration(
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(5),
-            ),
-            contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+            border: InputBorder.none,
+            contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
           ),
         ),
       ),
@@ -198,18 +195,16 @@ class EmailWidget extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(5),
+        borderRadius: BorderRadius.circular(10),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(5.0),
         child: TextField(
           controller: _emailController,
           enabled: false,
           decoration: InputDecoration(
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(5),
-            ),
-            contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+            border: InputBorder.none,
+            contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
           ),
         ),
       ),
@@ -230,10 +225,10 @@ class DropdownWidget extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(5),
+        borderRadius: BorderRadius.circular(10),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(5.0),
         child: DropdownButtonFormField<String>(
           value: _dominantnaRuka,
           items: ['Desna', 'Lijeva'].map((String value) {
@@ -244,8 +239,8 @@ class DropdownWidget extends StatelessWidget {
           }).toList(),
           onChanged: null,
           decoration: InputDecoration(
-            border: OutlineInputBorder(),
-            contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+            border: InputBorder.none,
+            contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
           ),
           disabledHint: Text(_dominantnaRuka),
         ),
