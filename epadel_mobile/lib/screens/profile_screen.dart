@@ -1,10 +1,13 @@
-import 'package:epadel_mobile/providers/auth_provider.dart';
+// ignore_for_file: prefer_const_constructors
+
+import 'dart:convert';
+import 'package:epadel_mobile/screens/login.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'dart:io';
 import 'package:provider/provider.dart';
+import 'package:epadel_mobile/providers/auth_provider.dart';
 import 'package:epadel_mobile/providers/korisnik_provider.dart';
 import 'package:epadel_mobile/models/korisnik.dart';
+import 'package:epadel_mobile/utils/util.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -14,7 +17,6 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  File? _image;
   late KorisnikProvider _korisnikProvider;
   Korisnik? _korisnik;
   AuthProvider? _authProvider;
@@ -41,19 +43,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
     });
   }
 
-  Future<void> _pickImage() async {
-    final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-
-    if (pickedFile != null) {
-      setState(() {
-        _image = File(pickedFile.path);
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
+    ImageProvider profileImageProvider;
+
+    if (_korisnik != null &&
+        _korisnik!.slika != null &&
+        _korisnik!.slika!.isNotEmpty) {
+      try {
+        profileImageProvider = MemoryImage(base64Decode(_korisnik!.slika!));
+      } catch (e) {
+        profileImageProvider = AssetImage('assets/noprofile.jpeg');
+      }
+    } else {
+      profileImageProvider = AssetImage('assets/noprofile.jpeg');
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Profile'),
@@ -65,20 +70,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Center(
-              child: GestureDetector(
-                onTap: _pickImage,
-                child: CircleAvatar(
-                  radius: 50,
-                  backgroundColor: Colors.grey[200],
-                  backgroundImage: _image != null ? FileImage(_image!) : null,
-                  child: _image == null
-                      ? Icon(
-                          Icons.add_a_photo,
-                          size: 50,
-                          color: Colors.grey[800],
-                        )
-                      : null,
-                ),
+              child: CircleAvatar(
+                radius: 50,
+                backgroundColor: Colors.grey[200],
+                backgroundImage: profileImageProvider,
               ),
             ),
             const SizedBox(height: 20),
@@ -117,22 +112,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
             const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                // Handle save action
-                Korisnik updatedKorisnik = Korisnik(
-                  korisnikId: _korisnik?.korisnikId,
-                  korisnickoIme: _nicknameController.text,
-                  email: _emailController.text,
-                  dominantnaRuka: _dominantHand,
-                );
-                _korisnikProvider.update(updatedKorisnik as int);
-              },
-              child: const Text('Save'),
-              // style: ElevatedButton.styleFrom(
-              //   primary: Colors.green[900],
-              // ),
-            ),
+            Positioned(
+                right: 10,
+                bottom: 10,
+                child: InkWell(
+                  onTap: () {
+                    _authProvider!.logout();
+                    Navigator.pushNamed(context, LoginScreen.routeName);
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: Colors.black,
+                        borderRadius: BorderRadius.circular(5)),
+                    child: const Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 8.0, vertical: 10),
+                      child: Center(
+                        child: Text(
+                          'Log out',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ),
+                )),
           ],
         ),
       ),
