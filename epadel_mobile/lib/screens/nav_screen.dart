@@ -1,3 +1,4 @@
+import 'package:epadel_mobile/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'screens.dart'; // Ensure this import points to your screens
 
@@ -13,7 +14,7 @@ class _NavScreenState extends State<NavScreen> {
   final List<Widget> _screens = [
     const HomeScreen(),
     const TereniSaPopustom(),
-    const HomeScreen() 
+    const ProfileScreen() 
   ];
 
   final List<IconData> _icons = const [

@@ -1,0 +1,48 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "epadel_admin",
+            "cwd": "epadel_admin",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "epadel_admin (profile mode)",
+            "cwd": "epadel_admin",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "epadel_admin (release mode)",
+            "cwd": "epadel_admin",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "epadel_mobile",
+            "cwd": "epadel_mobile",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "epadel_mobile (profile mode)",
+            "cwd": "epadel_mobile",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "epadel_mobile (release mode)",
+            "cwd": "epadel_mobile",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+    ]
+}
