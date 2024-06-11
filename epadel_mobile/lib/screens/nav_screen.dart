@@ -44,7 +44,7 @@ class _NavScreenState extends State<NavScreen> {
             label: '', // Add labels if needed
           );
         }).toList(),
-        selectedItemColor: Colors.green[900],
+        selectedItemColor: const Color(0XFFB0D9B1),
         unselectedItemColor: Colors.white,
         backgroundColor: Colors.green[500],
       ),
