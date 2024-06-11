@@ -1,3 +1,4 @@
+import 'package:epadel_mobile/models/models.dart';
 import 'package:epadel_mobile/providers/auth_provider.dart';
 import 'package:epadel_mobile/providers/providers.dart';
 import 'package:epadel_mobile/screens/screens.dart';
@@ -37,6 +38,7 @@ class MyApp extends StatelessWidget {
         LoginScreen.routeName: (context) => const LoginScreen(),
         RegisterScreen.routeName: (context) => const RegisterScreen(),
         NavScreen.routeName: (context) => const NavScreen(),
+        ReservationScreen.routeName: (context) => const ReservationScreen(),
        
       },
     );
