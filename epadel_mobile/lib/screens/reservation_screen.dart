@@ -1,9 +1,10 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:epadel_mobile/models/models.dart';
 import 'package:epadel_mobile/providers/auth_provider.dart';
 import 'package:epadel_mobile/providers/providers.dart';
 import 'package:epadel_mobile/utils/util.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
@@ -22,7 +23,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
   late AuthProvider _authProvider;
   late RezervacijaProvider _rezervacijaProvider;
   int selectedSlot = -1;
-  String? needRacket = 'Da';
+  String? needRacket = 'Ne';
   String? numberOfRackets = '0';
   int paymentMethod = 1;
 
@@ -66,39 +67,45 @@ class _ReservationScreenState extends State<ReservationScreen> {
           child: Column(
             children: [
               // Teren Card
-              TerenCardWidget(widget: widget),
-
-              // Other content
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
+              TerenCardWidget(widget: widget),          
+              Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Date
-                    Row(
-                      children: [
-                        Text(
-                          'Datum: 25.03.2023',
-                          style: TextStyle(fontSize: 16, color: Colors.white),
-                        ),
-                        Spacer(),
-                        Icon(Icons.calendar_today, color: Colors.white),
-                      ],
+                  Container(
+                    margin: const EdgeInsets.only(top: 20),
+                    color: Colors.green[200],
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          Text(
+                            'Datum: 25.03.2023',
+                            style: TextStyle(fontSize: 16, color: Colors.black),
+                          ),
+                          Spacer(),
+                          Icon(Icons.calendar_today, color: Colors.black),
+                        ],
+                      ),
                     ),
-                    const SizedBox(height: 20),
-
+                  ),
+                  const SizedBox(height: 20),
                     // Available Slots
-                    const Text(
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: const Text(
                       'Slobodni termini',
                       style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                           color: Colors.white),
                     ),
+                  ),
                     const SizedBox(height: 10),
-                    ListView.builder(
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: ListView.builder(
                       shrinkWrap: true,
-                      itemCount: 3, // Replace with actual slots length
+                      itemCount: 3,
                       itemBuilder: (context, index) {
                         return GestureDetector(
                           onTap: () {
@@ -111,54 +118,66 @@ class _ReservationScreenState extends State<ReservationScreen> {
                               color: selectedSlot == index
                                   ? Colors.black
                                   : Colors.white,
-                              borderRadius: BorderRadius.circular(10.0),
+                              borderRadius: BorderRadius.circular(15.0),
                               border: Border.all(color: Colors.black, width: 2),
                             ),
-                            child: Text(
-                              '10:00 - 11:00', // Replace with actual slot value
-                              style: TextStyle(
-                                color: selectedSlot == index
-                                    ? Colors.white
-                                    : Colors.black,
-                                fontSize: 16,
+                            child: Center(
+                              child: Text(
+                                '10:00 - 11:00',
+                                style: TextStyle(
+                                  color: selectedSlot == index
+                                      ? Colors.white
+                                      : Colors.black,
+                                  fontSize: 12,
+                                ),
                               ),
                             ),
                           ),
                         );
                       },
                     ),
+                  ),
                     const SizedBox(height: 20),
 
-                    // Need Racket Dropdown
-                    const Text(
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: const Text(
                       'Da li vam je potrebna reketa?',
                       style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                           color: Colors.white),
                     ),
-                    DropdownButtonFormField<String>(
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: DropdownButtonFormField<String>(
                       value: needRacket,
                       items: const [
-                        DropdownMenuItem(value: 'YES', child: Text('DA')),
-                        DropdownMenuItem(value: 'NO', child: Text('NE')),
+                        DropdownMenuItem(value: 'Da', child: Text('DA')),
+                        DropdownMenuItem(value: 'Ne', child: Text('NE')),
                       ],
                       onChanged: changeNeedRacket,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                       ),
                     ),
-                    const SizedBox(height: 20),
-
+                  ),
+                  const SizedBox(height: 20),
                     // Number of Rackets Input
-                    const Text(
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: const Text(
                       'Unesite broj reketa',
                       style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                           color: Colors.white),
                     ),
-                    TextFormField(
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: TextFormField(
                       initialValue: numberOfRackets,
                       keyboardType: TextInputType.number,
                       decoration: const InputDecoration(
@@ -166,17 +185,23 @@ class _ReservationScreenState extends State<ReservationScreen> {
                       ),
                       onChanged: changeNumberOfRackets,
                     ),
+                  ),
                     const SizedBox(height: 20),
 
                     // Payment Method
-                    const Text(
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: const Text(
                       'Nacin placanja',
                       style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                           color: Colors.white),
                     ),
-                    Row(
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Expanded(
@@ -208,6 +233,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                         ),
                       ],
                     ),
+                  ),
                     const SizedBox(height: 20),
 
                     // Cancel and Reserve Buttons
@@ -238,7 +264,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                     ),
                   ],
                 ),
-              ),
+           
             ],
           ),
         ),
