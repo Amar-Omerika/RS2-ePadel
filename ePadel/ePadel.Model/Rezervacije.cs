@@ -12,7 +12,6 @@ namespace ePadel.Model
         public int? KorisnikId { get; set; }
         public int? TerenId { get; set; }
 
-        //public int? TerminId { get; set; }
         public int? Cijena { get; set; }
         public string? RezervacijaStatus { get; set; }
         public string? DatumRezervacije { get; set; }

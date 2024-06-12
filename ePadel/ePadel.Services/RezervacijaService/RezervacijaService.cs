@@ -5,6 +5,7 @@ using ePadel.Model.Requests.TerenRequest;
 using ePadel.Model.SearchObjects;
 using ePadel.Services.BaseService;
 using ePadel.Services.Database;
+using ePadel.Services.Helper;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -35,6 +36,19 @@ namespace ePadel.Services.RezervacijaService
             return filteredQuery;
 
 
+        }
+        public List<string> getSlotsForReservationDate(int terenId, string datumRezervacije)
+        {
+            var reservations = _context.Rezervacijes.Where(c => c.DatumRezervacije == datumRezervacije && c.TerenId == terenId);
+            List<string> slots = TImeSlotsHelper.getTimeSlots();
+            List<string> responseSlots = new List<string> { };
+            foreach (string slot in slots)
+            {
+
+                if (!reservations.Any(r => r.VrijemeRezervacije == slot))
+                    responseSlots.Add(slot);
+            };
+            return responseSlots;
         }
         public override Model.Rezervacije Insert(RezervacijaInsertRequest request)
         {

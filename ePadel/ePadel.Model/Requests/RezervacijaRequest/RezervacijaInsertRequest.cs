@@ -27,6 +27,8 @@ namespace ePadel.Model.Requests.RezervacijaRequest
 
         public int? Cijena { get; set; }
         public string? PotrebnaReketa { get; set; }
+
+        [Range(0, 4, ErrorMessage = "Broj reketa moze biti od 0 do 4 ")]
         public int? BrojReketa { get; set; }
 
         //public virtual ICollection<Ocijene>? Ocijenes { get; set; }

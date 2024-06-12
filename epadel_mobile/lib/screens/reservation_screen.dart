@@ -246,30 +246,49 @@ class _ReservationScreenState extends State<ReservationScreen> {
                   ),
                   const SizedBox(height: 20),
                   // Cancel and Reserve Buttons
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      ElevatedButton(
-                        onPressed: () {
-                          // Cancel action
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white,
-                          foregroundColor: Colors.black,
-                          side: const BorderSide(color: Colors.green),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0, vertical: 20.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: () {
+                              print('pressed cancel');
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20.0),
+                              ),
+                            ),
+                            child: Text(
+                              'PONISTI',
+                              style: TextStyle(color: Colors.green[200]),
+                            ),
+                          ),
                         ),
-                        child: const Text('PONISTI'),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          // Reserve action
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.green,
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: () {
+                              print('pressed reserve');
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.green[200],
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20.0),
+                              ),
+                            ),
+                            child: Text(
+                              'REZERVISI',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
                         ),
-                        child: const Text('REZERVISI'),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ],
               ),

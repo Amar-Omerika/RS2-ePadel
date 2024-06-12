@@ -14,6 +14,13 @@ namespace ePadel.Controllers
         protected IRezervacijaService? _service { get; set; }
         public RezervacijaController(IRezervacijaService service) : base(service)
         {
+            _service = service;
+        }
+        [HttpGet("GetSlotsByDate")]
+
+        public List<string> GetTimeSlotsForDate(int terenId, string datumRezervacije)
+        {
+            return _service.getSlotsForReservationDate(terenId, datumRezervacije);
         }
         public override Model.Rezervacije Insert([FromBody] RezervacijaInsertRequest request)
         {
