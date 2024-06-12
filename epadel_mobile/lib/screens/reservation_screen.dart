@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors
 
 import 'package:epadel_mobile/models/models.dart';
 import 'package:epadel_mobile/providers/auth_provider.dart';
@@ -21,16 +21,38 @@ class ReservationScreen extends StatefulWidget {
 class _ReservationScreenState extends State<ReservationScreen> {
   late AuthProvider _authProvider;
   late RezervacijaProvider _rezervacijaProvider;
+  Rezervacija? rezervacija;
   int selectedSlot = -1;
   String? needRacket = 'Ne';
   String? numberOfRackets = '0';
   int paymentMethod = 1;
+  // Slots logic;
+  DateTime selektiraniDatum = DateTime.now().add(Duration(days: 1));
+  List<String> _slots = []; // Fetch from backend;
 
   @override
   void initState() {
     super.initState();
     _authProvider = context.read<AuthProvider>();
     _rezervacijaProvider = context.read<RezervacijaProvider>();
+    fetchSlots();
+  }
+
+  void fetchSlots() async {
+    var dateString = selektiraniDatum.toString().split(" ")[0];
+    print(selektiraniDatum);
+    var data = await _rezervacijaProvider!.getSlotsByDate(
+        {'terenId': widget.terenId, 'datumRezervacije': dateString});
+    setState(() {
+      _slots = data;
+    });
+  }
+
+  void handleChange(DateTime date) {
+    setState(() {
+      selektiraniDatum = date;
+    });
+    fetchSlots();
   }
 
   void setSlotIndex(int index) {
@@ -78,11 +100,27 @@ class _ReservationScreenState extends State<ReservationScreen> {
                       child: Row(
                         children: [
                           Text(
-                            'Datum: 25.03.2023',
+                            'Datum: ${selektiraniDatum.toLocal().toString().split(' ')[0]}',
                             style: TextStyle(fontSize: 16, color: Colors.black),
                           ),
                           Spacer(),
-                          Icon(Icons.calendar_today, color: Colors.black),
+                          IconButton(
+                            icon:
+                                Icon(Icons.calendar_today, color: Colors.black),
+                            onPressed: () async {
+                              DateTime? pickedDate = await showDatePicker(
+                                context: context,
+                                initialDate: selektiraniDatum,
+                                firstDate:
+                                    DateTime.now().add(Duration(days: 1)),
+                                lastDate: DateTime(2101),
+                              );
+                              if (pickedDate != null &&
+                                  pickedDate != selektiraniDatum) {
+                                handleChange(pickedDate);
+                              }
+                            },
+                          ),
                         ],
                       ),
                     ),
@@ -100,11 +138,12 @@ class _ReservationScreenState extends State<ReservationScreen> {
                     ),
                   ),
                   const SizedBox(height: 10),
+                  //time slots logic
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: ListView.builder(
                       shrinkWrap: true,
-                      itemCount: 3,
+                      itemCount: _slots.length,
                       itemBuilder: (context, index) {
                         return GestureDetector(
                           onTap: () {
@@ -121,7 +160,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                             ),
                             child: Center(
                               child: Text(
-                                '10:00 - 11:00',
+                                _slots[index],
                                 style: TextStyle(
                                   color: selectedSlot == index
                                       ? Colors.white
