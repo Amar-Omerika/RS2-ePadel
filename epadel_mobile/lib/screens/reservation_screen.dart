@@ -6,7 +6,6 @@ import 'package:epadel_mobile/providers/providers.dart';
 import 'package:epadel_mobile/utils/util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 class ReservationScreen extends StatefulWidget {
@@ -46,9 +45,9 @@ class _ReservationScreenState extends State<ReservationScreen> {
     });
   }
 
-  void changeNumberOfRackets(String value) {
+  void changeNumberOfRackets(String? value) {
     setState(() {
-      numberOfRackets = value;
+      numberOfRackets = value ?? '';
     });
   }
 
@@ -67,10 +66,10 @@ class _ReservationScreenState extends State<ReservationScreen> {
           child: Column(
             children: [
               // Teren Card
-              TerenCardWidget(widget: widget),          
+              TerenCardWidget(widget: widget),
               Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
                   Container(
                     margin: const EdgeInsets.only(top: 20),
                     color: Colors.green[200],
@@ -89,7 +88,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                     ),
                   ),
                   const SizedBox(height: 20),
-                    // Available Slots
+                  // Available Slots
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: const Text(
@@ -100,7 +99,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                           color: Colors.white),
                     ),
                   ),
-                    const SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: ListView.builder(
@@ -119,7 +118,6 @@ class _ReservationScreenState extends State<ReservationScreen> {
                                   ? Colors.black
                                   : Colors.white,
                               borderRadius: BorderRadius.circular(15.0),
-                              border: Border.all(color: Colors.black, width: 2),
                             ),
                             child: Center(
                               child: Text(
@@ -137,8 +135,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                       },
                     ),
                   ),
-                    const SizedBox(height: 20),
-
+                  const SizedBox(height: 20),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: const Text(
@@ -151,44 +148,37 @@ class _ReservationScreenState extends State<ReservationScreen> {
                   ),
                   Padding(
                     padding: const EdgeInsets.all(16.0),
-                    child: DropdownButtonFormField<String>(
+                    child: CustomDropdownButtonFormField(
                       value: needRacket,
                       items: const [
                         DropdownMenuItem(value: 'Da', child: Text('DA')),
                         DropdownMenuItem(value: 'Ne', child: Text('NE')),
                       ],
                       onChanged: changeNeedRacket,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                      ),
                     ),
                   ),
-                  const SizedBox(height: 20),
-                    // Number of Rackets Input
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: const Text(
-                      'Unesite broj reketa',
-                      style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: TextFormField(
-                      initialValue: numberOfRackets,
-                      keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                      ),
-                      onChanged: changeNumberOfRackets,
-                    ),
-                  ),
+                  if (needRacket == 'Da') ...[
                     const SizedBox(height: 20),
-
-                    // Payment Method
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: const Text(
+                        'Unesite broj reketa',
+                        style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: CustomTextField(
+                        initialValue: numberOfRackets,
+                        keyboardType: TextInputType.number,
+                        onChanged: changeNumberOfRackets,
+                      ),
+                    ),
+                  ],
+                  const SizedBox(height: 20),
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: const Text(
@@ -200,7 +190,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -211,10 +201,20 @@ class _ReservationScreenState extends State<ReservationScreen> {
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: paymentMethod == 1
-                                  ? Colors.green
-                                  : Colors.grey,
+                                  ? Colors.green[200]
+                                  : Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
                             ),
-                            child: const Text('online'),
+                            child: Text(
+                              'online',
+                              style: TextStyle(
+                                color: paymentMethod == 1
+                                    ? Colors.white
+                                    : Colors.black,
+                              ),
+                            ),
                           ),
                         ),
                         const SizedBox(width: 10),
@@ -225,46 +225,54 @@ class _ReservationScreenState extends State<ReservationScreen> {
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: paymentMethod == 2
-                                  ? Colors.green
-                                  : Colors.grey,
+                                  ? Colors.green[200]
+                                  : Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
                             ),
-                            child: const Text('cash'),
+                            child: Text(
+                              'cash',
+                              style: TextStyle(
+                                color: paymentMethod == 2
+                                    ? Colors.white
+                                    : Colors.black,
+                              ),
+                            ),
                           ),
                         ),
                       ],
                     ),
                   ),
-                    const SizedBox(height: 20),
-
-                    // Cancel and Reserve Buttons
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        ElevatedButton(
-                          onPressed: () {
-                            // Cancel action
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            foregroundColor: Colors.black,
-                            side: const BorderSide(color: Colors.green),
-                          ),
-                          child: const Text('PONISTI'),
+                  const SizedBox(height: 20),
+                  // Cancel and Reserve Buttons
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          // Cancel action
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          foregroundColor: Colors.black,
+                          side: const BorderSide(color: Colors.green),
                         ),
-                        ElevatedButton(
-                          onPressed: () {
-                            // Reserve action
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.green,
-                          ),
-                          child: const Text('REZERVISI'),
+                        child: const Text('PONISTI'),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          // Reserve action
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green,
                         ),
-                      ],
-                    ),
-                  ],
-                ),
-           
+                        child: const Text('REZERVISI'),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ],
           ),
         ),
@@ -362,6 +370,74 @@ class TerenCardWidget extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class CustomTextField extends StatelessWidget {
+  final String? initialValue;
+  final TextInputType keyboardType;
+  final Function(String) onChanged;
+
+  const CustomTextField({
+    required this.initialValue,
+    required this.keyboardType,
+    required this.onChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(1.0),
+        child: TextFormField(
+          initialValue: initialValue,
+          keyboardType: keyboardType,
+          decoration: InputDecoration(
+            border: InputBorder.none,
+            contentPadding: EdgeInsets.symmetric(vertical: 2, horizontal: 10),
+          ),
+          onChanged: onChanged,
+        ),
+      ),
+    );
+  }
+}
+
+class CustomDropdownButtonFormField extends StatelessWidget {
+  final String? value;
+  final List<DropdownMenuItem<String>> items;
+  final Function(String?) onChanged;
+
+  const CustomDropdownButtonFormField({
+    required this.value,
+    required this.items,
+    required this.onChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(1.0),
+        child: DropdownButtonFormField<String>(
+          value: value,
+          items: items,
+          onChanged: onChanged,
+          decoration: InputDecoration(
+            border: InputBorder.none,
+            contentPadding: EdgeInsets.symmetric(vertical: 2, horizontal: 10),
+          ),
+        ),
       ),
     );
   }
