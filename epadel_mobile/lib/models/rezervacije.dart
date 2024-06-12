@@ -4,14 +4,18 @@ part 'rezervacije.g.dart';
 
 @JsonSerializable()
 class Rezervacija {
-  int? rezervacijaId;
+  int? korisnikId;
+  int? terenId;
   String? terenNaziv;
+  String? vrijemeRezervacije;
+  String? datumRezervacije;
+  String? paymentMethod;
+  String? potrebnaReketa;
   String? korisnickoIme;
   int? cijena;
   int? brojReketa;
 
   Rezervacija({
-    this.rezervacijaId,
     this.terenNaziv,
     this.korisnickoIme,
     this.cijena,
