@@ -9,15 +9,17 @@ namespace ePadel.Model.Requests.PlatiRequest
 {
     public class PlatiInsertRequest
     {
-        [Required]
+    
+        [Range(0.01, double.MaxValue, ErrorMessage = "Cijena ne moze biti manja ili jednaka 0")]
         public int Cijena { get; set; }
 
         [Required]
         public int? KorisnikId { get; set; }
 
         [Required]
-        public int? TerminId { get; set; }
-   
+        public int? TerenId { get; set; }
+
+
 
     }
 }

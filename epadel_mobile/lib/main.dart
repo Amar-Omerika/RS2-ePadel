@@ -1,12 +1,18 @@
-import 'package:epadel_mobile/models/models.dart';
 import 'package:epadel_mobile/providers/auth_provider.dart';
 import 'package:epadel_mobile/providers/providers.dart';
 import 'package:epadel_mobile/screens/screens.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-void main() {
+import 'package:flutter_stripe/flutter_stripe.dart';
+
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  Stripe.publishableKey =
+      "pk_test_51Ng87hEOriruq5sG3hxXaTNR88caRjGe00l9g16vZQGmQTjylGbM56AygMZ8eJFi6MXMbBcQdjr9X14CcKlsVtUK00IImzFKxq";
+  Stripe.merchantIdentifier = 'any string works';
+  Stripe.urlScheme = "flutterstripe";
+  await Stripe.instance.applySettings();
 
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 

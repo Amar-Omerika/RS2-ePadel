@@ -29,16 +29,12 @@ namespace ePadel.Services.PlatiService
 
         public override Model.PlatiTermin Insert(PlatiInsertRequest request)
         {
-            var termin = _context.Terminis.First(x => x.TerminId == request.TerminId);
-            if (termin == null)
-                throw new Exception("Termin nije pronađen");
-
+           
             PlatiTermin platitermin = new PlatiTermin();
             platitermin.KorisnikId = (int)request.KorisnikId;
             platitermin.DatumKupovine = DateTime.Now;
             platitermin.Cijena = request.Cijena;
-            platitermin.TerminId = request.TerminId;
-            platitermin.Placena = false;
+            platitermin.Placena = true;
             _context.Add(platitermin);
             _context.SaveChanges();
 
