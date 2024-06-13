@@ -3,6 +3,7 @@
 import 'package:epadel_mobile/models/models.dart';
 import 'package:epadel_mobile/providers/auth_provider.dart';
 import 'package:epadel_mobile/providers/providers.dart';
+import 'package:epadel_mobile/screens/screens.dart';
 import 'package:epadel_mobile/utils/util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -329,14 +330,12 @@ class _ReservationScreenState extends State<ReservationScreen> {
                                 'potrebnaReket': needRacket,
                                 'brojReketa': numberOfRackets
                               };
-
                               print(reservationData);
-
                               try {
                                 var data = await _rezervacijaProvider!
                                     .insert(reservationData);
-                                // Navigator.popAndPushNamed(
-                                //     context, NavScreen.routeName);
+                                Navigator.popAndPushNamed(context,
+                                    ReservationSuccessfullScreen.routeName);
                               } on Exception catch (error) {
                                 print(error.toString());
                                 if (error.toString().contains("Bad request")) {

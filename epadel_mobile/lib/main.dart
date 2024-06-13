@@ -39,6 +39,10 @@ class MyApp extends StatelessWidget {
         RegisterScreen.routeName: (context) => const RegisterScreen(),
         NavScreen.routeName: (context) => const NavScreen(),
         ReservationScreen.routeName: (context) => const ReservationScreen(),
+        PaymentSuccessfullScreen.routeName: (context) =>
+            const PaymentSuccessfullScreen(),
+        ReservationSuccessfullScreen.routeName: (context) =>
+            const ReservationSuccessfullScreen(),
        
       },
     );

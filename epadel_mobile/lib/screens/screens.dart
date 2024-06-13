@@ -4,3 +4,5 @@ export 'register.dart';
 export 'home_screen.dart';
 export 'tereni_sa_popustom_screen.dart';
 export 'reservation_screen.dart';
+export 'payment_successfull_screen.dart';
+export 'reservation_successfull.dart';
