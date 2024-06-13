@@ -1,11 +1,11 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:epadel_mobile/Helpers/eror_dialog.dart';
 import 'package:epadel_mobile/models/models.dart';
 import 'package:epadel_mobile/providers/auth_provider.dart';
 import 'package:epadel_mobile/providers/providers.dart';
 import 'package:epadel_mobile/screens/screens.dart';
 import 'package:epadel_mobile/utils/util.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -24,8 +24,8 @@ class _ReservationScreenState extends State<ReservationScreen> {
   late RezervacijaProvider _rezervacijaProvider;
   Rezervacija? rezervacija;
   int selectedSlot = -1;
-  String? needRacket = 'Ne';
-  String? numberOfRackets = '0';
+  String? potrebnaReketa = 'Ne';
+  String? brojReketa = '0';
   int paymentMethod = 1;
   final formKey = GlobalKey<FormState>();
   // Slots logic;
@@ -67,13 +67,16 @@ class _ReservationScreenState extends State<ReservationScreen> {
 
   void changeNeedRacket(String? value) {
     setState(() {
-      needRacket = value;
+      potrebnaReketa = value;
+      if (potrebnaReketa == 'Ne') {
+        brojReketa = '0';
+      }
     });
   }
 
   void changeNumberOfRackets(String? value) {
     setState(() {
-      numberOfRackets = value ?? '';
+      brojReketa = value ?? '';
     });
   }
 
@@ -192,7 +195,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: CustomDropdownButtonFormField(
-                      value: needRacket,
+                      value: potrebnaReketa,
                       items: const [
                         DropdownMenuItem(value: 'Da', child: Text('Da')),
                         DropdownMenuItem(value: 'Ne', child: Text('Ne')),
@@ -200,7 +203,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                       onChanged: changeNeedRacket,
                     ),
                   ),
-                  if (needRacket == 'Da') ...[
+                  if (potrebnaReketa == 'Da') ...[
                     const SizedBox(height: 20),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -215,7 +218,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                     Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: CustomTextField(
-                        initialValue: numberOfRackets,
+                        initialValue: brojReketa,
                         keyboardType: TextInputType.number,
                         onChanged: changeNumberOfRackets,
                       ),
@@ -316,6 +319,26 @@ class _ReservationScreenState extends State<ReservationScreen> {
                         Expanded(
                           child: ElevatedButton(
                             onPressed: () async {
+                              if (potrebnaReketa == null ||
+                                  potrebnaReketa!.isEmpty) {
+                                return showErrorDialog(context,
+                                    'Molimo vas da odaberete da li vam je potrebna reketa.');
+                              }
+
+                              int brojReketaInt =
+                                  int.tryParse(brojReketa!) ?? -1;
+                              if (potrebnaReketa == 'Da' &&
+                                  (brojReketaInt < 0 || brojReketaInt > 4)) {
+                                return showErrorDialog(context,
+                                    'Broj reketa mora biti izmedju 0 i 4.');
+                              }
+
+                              if (_slots.isEmpty ||
+                                  selectedSlot < 0 ||
+                                  selectedSlot >= _slots.length) {
+                                return showErrorDialog(context,
+                                    'Molim vas odaberite slobodan termin.');
+                              }
                               var method =
                                   paymentMethod == 1 ? "Online" : "On site";
                               var dateString =
@@ -327,8 +350,8 @@ class _ReservationScreenState extends State<ReservationScreen> {
                                 'datumRezervacije': dateString,
                                 'paymentMethod': method,
                                 'cijena': widget.teren!.cijena,
-                                'potrebnaReket': needRacket,
-                                'brojReketa': numberOfRackets
+                                'potrebnaReket': potrebnaReketa,
+                                'brojReketa': brojReketa
                               };
                               print(reservationData);
                               try {
