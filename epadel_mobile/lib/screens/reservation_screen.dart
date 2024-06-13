@@ -26,6 +26,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
   String? needRacket = 'Ne';
   String? numberOfRackets = '0';
   int paymentMethod = 1;
+  final formKey = GlobalKey<FormState>();
   // Slots logic;
   DateTime selektiraniDatum = DateTime.now().add(Duration(days: 1));
   List<String> _slots = []; // Fetch from backend;
@@ -37,6 +38,8 @@ class _ReservationScreenState extends State<ReservationScreen> {
     _rezervacijaProvider = context.read<RezervacijaProvider>();
     fetchSlots();
   }
+
+
 
   void fetchSlots() async {
     var dateString = selektiraniDatum.toString().split(" ")[0];
@@ -190,8 +193,8 @@ class _ReservationScreenState extends State<ReservationScreen> {
                     child: CustomDropdownButtonFormField(
                       value: needRacket,
                       items: const [
-                        DropdownMenuItem(value: 'Da', child: Text('DA')),
-                        DropdownMenuItem(value: 'Ne', child: Text('NE')),
+                        DropdownMenuItem(value: 'Da', child: Text('Da')),
+                        DropdownMenuItem(value: 'Ne', child: Text('Ne')),
                       ],
                       onChanged: changeNeedRacket,
                     ),
@@ -293,7 +296,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                       children: [
                         Expanded(
                           child: ElevatedButton(
-                            onPressed: () {
+                            onPressed: () async {
                               print('pressed cancel');
                             },
                             style: ElevatedButton.styleFrom(
@@ -311,8 +314,35 @@ class _ReservationScreenState extends State<ReservationScreen> {
                         const SizedBox(width: 10),
                         Expanded(
                           child: ElevatedButton(
-                            onPressed: () {
-                              print('pressed reserve');
+                            onPressed: () async {
+                              var method =
+                                  paymentMethod == 1 ? "Online" : "On site";
+                              var dateString =
+                                  selektiraniDatum.toString().split(" ")[0];
+                              Map<String, dynamic> reservationData = {
+                                'korisnikId': _authProvider.getLoggedUserId(),
+                                'terenId': widget.terenId,
+                                'vrijemeRezervacije': _slots[selectedSlot],
+                                'datumRezervacije': dateString,
+                                'paymentMethod': method,
+                                'cijena': widget.teren!.cijena,
+                                'potrebnaReket': needRacket,
+                                'brojReketa': numberOfRackets
+                              };
+
+                              print(reservationData);
+
+                              try {
+                                var data = await _rezervacijaProvider!
+                                    .insert(reservationData);
+                                // Navigator.popAndPushNamed(
+                                //     context, NavScreen.routeName);
+                              } on Exception catch (error) {
+                                print(error.toString());
+                                if (error.toString().contains("Bad request")) {
+                                  print('Reservation failed');
+                                }
+                              }
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.green[200],
