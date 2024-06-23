@@ -11,6 +11,7 @@ PlatiTeren _$PlatiTerenFromJson(Map<String, dynamic> json) => PlatiTeren(
       Cijena: (json['Cijena'] as num?)?.toInt(),
       KorisnikId: (json['KorisnikId'] as num?)?.toInt(),
       TerenId: (json['TerenId'] as num?)?.toInt(),
+      paymentIntentId: json['paymentIntentId'] as String?,
     );
 
 Map<String, dynamic> _$PlatiTerenToJson(PlatiTeren instance) =>
@@ -19,4 +20,5 @@ Map<String, dynamic> _$PlatiTerenToJson(PlatiTeren instance) =>
       'Cijena': instance.Cijena,
       'KorisnikId': instance.KorisnikId,
       'TerenId': instance.TerenId,
+      'paymentIntentId': instance.paymentIntentId,
     };

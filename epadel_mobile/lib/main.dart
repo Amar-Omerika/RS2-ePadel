@@ -4,15 +4,15 @@ import 'package:epadel_mobile/screens/screens.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-// import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 
 void main() async {
-  // WidgetsFlutterBinding.ensureInitialized();
-  // Stripe.publishableKey =
-  //     "pk_test_51Ng87hEOriruq5sG3hxXaTNR88caRjGe00l9g16vZQGmQTjylGbM56AygMZ8eJFi6MXMbBcQdjr9X14CcKlsVtUK00IImzFKxq";
-  // Stripe.merchantIdentifier = 'any string works';
-  // Stripe.urlScheme = "flutterstripe";
-  // await Stripe.instance.applySettings();
+  WidgetsFlutterBinding.ensureInitialized();
+  Stripe.publishableKey =
+      "pk_test_51Ng87hEOriruq5sG3hxXaTNR88caRjGe00l9g16vZQGmQTjylGbM56AygMZ8eJFi6MXMbBcQdjr9X14CcKlsVtUK00IImzFKxq";
+  Stripe.merchantIdentifier = 'any string works';
+  Stripe.urlScheme = "flutterstripe";
+ await Stripe.instance.applySettings();
 
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
@@ -23,6 +23,8 @@ void main() async {
         ChangeNotifierProvider(create: (_) => TerenProvider()),
         ChangeNotifierProvider(create: (_) => KorisnikProvider()),
         ChangeNotifierProvider(create: (_) => RezervacijaProvider()),
+        ChangeNotifierProvider(create: (_) => PlatiTerenProvider()),
+
       ],
       child: const MyApp(),
     ),
