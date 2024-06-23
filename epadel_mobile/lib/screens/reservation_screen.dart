@@ -8,7 +8,7 @@ import 'package:epadel_mobile/providers/providers.dart';
 import 'package:epadel_mobile/screens/screens.dart';
 import 'package:epadel_mobile/utils/util.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
+// import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:provider/provider.dart';
 
 class ReservationScreen extends StatefulWidget {
@@ -90,31 +90,31 @@ class _ReservationScreenState extends State<ReservationScreen> {
       paymentMethod = value;
     });
   }
-  void handlePay(
-      BuildContext context, String paymentIntentId, int PlatiTerminId) async {
-    await Stripe.instance.initPaymentSheet(
-      paymentSheetParameters: SetupPaymentSheetParameters(
-        paymentIntentClientSecret: paymentIntentId,
-        style: ThemeMode.light,
-        merchantDisplayName: "Amar",
-      ),
-    );
-    try {
-      await Stripe.instance.presentPaymentSheet();
-      dynamic request = {
-        'PlatiTerminId': PlatiTerminId,
-        'cijena': widget.teren!.cijena,
-        'korisnikId': _authProvider.getLoggedUserId(),
-      };
-      await _platiTerenProvider!.insert(request);
+  // void handlePay(
+  //     BuildContext context, String paymentIntentId, int PlatiTerminId) async {
+  //   await Stripe.instance.initPaymentSheet(
+  //     paymentSheetParameters: SetupPaymentSheetParameters(
+  //       paymentIntentClientSecret: paymentIntentId,
+  //       style: ThemeMode.light,
+  //       merchantDisplayName: "Amar",
+  //     ),
+  //   );
+  //   try {
+  //     await Stripe.instance.presentPaymentSheet();
+  //     dynamic request = {
+  //       'PlatiTerminId': PlatiTerminId,
+  //       'cijena': widget.teren!.cijena,
+  //       'korisnikId': _authProvider.getLoggedUserId(),
+  //     };
+  //     await _platiTerenProvider!.insert(request);
 
-      if (context.mounted) {
-        Navigator.pushNamed(context, PaymentSuccessfullScreen.routeName);
-      }
-    } catch (e) {
-      print(e.toString());
-    }
-  }
+  //     if (context.mounted) {
+  //       Navigator.pushNamed(context, PaymentSuccessfullScreen.routeName);
+  //     }
+  //   } catch (e) {
+  //     print(e.toString());
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
