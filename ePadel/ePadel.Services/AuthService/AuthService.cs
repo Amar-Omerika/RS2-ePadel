@@ -15,11 +15,12 @@ namespace ePadel.Services.AuthService
     {
         public IB190069_ePadelContext _context { get; set; }
         public IMapper _mapper { get; set; }
-
-        public AuthService(IB190069_ePadelContext context, IMapper mapper)
+        private readonly INotificationProducer _notificationProducer;
+        public AuthService(IB190069_ePadelContext context, IMapper mapper, INotificationProducer notificationProducer)
         {
             _context = context;
             _mapper = mapper;
+            _notificationProducer = notificationProducer;
         }
 
         public async Task<Model.Korisnik> Register(KorisnikInsertRequest request)
@@ -50,6 +51,13 @@ namespace ePadel.Services.AuthService
 
             _context.SaveChanges();
 
+            Model.RegistracijaNotifikacija registerNot = new RegistracijaNotifikacija
+            {
+                RegistracijaNotifikacijaId = entity.KorisnikId,
+                PorukaDobrodoslice = "Dobrodosli na ePadel",
+                Email = entity.Email
+            };
+            _notificationProducer.SendingObject(registerNot);
             return _mapper.Map<Model.Korisnik>(entity);
         }
 
