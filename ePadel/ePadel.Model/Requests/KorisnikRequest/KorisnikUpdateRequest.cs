@@ -22,6 +22,7 @@ namespace ePadel.Model.Requests.KorisnikRequest
 
         public string? DominantnaRuka { get; set; }
 
+        public string? Slika { get; set; }
         public bool? Aktivan { get; set; }
     }
 }

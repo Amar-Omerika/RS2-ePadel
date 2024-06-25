@@ -51,6 +51,7 @@ class MyApp extends StatelessWidget {
             const PaymentSuccessfullScreen(),
         ReservationSuccessfullScreen.routeName: (context) =>
             const ReservationSuccessfullScreen(),
+       EditProfileScreen.routeName: (context) => const EditProfileScreen(),
        
       },
     );

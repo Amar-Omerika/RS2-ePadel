@@ -133,7 +133,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           }
                         } on Exception catch (error) {
                           print(error.toString());
-                          if (error.toString().contains("Bad request")) {
+                          if (error.toString().contains("Internal server error")) {
                             setState(() {
                               loginFailed = true;
                             });

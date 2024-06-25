@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
+
 import 'dart:convert';
-import 'package:epadel_mobile/screens/login.dart';
+import 'package:epadel_mobile/screens/screens.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:epadel_mobile/providers/auth_provider.dart';
@@ -28,6 +29,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
     super.initState();
     _korisnikProvider = context.read<KorisnikProvider>();
     _authProvider = context.read<AuthProvider>();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
     loadData();
   }
 
@@ -73,7 +79,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
             icon: Icon(Icons.settings),
             color: Color(0xFFB0D9B1),
             iconSize: 40,
-            onPressed: () {},
+            onPressed: () async {
+              await Navigator.pushNamed(context, EditProfileScreen.routeName);
+              loadData(); // Reload the data after returning from EditProfileScreen
+            },
           ),
         ],
       ),
