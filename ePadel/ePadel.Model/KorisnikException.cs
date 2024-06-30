@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ePadel.Model
 {
-    public class KorisnikException : Exception
+    public class KorisnikException : System.Exception
     {
         public string Title { get; set; }
         public KorisnikException(string title, string message) : base(message)

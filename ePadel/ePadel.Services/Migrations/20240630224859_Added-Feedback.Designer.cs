@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ePadel.Services.Database;
 
@@ -11,9 +12,10 @@ using ePadel.Services.Database;
 namespace ePadel.Services.Migrations
 {
     [DbContext(typeof(IB190069_ePadelContext))]
-    partial class IB190069_ePadelContextModelSnapshot : ModelSnapshot
+    [Migration("20240630224859_Added-Feedback")]
+    partial class AddedFeedback
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,28 +23,6 @@ namespace ePadel.Services.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
-
-            modelBuilder.Entity("ePadel.Services.Database.Feedback", b =>
-                {
-                    b.Property<int>("FeedbackId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FeedbackId"), 1L, 1);
-
-                    b.Property<string>("Komentar")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("KorisnikId")
-                        .HasColumnType("int");
-
-                    b.HasKey("FeedbackId");
-
-                    b.HasIndex("KorisnikId");
-
-                    b.ToTable("Feedbacks");
-                });
 
             modelBuilder.Entity("ePadel.Services.Database.KorisničkePreferencije", b =>
                 {
@@ -303,7 +283,7 @@ namespace ePadel.Services.Migrations
                         new
                         {
                             RezervacijaId = 1,
-                            DatumKreiranja = new DateTime(2024, 7, 1, 0, 52, 43, 488, DateTimeKind.Local).AddTicks(7782),
+                            DatumKreiranja = new DateTime(2024, 7, 1, 0, 48, 58, 289, DateTimeKind.Local).AddTicks(8966),
                             KorisnikId = 1,
                             RezervacijaStatus = "Aktivna",
                             TerenId = 1,
@@ -506,17 +486,6 @@ namespace ePadel.Services.Migrations
                             UlogaId = 2,
                             Naziv = "Igrac"
                         });
-                });
-
-            modelBuilder.Entity("ePadel.Services.Database.Feedback", b =>
-                {
-                    b.HasOne("ePadel.Services.Database.Korisnik", "Korisnik")
-                        .WithMany()
-                        .HasForeignKey("KorisnikId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Korisnik");
                 });
 
             modelBuilder.Entity("ePadel.Services.Database.KorisničkePreferencije", b =>

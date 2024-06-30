@@ -2,6 +2,7 @@ using ePadel;
 using ePadel.Services;
 using ePadel.Services.AuthService;
 using ePadel.Services.Database;
+using ePadel.Services.FeedbackService;
 using ePadel.Services.KorisnikService;
 using ePadel.Services.PaymentService;
 using ePadel.Services.PlatiService;
@@ -25,7 +26,9 @@ builder.Services.AddTransient<ITipTerenaService, TipTerenaService>();
 builder.Services.AddTransient<IRezervacijaService, RezervacijaService>();
 builder.Services.AddTransient<IPlatiService, PlatiService>();
 builder.Services.AddTransient<INotificationProducer, NotificationProducer>();
+builder.Services.AddTransient<IFeedbackService, FeedbackService>();
 builder.Services.AddTransient<StripeService>();
+
 
 
 

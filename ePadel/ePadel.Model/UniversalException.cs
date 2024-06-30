@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ePadel.Model
 {
-    public  class UniversalException: Exception
+    public  class UniversalException: System.Exception
     {
         public string Title { get; set; }
         public UniversalException(string title, string message) : base(message)

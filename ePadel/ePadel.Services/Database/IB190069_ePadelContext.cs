@@ -27,6 +27,8 @@ namespace ePadel.Services.Database
         public virtual DbSet<TipTerena> TipTerenas { get; set; } = null!;
         public virtual DbSet<Uloga> Ulogas { get; set; } = null!;
         public virtual DbSet<PlatiTermin> PlatiTermins { get; set; } = null!;
+        public virtual DbSet<Feedback> Feedbacks { get; set; } = null!;
+
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -109,11 +111,6 @@ namespace ePadel.Services.Database
                 entity.Property(e => e.TerenId).HasColumnName("TerenID");
 
                 entity.Property(e => e.TerminId).HasColumnName("TerminID");
-
-                entity.HasOne(d => d.Korisnik)
-                    .WithMany(p => p.Rezervacijes)
-                    .HasForeignKey(d => d.KorisnikId)
-                    .HasConstraintName("FK__Rezervaci__Koris__32E0915F");
 
                 entity.HasOne(d => d.Teren)
                     .WithMany(p => p.Rezervacijes)

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ePadel.Model.Requests.FeedbackRequest;
 using ePadel.Model.Requests.KorisnikRequest;
 using ePadel.Model.Requests.KorisnikUlogeRequest;
 using ePadel.Model.Requests.PlatiRequest;
@@ -26,6 +27,7 @@ namespace ePadel.Services.Mapping
             CreateMap<Database.RezervacijaStatusi, Model.RezervacijaStatusi>();
             CreateMap<Database.Termini, Model.Termini>();
             CreateMap<Database.PlatiTermin, Model.PlatiTermin>();
+            CreateMap<Database.Feedback, Model.Feedback>();
 
 
 
@@ -45,6 +47,9 @@ namespace ePadel.Services.Mapping
             CreateMap<RezervacijaUpdateRequest, Database.Rezervacije>();
 
             CreateMap<PlatiInsertRequest, Database.PlatiTermin>();
+
+            CreateMap<FeedbackInsertRequest, Database.Feedback>();
+
 
         }
 
