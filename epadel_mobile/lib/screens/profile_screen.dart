@@ -72,7 +72,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
           icon: Icon(Icons.history),
           color: Color(0xFFB0D9B1),
           iconSize: 40,
-          onPressed: () {},
+          onPressed: () {
+               Navigator.pushNamed(context, HistoryReservationScreen.routeName);
+          },
         ),
         actions: [
           IconButton(

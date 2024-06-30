@@ -37,9 +37,9 @@ namespace ePadel.Services.RezervacijaService
 
 
         }
-        public async Task<PagedResult<Model.Rezervacije>> HistoryReservations(int korsinikId)
+        public async Task<PagedResult<Model.Rezervacije>> HistoryReservations(int korisnikId)
         {
-            var rezervacije = _context.Rezervacijes.Where(x => x.KorisnikId == korsinikId).Include(x => x.Teren).ThenInclude(x => x.TipTerena);
+            var rezervacije = _context.Rezervacijes.Where(x => x.KorisnikId == korisnikId).Include(x => x.Teren).ThenInclude(x => x.TipTerena);
 
             if (rezervacije == null || !rezervacije.Any())
             {

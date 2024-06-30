@@ -26,9 +26,9 @@ namespace ePadel.Controllers
 
 
         [HttpGet("HistoryReservations")]
-        public async Task<PagedResult<Rezervacije>> History(int korsinikId)
+        public async Task<PagedResult<Rezervacije>> History(int korisnikId)
         {
-            return await _service.HistoryReservations(korsinikId);
+            return await _service.HistoryReservations(korisnikId);
         }
         public override Model.Rezervacije Insert([FromBody] RezervacijaInsertRequest request)
         {

@@ -3,10 +3,7 @@ import 'package:epadel_mobile/providers/base_provider.dart';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:async';
-import 'package:epadel_mobile/models/models.dart';
-import 'package:http/http.dart';
 import 'package:http/io_client.dart';
-import 'package:flutter/foundation.dart';
 
 
 class RezervacijaProvider extends BaseProvider<Rezervacija> {
@@ -44,5 +41,28 @@ class RezervacijaProvider extends BaseProvider<Rezervacija> {
       // return data;
     }
     return [];
+  }
+
+Future<SearchResult<Rezervacija>> getHistory({dynamic search}) async {
+    var url = "$_baseUrl" + "Rezervacija/HistoryReservations";
+
+    if (search != null) {
+      String queryString = getQueryString(search);
+      url = "$url?$queryString";
+    }
+    var uri = Uri.parse(url);
+
+    var headers = createHeaders();
+    var response = await http!.get(uri, headers: headers);
+    if (isValidResponseCode(response)) {
+      var data = jsonDecode(response.body);
+      var result = SearchResult<Rezervacija>();
+      for (var item in data['result']) {
+        result.result.add(fromJson(item));
+      }
+      return result;
+    } else {
+      throw Exception("Exception... handle this gracefully");
+    }
   }
 }

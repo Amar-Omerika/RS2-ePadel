@@ -1,3 +1,4 @@
+import 'package:epadel_mobile/models/models.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'rezervacije.g.dart';
@@ -14,12 +15,14 @@ class Rezervacija {
   String? korisnickoIme;
   int? cijena;
   int? brojReketa;
+  Teren? teren;
 
   Rezervacija({
     this.terenNaziv,
     this.korisnickoIme,
     this.cijena,
     this.brojReketa,
+    this.teren,
   });
 
   factory Rezervacija.fromJson(Map<String, dynamic> json) =>

@@ -52,6 +52,7 @@ class MyApp extends StatelessWidget {
         ReservationSuccessfullScreen.routeName: (context) =>
             const ReservationSuccessfullScreen(),
        EditProfileScreen.routeName: (context) => const EditProfileScreen(),
+       HistoryReservationScreen.routeName: (context) => const HistoryReservationScreen(),
        
       },
     );
