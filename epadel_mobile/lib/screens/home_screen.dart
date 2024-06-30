@@ -27,7 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> loadData() async {
-    Map<String, String> filters = {'Tekst': _filter};
+    Map<String, String> filters = {'Tekst': _filter, 'Popust': 'Ne'};
 
     if (_selectedType != 'Svi') {
       filters['TipTerenaTekst'] = _selectedType;
