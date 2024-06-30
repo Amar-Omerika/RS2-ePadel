@@ -30,5 +30,10 @@ namespace ePadel.Controllers
         {
             return _service.TereniRecommendedSystem();
         }
+        [HttpGet("tereniSaPopustom")]
+        public List<Model.Tereni> TerniSaPopustom()
+        {
+            return _service.TereniSaPopustom();
+        }
     }
 }

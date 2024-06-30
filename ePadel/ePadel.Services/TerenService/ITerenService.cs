@@ -8,6 +8,8 @@ namespace ePadel.Services.TerenService
     public interface ITerenService : IBaseCRUDService<Model.Tereni,TerenSearchObject,TerenInsertRequest,TerenUpdateRequest> 
     {
         public List<Model.Tereni> TereniRecommendedSystem();
+        public List<Model.Tereni> TereniSaPopustom();
+
     }
- 
+
 }

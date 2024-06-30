@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.ML;
 using Microsoft.ML.Data;
 using Microsoft.ML.Trainers;
+using System.Linq;
+using System.Collections.Generic;
 
 
 namespace ePadel.Services.TerenService
@@ -75,6 +77,21 @@ namespace ePadel.Services.TerenService
             }       
       
         }
+        public List<Model.Tereni> TereniSaPopustom()
+        {
+            var tereniSaPopustom = _context.Terenis
+                .Where(t => t.Popust == "Da")
+                .Include(t => t.TipTerena)
+                .ToList();
+
+            foreach (var teren in tereniSaPopustom)
+            {
+                teren.Cijena -= teren.CijenaPopusta;
+            }
+
+            return _mapper.Map<List<Model.Tereni>>(tereniSaPopustom);
+        }
+
         static object isLocked = new object();
         static MLContext? mlContext = null;
         static ITransformer? model = null;

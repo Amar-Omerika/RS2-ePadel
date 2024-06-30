@@ -12,7 +12,7 @@ class TereniSaPopustom extends StatefulWidget {
 
 class _TereniSaPopustomState extends State<TereniSaPopustom> {
   late TerenProvider _terenProvider;
-  SearchResult<Teren> _tereni = SearchResult<Teren>();
+  List<Teren> _tereni = [];
 
   @override
   void initState() {
@@ -22,9 +22,9 @@ class _TereniSaPopustomState extends State<TereniSaPopustom> {
   }
 
   Future<void> loadData() async {
-    var tmpData = await _terenProvider.get({'Popust': 'Da'});
+    var tmpData = await _terenProvider.getTereniSaPopustom();
     setState(() {
-      _tereni = tmpData as SearchResult<Teren>;
+      _tereni = tmpData as List<Teren>;
     });
   }
 
@@ -44,7 +44,7 @@ class _TereniSaPopustomState extends State<TereniSaPopustom> {
               ),
               const SizedBox(height: 5.0),
               Expanded(
-                child: _tereni.result.isEmpty
+                child: _tereni.isEmpty
                     ? const Center(
                         child: Text(
                           'Nema dostupnih terena sa popustom...',
@@ -52,9 +52,9 @@ class _TereniSaPopustomState extends State<TereniSaPopustom> {
                         ),
                       )
                     : ListView.builder(
-                        itemCount: _tereni.result.length,
+                        itemCount: _tereni.length,
                         itemBuilder: (context, index) {
-                          final teren = _tereni.result[index];
+                          final teren = _tereni[index];
                           return TerenPopustCard(
                             teren: teren,
                           );
