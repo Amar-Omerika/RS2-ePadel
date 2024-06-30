@@ -1,4 +1,5 @@
-﻿using ePadel.Model.Requests.RezervacijaRequest;
+﻿using ePadel.Model;
+using ePadel.Model.Requests.RezervacijaRequest;
 using ePadel.Model.Requests.TerenRequest;
 using ePadel.Model.SearchObjects;
 using ePadel.Services.RezervacijaService;
@@ -21,6 +22,13 @@ namespace ePadel.Controllers
         public List<string> GetTimeSlotsForDate(int terenId, string datumRezervacije)
         {
             return _service.getSlotsForReservationDate(terenId, datumRezervacije);
+        }
+
+
+        [HttpGet("HistoryReservations")]
+        public async Task<PagedResult<Rezervacije>> History(int korsinikId)
+        {
+            return await _service.HistoryReservations(korsinikId);
         }
         public override Model.Rezervacije Insert([FromBody] RezervacijaInsertRequest request)
         {

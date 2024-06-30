@@ -1,4 +1,5 @@
-﻿using ePadel.Model.Requests.RezervacijaRequest;
+﻿using ePadel.Model;
+using ePadel.Model.Requests.RezervacijaRequest;
 using ePadel.Model.SearchObjects;
 using ePadel.Services.BaseService;
 using System;
@@ -12,5 +13,6 @@ namespace ePadel.Services.RezervacijaService
     public interface IRezervacijaService : IBaseCRUDService<Model.Rezervacije, RezervacijaSearchObject, RezervacijaInsertRequest, RezervacijaUpdateRequest> 
     {
         List<string> getSlotsForReservationDate(int terenId, string datumRezervacije);
+        Task<PagedResult<Rezervacije>> HistoryReservations(int korsinikId);
     }
 }

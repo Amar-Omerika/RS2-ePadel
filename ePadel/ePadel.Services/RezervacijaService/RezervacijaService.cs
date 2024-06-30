@@ -37,6 +37,40 @@ namespace ePadel.Services.RezervacijaService
 
 
         }
+        public async Task<PagedResult<Model.Rezervacije>> HistoryReservations(int korsinikId)
+        {
+            var rezervacije = _context.Rezervacijes.Where(x => x.KorisnikId == korsinikId).Include(x => x.Teren).ThenInclude(x => x.TipTerena);
+
+            if (rezervacije == null || !rezervacije.Any())
+            {
+                var pagedResult2 = new PagedResult<Model.Rezervacije>()
+                {
+                    Count = 0,
+                    Result = new List<Model.Rezervacije>()
+                };
+                return pagedResult2;
+            }
+
+            var rezervacijeModel = new List<Model.Rezervacije>();
+
+            foreach (var rezervacija in rezervacije)
+            {
+                var datum = DateTime.Parse(rezervacija.DatumRezervacije);
+                if (datum.Date < DateTime.Now.Date)
+                {
+                    rezervacijeModel.Add(_mapper.Map<Model.Rezervacije>(rezervacija));
+                }
+            }
+
+            var pagedResult = new PagedResult<Model.Rezervacije>()
+            {
+                Count = rezervacijeModel.Count(),
+                Result = rezervacijeModel
+            };
+
+            return pagedResult;
+        }
+
         public List<string> getSlotsForReservationDate(int terenId, string datumRezervacije)
         {
             var reservations = _context.Rezervacijes.Where(c => c.DatumRezervacije == datumRezervacije && c.TerenId == terenId);
