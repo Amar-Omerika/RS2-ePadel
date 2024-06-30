@@ -65,4 +65,16 @@ Future<SearchResult<Rezervacija>> getHistory({dynamic search}) async {
       throw Exception("Exception... handle this gracefully");
     }
   }
+     Future<List<Rezervacija>> getRecommend() async {
+    var url = "$_baseUrl" + "Teren/recommend";
+    var headers = createHeaders();
+    var uri = Uri.parse(url);
+    var response = await http!.get(uri, headers: headers);
+    if (isValidResponseCode(response)) {
+      var data = jsonDecode(response.body);
+      List<Rezervacija> tereni = (data as List).map((item) => Rezervacija.fromJson(item)).toList();
+      return tereni;
+    }
+    return [];
+  }
 }

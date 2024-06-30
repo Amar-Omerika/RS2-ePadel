@@ -136,6 +136,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
               margin: EdgeInsets.symmetric(vertical: 10),
               child: InkWell(
                 onTap: () {
+                  Navigator.pushNamed(context, RecommendScreen.routeName);
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Colors.green[500],
+                      borderRadius: BorderRadius.circular(5)),
+                  child: const Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 8.0, vertical: 10),
+                    child: Center(
+                      child: Text(
+                        'Prikazi preporucene terene',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+             const SizedBox(height: 20),
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 10),
+              child: InkWell(
+                onTap: () {
                   _authProvider!.logout();
                   Navigator.pushNamed(context, LoginScreen.routeName);
                 },

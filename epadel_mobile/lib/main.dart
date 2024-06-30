@@ -1,5 +1,6 @@
 import 'package:epadel_mobile/providers/auth_provider.dart';
 import 'package:epadel_mobile/providers/providers.dart';
+import 'package:epadel_mobile/screens/recommend_courts_screen.dart';
 import 'package:epadel_mobile/screens/screens.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -53,6 +54,7 @@ class MyApp extends StatelessWidget {
             const ReservationSuccessfullScreen(),
        EditProfileScreen.routeName: (context) => const EditProfileScreen(),
        HistoryReservationScreen.routeName: (context) => const HistoryReservationScreen(),
+       RecommendScreen.routeName: (context) => const RecommendScreen(),
        
       },
     );
