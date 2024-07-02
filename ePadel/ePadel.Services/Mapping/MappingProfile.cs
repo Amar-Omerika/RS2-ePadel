@@ -25,6 +25,8 @@ namespace ePadel.Services.Mapping
             CreateMap<Database.TipTerena, Model.TipTerena>();
             CreateMap<Database.Rezervacije, Model.Rezervacije>();
             CreateMap<Database.PlatiTermin, Model.PlatiTermin>();
+            CreateMap<Database.Ocjene, Model.Ocjene>();
+
 
 
 
@@ -44,6 +46,8 @@ namespace ePadel.Services.Mapping
             CreateMap<RezervacijaUpdateRequest, Database.Rezervacije>();
 
             CreateMap<PlatiInsertRequest, Database.PlatiTermin>();
+            CreateMap<OcjeneInsertRequest, Database.Ocjene>();
+
         }
 
     }
