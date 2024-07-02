@@ -1,3 +1,4 @@
+import 'package:epadel_mobile/models/models.dart';
 import 'package:epadel_mobile/models/tip_terena.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -15,6 +16,7 @@ class Teren {
   String? popust;
   int? cijenaPopusta;
   TipTerena? tipTerena;
+  List<Ocjene>? ocjenes;
 
   Teren(
       {this.terenId,
@@ -26,7 +28,7 @@ class Teren {
       this.tipTerena,
       this.lokacija,
       this.popust,
-      this.cijenaPopusta});
+      this.cijenaPopusta,this.ocjenes});
 
   factory Teren.fromJson(Map<String, dynamic> json) => _$TerenFromJson(json);
   Map<String, dynamic> toJson() => _$TerenToJson(this);

@@ -1,3 +1,4 @@
+import 'package:epadel_mobile/models/models.dart';
 import 'package:epadel_mobile/screens/reservation_screen.dart';
 import 'package:epadel_mobile/utils/util.dart';
 import 'package:flutter/material.dart';
@@ -6,11 +7,19 @@ import '../models/teren.dart'; // Adjust the import as per your project structur
 class TerenCard extends StatelessWidget {
   final Teren teren;
 
-
   const TerenCard({super.key, required this.teren});
+
+ double calculateAverageRating(List<Ocjene> ocjenes) {
+    if (ocjenes.isEmpty) return 0.0;
+    int totalRating = ocjenes.fold(0, (sum, item) => sum + item.ocjena!);
+    return totalRating / ocjenes.length;
+  }
+
 
   @override
   Widget build(BuildContext context) {
+    double averageRating = calculateAverageRating(teren.ocjenes ?? []);
+
     return InkWell(
       onTap: () => {
         Navigator.push(
@@ -63,6 +72,7 @@ class TerenCard extends StatelessWidget {
                     Text('Tip: ${teren.tipTerena!.naziv}'),
                     Text('Cijena: ${teren.cijena} KM'),
                     Text('Lokacija: ${teren.lokacija}'),
+                    Text('Ocjena: ${averageRating.toStringAsFixed(1)} / 5'),
                   ],
                 ),
               ),
