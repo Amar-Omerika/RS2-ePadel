@@ -26,8 +26,7 @@ void main() async {
         ChangeNotifierProvider(create: (_) => RezervacijaProvider()),
         ChangeNotifierProvider(create: (_) => PlatiTerenProvider()),
         ChangeNotifierProvider(create: (_) => FeedbackProvider()),
-
-
+        ChangeNotifierProvider(create: (_) => OcjeneProvider()),
       ],
       child: const MyApp(),
     ),

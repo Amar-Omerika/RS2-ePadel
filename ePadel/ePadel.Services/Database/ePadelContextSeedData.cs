@@ -36,21 +36,25 @@ namespace ePadel.Services.Database
                 Ime = "Admin",
                 Prezime = "Admin",
                 KorisnickoIme = "Admin",
-                Email = "amaaromerika00@gmal.com",
-                LozinkaHash = "523l3SXvXt/OIGacFmI0PUlXkJM=", // Ovde trebate postaviti stvarnu hash vrednost lozinke
-                LozinkaSalt = "ORNOSgr59Nd5PGJx/GNMKg==", // Ovde trebate postaviti stvarnu vrednost soli
+                Email = "adminmail00@gmal.com",
+                LozinkaHash = "523l3SXvXt/OIGacFmI0PUlXkJM=",
+                LozinkaSalt = "ORNOSgr59Nd5PGJx/GNMKg==", 
+                DominantnaRuka = "Desna",
+                Spol = "Musko",
                 Slika = profilnaSlikaKorisnika,
                 Aktivan = true
             },
             new Korisnik()
             {
                     KorisnikId = 2,
-                    Ime = "Amar",
-                    Prezime = "Omerika",
-                    KorisnickoIme = "AmarTapia",
-                    Email = "amartapia@gmail.com",
-                    LozinkaHash = "523l3SXvXt/OIGacFmI0PUlXkJM=", // Ovde trebate postaviti stvarnu hash vrednost lozinke
-                    LozinkaSalt = "ORNOSgr59Nd5PGJx/GNMKg==", // Ovde trebate postaviti stvarnu vrednost soli
+                    Ime = "John",
+                    Prezime = "Doe",
+                    KorisnickoIme = "JohnDoe",
+                    Email = "johndoe@gmail.com",
+                    LozinkaHash = "523l3SXvXt/OIGacFmI0PUlXkJM=",
+                    LozinkaSalt = "ORNOSgr59Nd5PGJx/GNMKg==",
+                    DominantnaRuka = "Desna",
+                    Spol = "Musko",
                     Slika = profilnaSlikaKorisnika,
                     Aktivan = true
             }
@@ -61,14 +65,14 @@ namespace ePadel.Services.Database
             new KorisnikUloge()
             {
                 KorisnikUlogeId = 1,
-                UlogaId = 1, // Postavite odgovarajući ID uloge
-                KorisnikId = 1 // Postavite odgovarajući ID korisnika
+                UlogaId = 1, 
+                KorisnikId = 1
             },
                new KorisnikUloge()
             {
                 KorisnikUlogeId = 2,
-                UlogaId = 2, // Postavite odgovarajući ID uloge
-                KorisnikId = 2 // Postavite odgovarajući ID korisnika
+                UlogaId = 2,
+                KorisnikId = 2 
             }
             });
 
@@ -101,24 +105,33 @@ namespace ePadel.Services.Database
                     TerenId = 1,
                     Naziv = "Teren 1",
                     BrojTerena = 1,
-                    Cijena = 20, // Postavite stvarnu cenu
-                    TipTerenaId = 1 // Postavite odgovarajući ID tipa terena
+                    Cijena = 20,
+                    Popust = "Da",
+                    CijenaPopusta = 10,
+                    Lokacija = "Mostar",
+                    TipTerenaId = 1 
                 },
                 new Tereni()
                 {
                     TerenId = 2,
                     Naziv = "Teren 2",
                     BrojTerena = 2,
-                    Cijena = 15, // Postavite stvarnu cenu
-                    TipTerenaId = 2 // Postavite odgovarajući ID tipa terena
+                    Cijena = 15,
+                    Popust = "Ne",
+                    CijenaPopusta = 0,
+                    Lokacija = "Mostar",
+                    TipTerenaId = 2 
                 },
                 new Tereni()
                 {
                     TerenId = 3,
                     Naziv = "Teren 3",
                     BrojTerena = 3,
-                    Cijena = 20, // Postavite stvarnu cenu
-                    TipTerenaId = 3 // Postavite odgovarajući ID tipa terena
+                    Cijena = 15,
+                    Popust = "Ne",
+                    CijenaPopusta = 0,
+                    Lokacija = "Mostar",
+                    TipTerenaId = 3 
                 }
             });
             modelBuilder.Entity<Rezervacije>().HasData(new Rezervacije[]
@@ -126,10 +139,9 @@ namespace ePadel.Services.Database
                 new Rezervacije()
                 {
                     RezervacijaId = 1,
-                    KorisnikId = 1, // Postavite odgovarajući ID korisnika
-                    TerenId = 1, // Postavite odgovarajući ID terena
-                    RezervacijaStatus = "Aktivna", // Postavite stvaran status rezervacije
-                    //DatumRezervacije = DateTime.Now
+                    KorisnikId = 2,
+                    TerenId = 1,
+                    RezervacijaStatus = "Aktivna",
                 }
             });
      
