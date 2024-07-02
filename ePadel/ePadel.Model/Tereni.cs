@@ -16,12 +16,13 @@ namespace ePadel.Model
         public int BrojTerena { get; set; }
 
         public int Cijena { get; set; }
-
+         
         public int? TipTerenaId { get; set; }
         public string? Lokacija { get; set; }
         public string? Popust { get; set; }
         public int CijenaPopusta { get; set; }
         public virtual TipTerena? TipTerena { get; set; }
+        public ICollection<Ocjene> Ocjenes { get; } = new List<Ocjene>();
 
     }
 }

@@ -4,6 +4,7 @@ using ePadel.Services.AuthService;
 using ePadel.Services.Database;
 using ePadel.Services.FeedbackService;
 using ePadel.Services.KorisnikService;
+using ePadel.Services.OcjenaService;
 using ePadel.Services.PaymentService;
 using ePadel.Services.PlatiService;
 using ePadel.Services.RezervacijaService;
@@ -27,6 +28,7 @@ builder.Services.AddTransient<IRezervacijaService, RezervacijaService>();
 builder.Services.AddTransient<IPlatiService, PlatiService>();
 builder.Services.AddTransient<INotificationProducer, NotificationProducer>();
 builder.Services.AddTransient<IFeedbackService, FeedbackService>();
+builder.Services.AddTransient<IOcjenaService, OcjenaService>();
 builder.Services.AddTransient<StripeService>();
 
 

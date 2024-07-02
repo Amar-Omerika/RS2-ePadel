@@ -12,8 +12,8 @@ using ePadel.Services.Database;
 namespace ePadel.Services.Migrations
 {
     [DbContext(typeof(IB190069_ePadelContext))]
-    [Migration("20240630224859_Added-Feedback")]
-    partial class AddedFeedback
+    [Migration("20240701220155_new-migration-2")]
+    partial class newmigration2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,6 +23,28 @@ namespace ePadel.Services.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("ePadel.Services.Database.Feedback", b =>
+                {
+                    b.Property<int>("FeedbackId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FeedbackId"), 1L, 1);
+
+                    b.Property<string>("Komentar")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("KorisnikId")
+                        .HasColumnType("int");
+
+                    b.HasKey("FeedbackId");
+
+                    b.HasIndex("KorisnikId");
+
+                    b.ToTable("Feedbacks");
+                });
 
             modelBuilder.Entity("ePadel.Services.Database.KorisničkePreferencije", b =>
                 {
@@ -161,6 +183,27 @@ namespace ePadel.Services.Migrations
                         });
                 });
 
+            modelBuilder.Entity("ePadel.Services.Database.Ocjene", b =>
+                {
+                    b.Property<int>("OcjeneId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OcjeneId"), 1L, 1);
+
+                    b.Property<int>("Ocjena")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TerenId")
+                        .HasColumnType("int");
+
+                    b.HasKey("OcjeneId");
+
+                    b.HasIndex("TerenId");
+
+                    b.ToTable("Ocjene");
+                });
+
             modelBuilder.Entity("ePadel.Services.Database.PlatiTermin", b =>
                 {
                     b.Property<int>("PlatiTerminId")
@@ -283,7 +326,7 @@ namespace ePadel.Services.Migrations
                         new
                         {
                             RezervacijaId = 1,
-                            DatumKreiranja = new DateTime(2024, 7, 1, 0, 48, 58, 289, DateTimeKind.Local).AddTicks(8966),
+                            DatumKreiranja = new DateTime(2024, 7, 2, 0, 1, 54, 477, DateTimeKind.Local).AddTicks(7058),
                             KorisnikId = 1,
                             RezervacijaStatus = "Aktivna",
                             TerenId = 1,
@@ -389,7 +432,7 @@ namespace ePadel.Services.Migrations
                         new
                         {
                             TerminId = 1,
-                            Datum = new DateTime(2024, 7, 1, 0, 0, 0, 0, DateTimeKind.Local),
+                            Datum = new DateTime(2024, 7, 2, 0, 0, 0, 0, DateTimeKind.Local),
                             VremePočetka = new TimeSpan(0, 10, 0, 0, 0),
                             VremeZavršetka = new TimeSpan(0, 12, 0, 0, 0)
                         });
@@ -488,6 +531,17 @@ namespace ePadel.Services.Migrations
                         });
                 });
 
+            modelBuilder.Entity("ePadel.Services.Database.Feedback", b =>
+                {
+                    b.HasOne("ePadel.Services.Database.Korisnik", "Korisnik")
+                        .WithMany()
+                        .HasForeignKey("KorisnikId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Korisnik");
+                });
+
             modelBuilder.Entity("ePadel.Services.Database.KorisničkePreferencije", b =>
                 {
                     b.HasOne("ePadel.Services.Database.TipTerena", "TipTerena")
@@ -513,6 +567,13 @@ namespace ePadel.Services.Migrations
                     b.Navigation("Korisnik");
 
                     b.Navigation("Uloga");
+                });
+
+            modelBuilder.Entity("ePadel.Services.Database.Ocjene", b =>
+                {
+                    b.HasOne("ePadel.Services.Database.Tereni", null)
+                        .WithMany("Ocjenes")
+                        .HasForeignKey("TerenId");
                 });
 
             modelBuilder.Entity("ePadel.Services.Database.PlatiTermin", b =>
@@ -575,6 +636,8 @@ namespace ePadel.Services.Migrations
 
             modelBuilder.Entity("ePadel.Services.Database.Tereni", b =>
                 {
+                    b.Navigation("Ocjenes");
+
                     b.Navigation("Rezervacijes");
                 });
 
