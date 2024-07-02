@@ -121,17 +121,6 @@ namespace ePadel.Services.Database
                     TipTerenaId = 3 // Postavite odgovarajući ID tipa terena
                 }
             });
-            modelBuilder.Entity<Termini>().HasData(new Termini[]
-            {
-                new Termini()
-                {
-                    TerminId = 1,
-                    Datum = DateTime.Now.Date,
-                    VremePočetka = new TimeSpan(10, 0, 0),
-                    VremeZavršetka = new TimeSpan(12, 0, 0)
-                }
-                // Dodajte ostale termine prema potrebi
-            });
             modelBuilder.Entity<Rezervacije>().HasData(new Rezervacije[]
             {
                 new Rezervacije()
@@ -139,28 +128,9 @@ namespace ePadel.Services.Database
                     RezervacijaId = 1,
                     KorisnikId = 1, // Postavite odgovarajući ID korisnika
                     TerenId = 1, // Postavite odgovarajući ID terena
-                    TerminId = 1, // Postavite odgovarajući ID termina
                     RezervacijaStatus = "Aktivna", // Postavite stvaran status rezervacije
                     //DatumRezervacije = DateTime.Now
                 }
-            });
-      
-            modelBuilder.Entity<TerminStatusi>().HasData(new TerminStatusi[]
-            {
-                new TerminStatusi()
-                {
-                    StatusId = 1,
-                    Naziv = "Aktivan"
-                }
-            });
-
-            modelBuilder.Entity<RezervacijaStatusi>().HasData(new RezervacijaStatusi[]
-            {
-            new RezervacijaStatusi()
-            {
-                StatusId = 1,
-                Naziv = "Potvrđena"
-            }
             });
      
         }

@@ -15,8 +15,6 @@ namespace ePadel.Services.Database
         public bool? Placena { get; set; }
         public int? KorisnikId { get; set; }
         public virtual Korisnik? Korisnik { get; set; }
-        public int? TerminId { get; set; }
-        public virtual Termini? Termin { get; set; }
         public int? TerenId { get; set; }
         public virtual Tereni? Teren { get; set; }
     }

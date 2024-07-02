@@ -23,14 +23,8 @@ namespace ePadel.Services.Mapping
             CreateMap<Database.Uloga, Model.Uloga>();
             CreateMap<Database.Tereni, Model.Tereni>();
             CreateMap<Database.TipTerena, Model.TipTerena>();
-            CreateMap<Database.KorisničkePreferencije, Model.KorisničkePreferencije>();
             CreateMap<Database.Rezervacije, Model.Rezervacije>();
-            CreateMap<Database.RezervacijaStatusi, Model.RezervacijaStatusi>();
-            CreateMap<Database.Termini, Model.Termini>();
             CreateMap<Database.PlatiTermin, Model.PlatiTermin>();
-            CreateMap<Database.Feedback, Model.Feedback>();
-            CreateMap<Database.Ocjene, Model.Ocjene>();
-
 
 
 
@@ -50,13 +44,6 @@ namespace ePadel.Services.Mapping
             CreateMap<RezervacijaUpdateRequest, Database.Rezervacije>();
 
             CreateMap<PlatiInsertRequest, Database.PlatiTermin>();
-
-            CreateMap<FeedbackInsertRequest, Database.Feedback>();
-
-            CreateMap<OcjeneInsertRequest, Database.Ocjene>();
-
-
-
         }
 
     }

@@ -16,7 +16,6 @@ namespace ePadel.Services.Database
         public int? TipTerenaId { get; set; }
 
         public virtual TipTerena? TipTerena { get; set; }
-        public virtual ICollection<Rezervacije>? Rezervacijes { get; set; }
         public ICollection<Ocjene> Ocjenes { get; } = new List<Ocjene>();
 
         [NotMapped] // Add this attribute to indicate that Revenue is not mapped to the database

@@ -25,6 +25,8 @@ void main() async {
         ChangeNotifierProvider(create: (_) => KorisnikProvider()),
         ChangeNotifierProvider(create: (_) => RezervacijaProvider()),
         ChangeNotifierProvider(create: (_) => PlatiTerenProvider()),
+        ChangeNotifierProvider(create: (_) => FeedbackProvider()),
+
 
       ],
       child: const MyApp(),
@@ -50,8 +52,8 @@ class MyApp extends StatelessWidget {
         ReservationScreen.routeName: (context) => const ReservationScreen(),
         PaymentSuccessfullScreen.routeName: (context) =>
             const PaymentSuccessfullScreen(),
-        ReservationSuccessfullScreen.routeName: (context) =>
-            const ReservationSuccessfullScreen(),
+        ReservationSuccessfulScreen.routeName: (context) =>
+            const ReservationSuccessfulScreen(),
        EditProfileScreen.routeName: (context) => const EditProfileScreen(),
        HistoryReservationScreen.routeName: (context) => const HistoryReservationScreen(),
        RecommendScreen.routeName: (context) => const RecommendScreen(),

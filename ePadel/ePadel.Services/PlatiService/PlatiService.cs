@@ -23,7 +23,7 @@ namespace ePadel.Services.PlatiService
 
         public override IQueryable<ePadel.Services.Database.PlatiTermin> AddInclude(IQueryable<ePadel.Services.Database.PlatiTermin> query, BaseSearchObject search = null)
         {
-            query = query.Include(x => x.Korisnik).Include(x => x.Termin);
+            query = query.Include(x => x.Korisnik);
             return base.AddInclude(query, search);
         }
 

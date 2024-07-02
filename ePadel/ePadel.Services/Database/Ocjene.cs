@@ -12,5 +12,8 @@ namespace ePadel.Services.Database
 
         public int Ocjena { get; set; }
 
+        public int TerenId { get; set; }
+        public  Tereni? Teren { get; set; }  
+
     }
 }

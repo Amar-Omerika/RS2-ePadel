@@ -359,7 +359,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                                   var data = await _rezervacijaProvider!
                                       .insert(reservationData);
                                   Navigator.popAndPushNamed(context,
-                                      ReservationSuccessfullScreen.routeName);
+                                      ReservationSuccessfulScreen.routeName);
                                 } on Exception catch (error) {
                                   print(error.toString());
                                   if (error
@@ -407,7 +407,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                                   var data = await _rezervacijaProvider!
                                       .insert(reservationData);
                                   Navigator.popAndPushNamed(context,
-                                      ReservationSuccessfullScreen.routeName);
+                                      PaymentSuccessfullScreen.routeName);
                                 } on Exception catch (error) {
                                   print(error.toString());
                                   if (error

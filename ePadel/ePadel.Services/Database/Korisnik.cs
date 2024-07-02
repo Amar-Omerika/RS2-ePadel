@@ -20,7 +20,7 @@ namespace ePadel.Services.Database
         public bool? Aktivan { get; set; }
 
         public virtual ICollection<KorisnikUloge> KorisnikUloges { get; set; }
-
+        public virtual ICollection<Rezervacije>? Rezervacijes { get; set; }
         public string Slika { get; set; }
     }
 }

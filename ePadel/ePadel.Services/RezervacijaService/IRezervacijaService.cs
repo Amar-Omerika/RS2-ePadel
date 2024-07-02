@@ -13,6 +13,6 @@ namespace ePadel.Services.RezervacijaService
     public interface IRezervacijaService : IBaseCRUDService<Model.Rezervacije, RezervacijaSearchObject, RezervacijaInsertRequest, RezervacijaUpdateRequest> 
     {
         List<string> getSlotsForReservationDate(int terenId, string datumRezervacije);
-        Task<PagedResult<Rezervacije>> HistoryReservations(int korsinikId);
+        Task<PagedResult<Rezervacije>> HistoryReservations(int korisnikId);
     }
 }

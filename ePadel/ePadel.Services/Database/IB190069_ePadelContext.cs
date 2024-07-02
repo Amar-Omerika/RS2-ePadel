@@ -18,12 +18,8 @@ namespace ePadel.Services.Database
 
         public virtual DbSet<Korisnik> Korisniks { get; set; } = null!;
         public virtual DbSet<KorisnikUloge> KorisnikUloges { get; set; } = null!;
-        public virtual DbSet<KorisničkePreferencije> KorisničkePreferencijes { get; set; } = null!;
-        public virtual DbSet<RezervacijaStatusi> RezervacijaStatusis { get; set; } = null!;
         public virtual DbSet<Rezervacije> Rezervacijes { get; set; } = null!;
         public virtual DbSet<Tereni> Terenis { get; set; } = null!;
-        public virtual DbSet<TerminStatusi> TerminStatusis { get; set; } = null!;
-        public virtual DbSet<Termini> Terminis { get; set; } = null!;
         public virtual DbSet<TipTerena> TipTerenas { get; set; } = null!;
         public virtual DbSet<Uloga> Ulogas { get; set; } = null!;
         public virtual DbSet<PlatiTermin> PlatiTermins { get; set; } = null!;
@@ -62,38 +58,6 @@ namespace ePadel.Services.Database
                     .HasConstraintName("FK__KorisnikU__Uloga__286302EC");
             });
 
-            modelBuilder.Entity<KorisničkePreferencije>(entity =>
-            {
-                entity.HasKey(e => e.KorisnikId)
-                    .HasName("PK__Korisnič__80B06D61102DA75F");
-
-                entity.ToTable("KorisničkePreferencije");
-
-                entity.Property(e => e.KorisnikId).HasColumnName("KorisnikID");
-
-                entity.Property(e => e.MaksimalnaCena).HasColumnType("decimal(18, 0)");
-
-                entity.Property(e => e.TipTerenaId).HasColumnName("TipTerenaID");
-
-                entity.HasOne(d => d.TipTerena)
-                    .WithMany(p => p.KorisničkePreferencijes)
-                    .HasForeignKey(d => d.TipTerenaId)
-                    .HasConstraintName("FK__Korisničk__TipTe__412EB0B6");
-            });
-
-
-
-           
-
-            modelBuilder.Entity<RezervacijaStatusi>(entity =>
-            {
-                entity.HasKey(e => e.StatusId)
-                    .HasName("PK__Rezervac__C8EE20437885A79B");
-
-                entity.ToTable("RezervacijaStatusi");
-
-                entity.Property(e => e.StatusId).HasColumnName("StatusID");
-            });
 
             modelBuilder.Entity<Rezervacije>(entity =>
             {
@@ -110,17 +74,6 @@ namespace ePadel.Services.Database
 
                 entity.Property(e => e.TerenId).HasColumnName("TerenID");
 
-                entity.Property(e => e.TerminId).HasColumnName("TerminID");
-
-                entity.HasOne(d => d.Teren)
-                    .WithMany(p => p.Rezervacijes)
-                    .HasForeignKey(d => d.TerenId)
-                    .HasConstraintName("FK__Rezervaci__Teren__33D4B598");
-
-                entity.HasOne(d => d.Termin)
-                    .WithMany(p => p.Rezervacijes)
-                    .HasForeignKey(d => d.TerminId)
-                    .HasConstraintName("FK__Rezervaci__Termi__34C8D9D1");
             });
 
             modelBuilder.Entity<Tereni>(entity =>
@@ -136,28 +89,6 @@ namespace ePadel.Services.Database
 
                 entity.Property(e => e.TipTerenaId).HasColumnName("TipTerenaID");
  
-            });
-
-            modelBuilder.Entity<TerminStatusi>(entity =>
-            {
-                entity.HasKey(e => e.StatusId)
-                    .HasName("PK__TerminSt__C8EE20434FDF98E6");
-
-                entity.ToTable("TerminStatusi");
-
-                entity.Property(e => e.StatusId).HasColumnName("StatusID");
-            });
-
-            modelBuilder.Entity<Termini>(entity =>
-            {
-                entity.HasKey(e => e.TerminId)
-                    .HasName("PK__Termini__42126CB556013045");
-
-                entity.ToTable("Termini");
-
-                entity.Property(e => e.TerminId).HasColumnName("TerminID");
-
-                entity.Property(e => e.Datum).HasColumnType("date");
             });
 
             modelBuilder.Entity<TipTerena>(entity =>

@@ -55,11 +55,8 @@ namespace ePadel.Services.RezervacijaService
 
             foreach (var rezervacija in rezervacije)
             {
-                var datum = DateTime.Parse(rezervacija.DatumRezervacije);
-                if (datum.Date < DateTime.Now.Date)
-                {
-                    rezervacijeModel.Add(_mapper.Map<Model.Rezervacije>(rezervacija));
-                }
+    
+                rezervacijeModel.Add(_mapper.Map<Model.Rezervacije>(rezervacija));
             }
 
             var pagedResult = new PagedResult<Model.Rezervacije>()
@@ -106,7 +103,7 @@ namespace ePadel.Services.RezervacijaService
         {
             try
             {
-                var rezervacija = _context.Rezervacijes.Where(x => x.RezervacijaId != id ).ToList();
+                var rezervacija = _context.Rezervacijes.Where(x => x.RezervacijaId != id).ToList();
                 return base.Update(id, request);
             }
             catch (Exception ex)

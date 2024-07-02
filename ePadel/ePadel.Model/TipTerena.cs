@@ -11,7 +11,6 @@ namespace ePadel.Model
         public int TipTerenaId { get; set; }
         public string? Naziv { get; set; }
         public string Slika { get; set; }
-        public virtual ICollection<KorisničkePreferencije> KorisničkePreferencijes { get; set; }
 
     }
 }
