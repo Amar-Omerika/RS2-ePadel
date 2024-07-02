@@ -11,8 +11,8 @@ namespace ePadel.Subscribe
 
         public EmailSendGridService()
         {
-            var encryptedApiKey = Environment.GetEnvironmentVariable("EncryptedApiKey") ?? "Q1vV48KBIqHUaZENVYLno8tOypbKSyUeCEl06219o/0kAZGJapGPnJ37nCqq8prs7qe0GlsDI6Thjc7TT17IG9P9YdVM7NR18JX49XmO/G4=";
-            var encryptionKey = Environment.GetEnvironmentVariable("EncryptionKey") ?? "73Gh30kxP4j7W2nX5Rf8T3vZ20QqM1uY";
+            var encryptedApiKey = Environment.GetEnvironmentVariable("EncryptedApiKey") ?? "4afXjVLYhlXVf4hJHOSuhTcyV509+IxjKBuWXXvC6NW/GU+1AcYAc3Cow9HZ781RuamhUEU80QO2slWQ9aPA1MjcMU/tJM/p+rg5+Qkw+Dc=";
+            var encryptionKey = Environment.GetEnvironmentVariable("EncryptionKey") ?? "Mc4idWDv7a9pnL8t";
             _apiKey = EncryptionHelper.DecryptString(encryptedApiKey, encryptionKey);
             _client = new SendGridClient(_apiKey);
             _fromAddress = new EmailAddress("amar.omerika@edu.fit.ba", "epadel");
