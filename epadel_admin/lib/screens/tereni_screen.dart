@@ -1,6 +1,7 @@
 import 'package:epadel_admin/models/models.dart';
 import 'package:epadel_admin/providers/providers.dart';
 import 'package:epadel_admin/screens/appsidebar.dart';
+import 'package:epadel_admin/screens/feedback_screen.dart';
 import 'package:epadel_admin/screens/korisnici_screen.dart';
 import 'package:epadel_admin/screens/report_screen.dart';
 import 'package:epadel_admin/screens/rezervacije_screen.dart';
@@ -246,7 +247,16 @@ class _TereniScreenState extends State<TereniScreen> {
                     pageBuilder: (_, __, ___) => const RezervacijeScreen(),
                   ),
                 );
-              } else if (page == 'report') {
+              } 
+                  else if (page == 'feedback') {
+                Navigator.of(context).pushReplacement(
+                  PageRouteBuilder(
+                    transitionDuration: Duration.zero,
+                    pageBuilder: (_, __, ___) => const FeedbackScreen(),
+                  ),
+                );
+              } 
+              else if (page == 'report') {
                 Navigator.of(context).pushReplacement(
                   PageRouteBuilder(
                     transitionDuration: Duration.zero,

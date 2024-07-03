@@ -4,6 +4,7 @@ import 'package:epadel_admin/models/models.dart';
 import 'package:epadel_admin/providers/providers.dart';
 import 'package:epadel_admin/providers/rezervacije_provider.dart';
 import 'package:epadel_admin/screens/appsidebar.dart';
+import 'package:epadel_admin/screens/feedback_screen.dart';
 import 'package:epadel_admin/screens/korisnici_screen.dart';
 import 'package:epadel_admin/screens/report_screen.dart';
 import 'package:epadel_admin/screens/tereni_screen.dart';
@@ -134,7 +135,15 @@ class _RezervacijeScreenState extends State<RezervacijeScreen> {
                     pageBuilder: (_, __, ___) => const TereniScreen(),
                   ),
                 );
-              } else if (page == 'report') {
+              } else if (page == 'feedback') {
+                Navigator.of(context).pushReplacement(
+                  PageRouteBuilder(
+                    transitionDuration: Duration.zero,
+                    pageBuilder: (_, __, ___) => const FeedbackScreen(),
+                  ),
+                );
+              }  
+              else if (page == 'report') {
                 Navigator.of(context).pushReplacement(
                   PageRouteBuilder(
                     transitionDuration: Duration.zero,
