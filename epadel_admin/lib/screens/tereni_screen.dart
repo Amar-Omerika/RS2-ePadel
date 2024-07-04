@@ -131,17 +131,16 @@ class _TereniScreenState extends State<TereniScreen> {
       int? cijena,
       int? brojTerena,
       int? tipTerenaId,
-      String? lokacija,
       String? popust,
-      int? cijenaPopusta) async {
+      int? cijenaPopusta, int? gradoviId) async {
     await _terenProvider!.update(id, {
       'naziv': naziv,
       'cijena': cijena,
       'brojTerena': brojTerena,
       'tipTerenaId': tipTerenaId,
-      'lokacija': lokacija,
       'popust': popust,
-      'cijenaPopusta': cijenaPopusta
+      'cijenaPopusta': cijenaPopusta,
+      'gradoviId': gradoviId
     });
     if (context.mounted) {
       Navigator.pop(context);

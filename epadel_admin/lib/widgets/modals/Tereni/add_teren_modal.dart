@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:epadel_admin/models/gradovi.dart';
 import 'package:epadel_admin/models/search_result.dart';
 import 'package:epadel_admin/providers/providers.dart';

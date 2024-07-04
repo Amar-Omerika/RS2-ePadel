@@ -2,6 +2,8 @@
 import 'package:epadel_admin/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:epadel_admin/providers/gradovi_provider.dart';
+import 'package:epadel_admin/models/search_result.dart';
 
 class EditTerenModal extends StatefulWidget {
   final Teren teren;
@@ -22,10 +24,12 @@ class _EditTerenModalState extends State<EditTerenModal> {
   late TextEditingController _nazivController;
   late TextEditingController _brojTerenaController;
   late TextEditingController _cijenaController;
-  late TextEditingController _lokacijaController;
   late TextEditingController _cijenaPopustaController;
+  late GradoviProvider _gradoviProvider;
+  SearchResult<Gradovi>? _gradoviResult;
 
   int? _selectedTipTerena;
+  int? _selectedGradoviId;
   String? _selectedPopust;
 
   final List<Map<String, dynamic>> vrstePodloge = [
@@ -53,11 +57,20 @@ class _EditTerenModalState extends State<EditTerenModal> {
         TextEditingController(text: widget.teren.brojTerena?.toString());
     _cijenaController =
         TextEditingController(text: widget.teren.cijena?.toString());
-    _lokacijaController = TextEditingController(text: widget.teren.lokacija);
     _cijenaPopustaController =
         TextEditingController(text: widget.teren.cijenaPopusta?.toString());
     _selectedTipTerena = widget.teren.tipTerenaId;
+    _selectedGradoviId = widget.teren.gradovi!.id;
     _selectedPopust = widget.teren.popust ?? 'Ne';
+    _initializeData();
+  }
+
+  Future<void> _initializeData() async {
+    _gradoviProvider = GradoviProvider();
+    var data = await _gradoviProvider.get();
+    setState(() {
+      _gradoviResult = data;
+    });
   }
 
   @override
@@ -65,7 +78,6 @@ class _EditTerenModalState extends State<EditTerenModal> {
     _nazivController.dispose();
     _brojTerenaController.dispose();
     _cijenaController.dispose();
-    _lokacijaController.dispose();
     _cijenaPopustaController.dispose();
     super.dispose();
   }
@@ -267,7 +279,7 @@ class _EditTerenModalState extends State<EditTerenModal> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const Text(
-                                'Lokacija',
+                                'Gradovi',
                                 style: TextStyle(
                                     fontSize: 16,
                                     color: Colors.black,
@@ -279,15 +291,27 @@ class _EditTerenModalState extends State<EditTerenModal> {
                                   color: Colors.white,
                                   borderRadius: BorderRadius.circular(12.0),
                                 ),
-                                child: TextFormField(
-                                  controller: _lokacijaController,
-                                  decoration: const InputDecoration(
+                                child: DropdownButtonFormField<int>(
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.all(8.0),
                                     border: InputBorder.none,
                                     enabledBorder: InputBorder.none,
                                     focusedBorder: InputBorder.none,
                                   ),
+                                  value: _selectedGradoviId,
+                                  items: _gradoviResult?.result.map((grad) {
+                                    return DropdownMenuItem<int>(
+                                      value: grad.id,
+                                      child: Text(grad.nazivGrada!),
+                                    );
+                                  }).toList(),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _selectedGradoviId = value;
+                                    });
+                                  },
                                   validator: (value) {
-                                    if (value == null || value.isEmpty) {
+                                    if (value == null) {
                                       return 'Ovo polje je obavezno';
                                     }
                                     return null;
@@ -324,7 +348,7 @@ class _EditTerenModalState extends State<EditTerenModal> {
                                   ),
                                   value: _selectedPopust,
                                   items: ['Da', 'Ne']
-                                      .map((label) => DropdownMenuItem(
+                                      .map((label) => DropdownMenuItem<String>(
                                             child: Text(label),
                                             value: label,
                                           ))
@@ -401,7 +425,6 @@ class _EditTerenModalState extends State<EditTerenModal> {
             backgroundColor: Colors.red,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20.0),
-              side: BorderSide(color: Colors.blue),
             ),
             padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           ),
@@ -423,9 +446,9 @@ class _EditTerenModalState extends State<EditTerenModal> {
                       int.tryParse(_cijenaController.text),
                       int.tryParse(_brojTerenaController.text),
                       _selectedTipTerena,
-                      _lokacijaController.text,
                       _selectedPopust,
                       int.tryParse(_cijenaPopustaController.text),
+                      _selectedGradoviId,
                     );
                   }
                 },
