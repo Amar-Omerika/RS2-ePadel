@@ -22,7 +22,7 @@ namespace ePadel.Services.TerenService
 
         public override IQueryable<ePadel.Services.Database.Tereni> AddInclude(IQueryable<ePadel.Services.Database.Tereni> query, TerenSearchObject search = null)
         {
-            query = query.Include(x => x.TipTerena).Include(x => x.Ocjenes);
+            query = query.Include(x => x.TipTerena).Include(x => x.Ocjenes).Include(x=>x.Gradovi);
             return base.AddInclude(query, search);
         }
         public override IQueryable<ePadel.Services.Database.Tereni> AddFilter(IQueryable<ePadel.Services.Database.Tereni> query, TerenSearchObject search = null)

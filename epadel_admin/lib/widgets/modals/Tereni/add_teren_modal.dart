@@ -1,5 +1,6 @@
-// ignore_for_file: prefer_const_constructors
-
+import 'package:epadel_admin/models/gradovi.dart';
+import 'package:epadel_admin/models/search_result.dart';
+import 'package:epadel_admin/providers/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -17,11 +18,13 @@ class AddTerenModal extends StatefulWidget {
 
 class _AddTerenModalState extends State<AddTerenModal> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  late GradoviProvider _gradoviProvider;
+  SearchResult<Gradovi>? result;
   String? naziv;
   int? brojTerena;
   int? cijena;
   int? tipTerenaId;
-  String? lokacija;
+  int? gradoviId;
   String? popust = 'Ne';
   int? cijenaPopusta = 0;
 
@@ -39,11 +42,25 @@ class _AddTerenModalState extends State<AddTerenModal> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _initializeData();
+  }
+
+  Future<void> _initializeData() async {
+    _gradoviProvider = GradoviProvider();
+    var data = await _gradoviProvider.get();
+    setState(() {
+      result = data;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return AlertDialog(
       backgroundColor: Colors.grey[300],
       content: SizedBox(
-        width: MediaQuery.of(context).size.width * 0.6, // 60% of screen width
+        width: MediaQuery.of(context).size.width * 0.6,
         child: Form(
           key: formKey,
           child: Column(
@@ -70,17 +87,14 @@ class _AddTerenModalState extends State<AddTerenModal> {
                               Container(
                                 decoration: BoxDecoration(
                                   color: Colors.white,
-                                  borderRadius: BorderRadius.circular(
-                                      12.0), 
+                                  borderRadius: BorderRadius.circular(12.0),
                                 ),
                                 child: TextFormField(
                                   decoration: InputDecoration(
                                     contentPadding: EdgeInsets.all(8.0),
                                     border: InputBorder.none,
-                                    enabledBorder: InputBorder
-                                        .none,
-                                    focusedBorder: InputBorder
-                                        .none,
+                                    enabledBorder: InputBorder.none,
+                                    focusedBorder: InputBorder.none,
                                   ),
                                   onChanged: (value) {
                                     naziv = value;
@@ -165,11 +179,9 @@ class _AddTerenModalState extends State<AddTerenModal> {
                                   maxLength: 3,
                                   decoration: InputDecoration(
                                     contentPadding: EdgeInsets.all(8.0),
-                                    border: InputBorder.none, 
-                                    enabledBorder: InputBorder
-                                        .none, 
-                                    focusedBorder: InputBorder
-                                        .none,
+                                    border: InputBorder.none,
+                                    enabledBorder: InputBorder.none,
+                                    focusedBorder: InputBorder.none,
                                   ),
                                   keyboardType: TextInputType.number,
                                   inputFormatters: <TextInputFormatter>[
@@ -212,11 +224,9 @@ class _AddTerenModalState extends State<AddTerenModal> {
                                 child: TextFormField(
                                   decoration: InputDecoration(
                                     contentPadding: EdgeInsets.all(8.0),
-                                    border: InputBorder.none, // No border
-                                    enabledBorder: InputBorder
-                                        .none, // No underline when enabled
-                                    focusedBorder: InputBorder
-                                        .none, // No underline when focused
+                                    border: InputBorder.none,
+                                    enabledBorder: InputBorder.none,
+                                    focusedBorder: InputBorder.none,
                                   ),
                                   keyboardType: TextInputType.number,
                                   inputFormatters: <TextInputFormatter>[
@@ -249,7 +259,7 @@ class _AddTerenModalState extends State<AddTerenModal> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const Text(
-                                'Lokacija',
+                                'Gradovi',
                                 style: TextStyle(
                                     fontSize: 16,
                                     color: Colors.black,
@@ -258,21 +268,30 @@ class _AddTerenModalState extends State<AddTerenModal> {
                               SizedBox(height: 8),
                               Container(
                                 decoration: BoxDecoration(
-                                  color: Colors.white, // Background color
-                                  borderRadius: BorderRadius.circular(
-                                      12.0), // Border radius
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(12.0),
                                 ),
-                                child: TextFormField(
-                                  decoration: const InputDecoration(
+                                child: DropdownButtonFormField<int>(
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.all(8.0),
                                     border: InputBorder.none,
                                     enabledBorder: InputBorder.none,
                                     focusedBorder: InputBorder.none,
                                   ),
+                                  value: gradoviId,
+                                  items: result?.result.map((grad) {
+                                    return DropdownMenuItem<int>(
+                                      value: grad.id,
+                                      child: Text(grad.nazivGrada!),
+                                    );
+                                  }).toList(),
                                   onChanged: (value) {
-                                    lokacija = value;
+                                    setState(() {
+                                      gradoviId = value;
+                                    });
                                   },
                                   validator: (value) {
-                                    if (value == null || value.isEmpty) {
+                                    if (value == null) {
                                       return 'Ovo polje je obavezno';
                                     }
                                     return null;
@@ -309,7 +328,7 @@ class _AddTerenModalState extends State<AddTerenModal> {
                                   ),
                                   value: popust,
                                   items: ['Da', 'Ne']
-                                      .map((label) => DropdownMenuItem(
+                                      .map((label) => DropdownMenuItem<String>(
                                             child: Text(label),
                                             value: label,
                                           ))
@@ -347,11 +366,9 @@ class _AddTerenModalState extends State<AddTerenModal> {
                                     maxLength: 3,
                                     decoration: InputDecoration(
                                       contentPadding: EdgeInsets.all(8.0),
-                                      border: InputBorder.none, // No border
-                                      enabledBorder: InputBorder
-                                          .none, // No underline when enabled
-                                      focusedBorder: InputBorder
-                                          .none, // No underline when focused
+                                      border: InputBorder.none,
+                                      enabledBorder: InputBorder.none,
+                                      focusedBorder: InputBorder.none,
                                     ),
                                     keyboardType: TextInputType.number,
                                     inputFormatters: <TextInputFormatter>[
@@ -411,10 +428,10 @@ class _AddTerenModalState extends State<AddTerenModal> {
                       naziv,
                       cijena,
                       brojTerena,
-                      tipTerenaId,
-                      lokacija,
+                      tipTerenaId,                
                       popust,
                       cijenaPopusta,
+                      gradoviId,
                     );
                   }
                 },
@@ -433,7 +450,6 @@ class _AddTerenModalState extends State<AddTerenModal> {
           ),
         ),
       ],
-
     );
   }
 }

@@ -21,13 +21,15 @@ namespace ePadel.Services.Mapping
             CreateMap<Database.Korisnik, Model.Korisnik>();
             CreateMap<Database.KorisnikUloge, Model.KorisnikUloge>();
             CreateMap<Database.Uloga, Model.Uloga>();
+            CreateMap<Database.Gradovi, Model.Grad>();
             CreateMap<Database.Tereni, Model.Tereni>();
             CreateMap<Database.TipTerena, Model.TipTerena>();
             CreateMap<Database.Rezervacije, Model.Rezervacije>();
             CreateMap<Database.PlatiTermin, Model.PlatiTermin>();
             CreateMap<Database.Feedback, Model.Feedback>();
             CreateMap<Database.Ocjene, Model.Ocjene>();
-      
+            
+
 
 
 

@@ -38,7 +38,7 @@ namespace ePadel.Services.Database
                 KorisnickoIme = "Admin",
                 Email = "adminmail00@gmal.com",
                 LozinkaHash = "523l3SXvXt/OIGacFmI0PUlXkJM=",
-                LozinkaSalt = "ORNOSgr59Nd5PGJx/GNMKg==", 
+                LozinkaSalt = "ORNOSgr59Nd5PGJx/GNMKg==",
                 DominantnaRuka = "Desna",
                 Spol = "Musko",
                 Slika = profilnaSlikaKorisnika,
@@ -65,14 +65,14 @@ namespace ePadel.Services.Database
             new KorisnikUloge()
             {
                 KorisnikUlogeId = 1,
-                UlogaId = 1, 
+                UlogaId = 1,
                 KorisnikId = 1
             },
                new KorisnikUloge()
             {
                 KorisnikUlogeId = 2,
                 UlogaId = 2,
-                KorisnikId = 2 
+                KorisnikId = 2
             }
             });
 
@@ -97,6 +97,29 @@ namespace ePadel.Services.Database
                     Slika = terenBetonSlika
                 }
             });
+            modelBuilder.Entity<Gradovi>().HasData(new Gradovi[]
+   {
+                    new Gradovi()
+            {
+                Id = 1,
+                NazivGrada = "Mostar",
+            },
+            new Gradovi()
+            {
+                Id = 2,
+                NazivGrada = "Sarajevo",
+            },
+            new Gradovi()
+            {
+                Id = 3,
+                NazivGrada = "Tuzla",
+            },
+               new Gradovi()
+            {
+                Id = 4,
+                NazivGrada = "Zenica",
+            },
+   });
 
             modelBuilder.Entity<Tereni>().HasData(new Tereni[]
             {
@@ -108,8 +131,8 @@ namespace ePadel.Services.Database
                     Cijena = 20,
                     Popust = "Da",
                     CijenaPopusta = 10,
-                    Lokacija = "Mostar",
-                    TipTerenaId = 1 
+                    GradoviId = 1,
+                    TipTerenaId = 1
                 },
                 new Tereni()
                 {
@@ -119,8 +142,8 @@ namespace ePadel.Services.Database
                     Cijena = 15,
                     Popust = "Ne",
                     CijenaPopusta = 0,
-                    Lokacija = "Mostar",
-                    TipTerenaId = 2 
+                    GradoviId = 2,
+                    TipTerenaId = 2
                 },
                 new Tereni()
                 {
@@ -130,8 +153,8 @@ namespace ePadel.Services.Database
                     Cijena = 15,
                     Popust = "Ne",
                     CijenaPopusta = 0,
-                    Lokacija = "Mostar",
-                    TipTerenaId = 3 
+                    GradoviId = 3,
+                    TipTerenaId = 3
                 }
             });
             modelBuilder.Entity<Rezervacije>().HasData(new Rezervacije[]
@@ -144,7 +167,17 @@ namespace ePadel.Services.Database
                     RezervacijaStatus = "Aktivna",
                 }
             });
-     
+
+       
+            modelBuilder.Entity<Feedback>().HasData(new Feedback[]{
+            new Feedback()
+            {
+                FeedbackId = 1,
+                KorisnikId = 1,
+                Komentar = "Odlicna aplikacija svaka čast!"
+            },
+
+        });
         }
     }
 }

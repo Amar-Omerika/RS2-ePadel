@@ -93,15 +93,15 @@ class _TereniScreenState extends State<TereniScreen> {
   }
 
   void handleAdd(String? naziv, int? cijena, int? brojTerena, int? tipTerenaId, 
-      String? lokacija, String? popust, int? cijenaPopusta) async {
+       String? popust, int? cijenaPopusta, int? gradoviId) async {
     await _terenProvider!.insert({
       'naziv': naziv,
       'cijena': cijena,
       'brojTerena': brojTerena,
       'tipTerenaId': tipTerenaId,
-      'lokacija': lokacija,
       'popust': popust,
-      'cijenaPopusta': cijenaPopusta
+      'cijenaPopusta': cijenaPopusta,
+      'gradoviId': gradoviId,
     });
     if (context.mounted) {
       Navigator.pop(context);

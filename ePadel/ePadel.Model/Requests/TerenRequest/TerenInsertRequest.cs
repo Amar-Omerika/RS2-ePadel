@@ -18,14 +18,14 @@ namespace ePadel.Model.Requests.TerenRequest
         [Required(ErrorMessage = "Cijena je obavezna")]
         public int Cijena { get; set; }
 
-        [Required(ErrorMessage = "Lokacija je obavezna")]
-        public string? Lokacija { get; set; }
         public string? Popust { get; set; }
         public int CijenaPopusta { get; set; }
 
         [Required(ErrorMessage = "Tip terena je obavezan")]
         public int TipTerenaId { get; set; }
 
+        [Required(ErrorMessage = "Grad je obavezan")]
+        public int GradoviId { get; set; }
 
 
     }

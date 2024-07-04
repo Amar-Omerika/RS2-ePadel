@@ -18,6 +18,7 @@ void main() {
         ChangeNotifierProvider(create: (_) => KorisnikProvider()),
         ChangeNotifierProvider(create: (_) => RezervacijaProvider()),
         ChangeNotifierProvider(create: (_) => FeedbackProvider()),
+        ChangeNotifierProvider(create: (_) => GradoviProvider()),
       ],
       child: const MyApp(),
     ),

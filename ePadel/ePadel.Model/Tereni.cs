@@ -18,11 +18,19 @@ namespace ePadel.Model
         public int Cijena { get; set; }
          
         public int? TipTerenaId { get; set; }
-        public string? Lokacija { get; set; }
         public string? Popust { get; set; }
         public int CijenaPopusta { get; set; }
         public int? Ocjena { get; set; }
+        public string? Lokacija
+        {
+            get
+            {
+                return Gradovi?.NazivGrada;
+            }
+        }
         public virtual TipTerena? TipTerena { get; set; }
+
+        public Grad Gradovi { get; set; }
         public ICollection<Ocjene> Ocjenes { get; } = new List<Ocjene>();
 
     }
