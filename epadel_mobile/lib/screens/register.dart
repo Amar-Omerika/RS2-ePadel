@@ -1,6 +1,9 @@
+import 'package:epadel_mobile/models/models.dart';
 import 'package:epadel_mobile/providers/auth_provider.dart';
+import 'package:epadel_mobile/providers/spolovi_provider.dart'; // Import the provider
 import 'package:epadel_mobile/screens/screens.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -14,21 +17,30 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreenState extends State<RegisterScreen> {
   final formKey = GlobalKey<FormState>();
   late AuthProvider _authProvider;
+  late SpoloviProvider _spoloviProvider; // Add SpoloviProvider
   String? userName;
   String? password;
   String? firstName;
   String? lastName;
-  String? spol = 'Musko';
+  int? selectedSpolId = 1; 
   String? dominantnaRuka = 'Desna';
   List<int> uloge = [2];
+  SearchResult<Spolovi> _spoloviResult = SearchResult<Spolovi>();
   bool registrationFailed = false;
 
   @override
   void initState() {
     super.initState();
     _authProvider = context.read<AuthProvider>();
+    _spoloviProvider = context.read<SpoloviProvider>();
+    loadSpolovi();
   }
-
+  Future<void> loadSpolovi() async {
+    var tmpData = await _spoloviProvider.get();
+    setState(() {
+      _spoloviResult = tmpData;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,7 +64,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   children: [
                     const SizedBox(height: 16.0),
                     const Text(
-                      "Dobrodosli na ePadel", // Your custom text
+                      "Dobrodosli na ePadel",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 26,
@@ -124,22 +136,26 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    DropdownButtonFormField<String>(
-                      value: spol,
-                      items: ['Musko', 'Zensko']
-                          .map((label) => DropdownMenuItem(
-                                child: Text(label),
-                                value: label,
-                              ))
-                          .toList(),
-                      onChanged: (value) {
-                        setState(() {
-                          spol = value!;
-                        });
+                    Consumer<SpoloviProvider>(
+                      builder: (context, provider, child) {
+                        return DropdownButtonFormField<int>(
+                          value: selectedSpolId,
+                          items:_spoloviResult.result.map((spol) {
+                            return DropdownMenuItem(
+                              value: spol.id,
+                              child: Text(spol.tipSpola!),
+                            );
+                          }).toList(),
+                          onChanged: (value) {
+                            setState(() {
+                              selectedSpolId = value;
+                            });
+                          },
+                          decoration: const InputDecoration(
+                            labelText: 'Spol',
+                          ),
+                        );
                       },
-                      decoration: const InputDecoration(
-                        labelText: 'Spol',
-                      ),
                     ),
                     const SizedBox(height: 20),
                     DropdownButtonFormField<String>(
@@ -169,11 +185,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         minimumSize: const Size(double.infinity, 50),
-                        backgroundColor:
-                            Colors.green, // Set the background color to green
+                        backgroundColor: Colors.green,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(
-                              10), // Set the radius of the corners
+                          borderRadius: BorderRadius.circular(10),
                         ),
                       ),
                       onPressed: () async {
@@ -187,7 +201,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             'prezime': lastName!,
                             'korisnickoIme': userName!,
                             'lozinka': password!,
-                            'spol': spol!,
+                            'spoloviId': selectedSpolId!,
                             'dominantnaRuka': dominantnaRuka!,
                             'uloge': [2]
                           };
@@ -210,7 +224,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         'Register',
                         style: TextStyle(
                           fontSize: 20,
-                          color: Colors.white, // Set the text color to white
+                          color: Colors.white,
                         ),
                       ),
                     ),

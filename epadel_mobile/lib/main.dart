@@ -27,6 +27,7 @@ void main() async {
         ChangeNotifierProvider(create: (_) => PlatiTerenProvider()),
         ChangeNotifierProvider(create: (_) => FeedbackProvider()),
         ChangeNotifierProvider(create: (_) => OcjeneProvider()),
+        ChangeNotifierProvider(create: (_) => SpoloviProvider()),
       ],
       child: const MyApp(),
     ),

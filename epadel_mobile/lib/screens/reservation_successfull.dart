@@ -5,7 +5,6 @@ import 'package:epadel_mobile/providers/auth_provider.dart';
 import 'package:epadel_mobile/screens/screens.dart';
 import 'package:flutter/material.dart';
 import 'package:epadel_mobile/providers/feedback_provider.dart';
-import 'package:epadel_mobile/utils/util.dart';
 
 class ReservationSuccessfulScreen extends StatefulWidget {
   const ReservationSuccessfulScreen({super.key});

@@ -1,7 +1,6 @@
 import 'package:epadel_mobile/models/models.dart';
 import 'package:epadel_mobile/providers/auth_provider.dart';
 import 'package:epadel_mobile/providers/providers.dart';
-import 'package:epadel_mobile/utils/util.dart';
 import 'package:epadel_mobile/widgets/rezervacija_card_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
