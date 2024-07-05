@@ -9,6 +9,7 @@ using ePadel.Services.OcjenaService;
 using ePadel.Services.PaymentService;
 using ePadel.Services.PlatiService;
 using ePadel.Services.RezervacijaService;
+using ePadel.Services.SpoloviService;
 using ePadel.Services.TerenService;
 using ePadel.Services.TipTerenaService;
 using Microsoft.AspNetCore.Authentication;
@@ -31,6 +32,7 @@ builder.Services.AddTransient<INotificationProducer, NotificationProducer>();
 builder.Services.AddTransient<IFeedbackService, FeedbackService>();
 builder.Services.AddTransient<IOcjenaService, OcjenaService>();
 builder.Services.AddTransient<IGradoviService, GradoviService>();
+builder.Services.AddTransient<ISpoloviService, SpoloviService>();
 builder.Services.AddTransient<StripeService>();
 
 
