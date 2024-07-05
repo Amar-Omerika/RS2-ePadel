@@ -22,6 +22,7 @@ namespace ePadel.Model.Requests.TerenRequest
 
         [Required(ErrorMessage = "Tip terena je obavezan")]
         public int TipTerenaId { get; set; }
+
         [Required(ErrorMessage = "Grad je obavezan")]
         public int GradoviId { get; set; }
     }

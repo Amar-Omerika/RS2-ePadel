@@ -18,6 +18,7 @@ namespace ePadel.Services.Mapping
     public class MappingProfile:Profile
     {
         public MappingProfile() {
+            CreateMap<Database.Spolovi, Model.Spol>();
             CreateMap<Database.Korisnik, Model.Korisnik>();
             CreateMap<Database.KorisnikUloge, Model.KorisnikUloge>();
             CreateMap<Database.Uloga, Model.Uloga>();
@@ -28,14 +29,7 @@ namespace ePadel.Services.Mapping
             CreateMap<Database.PlatiTermin, Model.PlatiTermin>();
             CreateMap<Database.Feedback, Model.Feedback>();
             CreateMap<Database.Ocjene, Model.Ocjene>();
-            
-
-
-
-
-
-
-
+    
 
             CreateMap<KorisnikInsertRequest, Database.Korisnik>();
             CreateMap<KorisnikUpdateRequest, Database.Korisnik>();
@@ -51,7 +45,9 @@ namespace ePadel.Services.Mapping
             CreateMap<RezervacijaUpdateRequest, Database.Rezervacije>();
 
             CreateMap<PlatiInsertRequest, Database.PlatiTermin>();
+
             CreateMap<FeedbackInsertRequest, Database.Feedback>();
+
             CreateMap<OcjeneInsertRequest, Database.Ocjene>();
 
 

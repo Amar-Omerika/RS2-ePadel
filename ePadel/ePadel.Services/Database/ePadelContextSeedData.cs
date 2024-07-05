@@ -27,7 +27,19 @@ namespace ePadel.Services.Database
                 Naziv = "Igrac"
             }
             });
-
+            modelBuilder.Entity<Spolovi>().HasData(new Spolovi[]
+{
+            new Spolovi()
+            {
+                Id = 1,
+                TipSpola = "Musko",
+            },
+           new Spolovi()
+            {
+                Id = 2,
+                TipSpola = "Zensko",
+            },
+            });
             modelBuilder.Entity<Korisnik>().HasData(new Korisnik[]
             {
             new Korisnik()
@@ -40,7 +52,7 @@ namespace ePadel.Services.Database
                 LozinkaHash = "523l3SXvXt/OIGacFmI0PUlXkJM=",
                 LozinkaSalt = "ORNOSgr59Nd5PGJx/GNMKg==",
                 DominantnaRuka = "Desna",
-                Spol = "Musko",
+                SpoloviId = 1,
                 Slika = profilnaSlikaKorisnika,
                 Aktivan = true
             },
@@ -54,7 +66,7 @@ namespace ePadel.Services.Database
                     LozinkaHash = "523l3SXvXt/OIGacFmI0PUlXkJM=",
                     LozinkaSalt = "ORNOSgr59Nd5PGJx/GNMKg==",
                     DominantnaRuka = "Desna",
-                    Spol = "Musko",
+                    SpoloviId = 2,
                     Slika = profilnaSlikaKorisnika,
                     Aktivan = true
             }
@@ -99,7 +111,7 @@ namespace ePadel.Services.Database
             });
             modelBuilder.Entity<Gradovi>().HasData(new Gradovi[]
    {
-                    new Gradovi()
+            new Gradovi()
             {
                 Id = 1,
                 NazivGrada = "Mostar",

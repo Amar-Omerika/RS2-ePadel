@@ -16,7 +16,7 @@ namespace ePadel.Services.KorisnikService
         }
         public override IQueryable<ePadel.Services.Database.Korisnik> AddInclude(IQueryable<ePadel.Services.Database.Korisnik> query, KorisnikSearchObject search = null)
         {
-            query = query.Include(x => x.KorisnikUloges);
+            query = query.Include(x => x.KorisnikUloges).Include(x=>x.Spolovi);
             return base.AddInclude(query, search);
         }
 
@@ -28,7 +28,7 @@ namespace ePadel.Services.KorisnikService
                 filteredQuery = filteredQuery.Where(x =>  x.KorisnickoIme.ToLower().Contains(search.Tekst.ToLower()));
 
             if (!string.IsNullOrWhiteSpace(search?.Spol))
-                filteredQuery = filteredQuery.Where(x => x.Spol.ToLower().Contains(search.Spol.ToLower()));
+                filteredQuery = filteredQuery.Where(x => x.Spolovi.TipSpola.ToLower().Contains(search.Spol.ToLower()));
 
             return filteredQuery;
 

@@ -23,7 +23,7 @@ namespace ePadel.Model.Requests.KorisnikRequest
         public string? Password { get; set; }
 
         [Required(ErrorMessage = "Spol je obavezan.")]
-        public string? Spol { get; set; }
+        public int SpoloviId { get; set; }
 
         [Required(ErrorMessage = "Dominantna ruka je obavezna.")]
         public string? DominantnaRuka { get; set; }

@@ -14,13 +14,15 @@ namespace ePadel.Services.Database
         public string? BrTelefona { get; set; }
         public string? LozinkaHash { get; set; }
         public string? LozinkaSalt { get; set; }
-        public string? Spol { get; set; }
         public string? DominantnaRuka { get; set; }
 
+        public int SpoloviId { get; set; }
         public bool? Aktivan { get; set; }
 
+        public Spolovi Spolovi { get; set; }
         public virtual ICollection<KorisnikUloge> KorisnikUloges { get; set; }
         public virtual ICollection<Rezervacije>? Rezervacijes { get; set; }
+      
         public string Slika { get; set; }
     }
 }
