@@ -1,7 +1,9 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:epadel_admin/models/models.dart';
+import 'package:epadel_admin/providers/providers.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class EditKorisnikModal extends StatefulWidget {
   final Korisnik korisnik;
@@ -21,12 +23,11 @@ class _EditKorisnikModalState extends State<EditKorisnikModal> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _korisnickoImeController;
   late TextEditingController _emailController;
-
   String? _selectedDominantnaRuka;
-  String? _selectedSpol;
+  int? _selectedSpolId;
 
   final List<String> ruke = ['Lijeva', 'Desna'];
-  final List<String> spolovi = ['Musko', 'Zensko'];
+  SearchResult<Spolovi> _spoloviResult = SearchResult<Spolovi>();
 
   @override
   void initState() {
@@ -35,7 +36,23 @@ class _EditKorisnikModalState extends State<EditKorisnikModal> {
         TextEditingController(text: widget.korisnik.korisnickoIme);
     _emailController = TextEditingController(text: widget.korisnik.email);
     _selectedDominantnaRuka = widget.korisnik.dominantnaRuka ?? ruke.first;
-    _selectedSpol = widget.korisnik.spol ?? spolovi.first;
+    _selectedSpolId = null;
+
+    loadSpolovi();
+  }
+
+  Future<void> loadSpolovi() async {
+    var tmpData = await context.read<SpoloviProvider>().get();
+    setState(() {
+      _spoloviResult = tmpData;
+
+      // Set the _selectedSpolId based on the spol value from korisnik
+      Spolovi? selectedSpol = _spoloviResult.result.firstWhere(
+        (spol) => spol.tipSpola == widget.korisnik.spol,
+        orElse: () => Spolovi(),
+      );
+      _selectedSpolId = selectedSpol.id;
+    });
   }
 
   @override
@@ -193,17 +210,17 @@ class _EditKorisnikModalState extends State<EditKorisnikModal> {
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(12.0),
                       ),
-                      child: DropdownButtonFormField<String>(
-                        value: _selectedSpol,
-                        items: spolovi.map((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
+                      child: DropdownButtonFormField<int>(
+                        value: _selectedSpolId,
+                        items: _spoloviResult.result.map((Spolovi spol) {
+                          return DropdownMenuItem<int>(
+                            value: spol.id,
+                            child: Text(spol.tipSpola!),
                           );
                         }).toList(),
                         onChanged: (newValue) {
                           setState(() {
-                            _selectedSpol = newValue;
+                            _selectedSpolId = newValue;
                           });
                         },
                         decoration: InputDecoration(
@@ -249,7 +266,8 @@ class _EditKorisnikModalState extends State<EditKorisnikModal> {
                 _korisnickoImeController.text,
                 _emailController.text,
                 _selectedDominantnaRuka,
-                _selectedSpol,
+                _selectedSpolId,
+                widget.korisnik.slika,
               );
             }
           },

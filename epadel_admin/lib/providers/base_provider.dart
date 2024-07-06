@@ -30,13 +30,14 @@ abstract class BaseProvider<T> with ChangeNotifier {
 
   Future<T> getById(int id, [dynamic additionalData]) async {
     var url = Uri.parse("$_baseUrl$_endpoint/$id");
-
+    print("data");
     Map<String, String> headers = createHeaders();
 
     var response = await http!.get(url, headers: headers);
 
     if (isValidResponseCode(response)) {
       var data = jsonDecode(response.body);
+
       return fromJson(data);
     } else {
       throw Exception("Exception... handle this gracefully");

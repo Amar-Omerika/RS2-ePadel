@@ -21,6 +21,7 @@ void main() {
         ChangeNotifierProvider(create: (_) => FeedbackProvider()),
         ChangeNotifierProvider(create: (_) => GradoviProvider()),
         ChangeNotifierProvider(create: (_) => ReportProvider()),
+        ChangeNotifierProvider(create: (_) => SpoloviProvider()),
       ],
       child: const MyApp(),
     ),

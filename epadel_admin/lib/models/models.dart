@@ -6,4 +6,4 @@ export 'search_result.dart';
 export 'feedback.dart';
 export 'gradovi.dart';
 export 'reporti.dart';
-
+export 'spolovi.dart';

@@ -55,7 +55,7 @@ public class RabbitMQHostedService : IHostedService
     {
         Console.WriteLine($"Registracija zaprimljena: {entity?.RegistracijaNotifikacijaId}, PorukaDobrodoslice: {entity?.PorukaDobrodoslice}, Email: {entity?.Email}");
         _sendGridService.Send("Registracija zaprimljena", $"Dobrodosli {entity.PorukaDobrodoslice}.", entity.Email, entity.Email);
-        _service.SendEmailAsync("amaaromerika00@gmail.com", "Nova registracija na ePadelu!", $"Poruka dobrodoslice {entity.PorukaDobrodoslice}.");
+        _service.SendEmailAsync(entity.Email, "Nova registracija na ePadelu!", $"{entity.PorukaDobrodoslice}.");
         return Task.CompletedTask;
     }
 }

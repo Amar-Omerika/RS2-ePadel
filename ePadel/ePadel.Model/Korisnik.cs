@@ -20,6 +20,7 @@ namespace ePadel.Model
                 return Spolovi?.TipSpola;
             }
         }
+
         public string? DominantnaRuka { get; set; }
         public string? Slika { get; set; }
         public Spol Spolovi { get; set; }

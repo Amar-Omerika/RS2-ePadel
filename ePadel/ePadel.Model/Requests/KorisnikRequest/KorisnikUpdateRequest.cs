@@ -17,8 +17,8 @@ namespace ePadel.Model.Requests.KorisnikRequest
         [MinLength(4)]
         public string? KorisnickoIme { get; set; }
 
-        [Required(AllowEmptyStrings = false)]
-        public string? Spol { get; set; }
+        [Required(ErrorMessage = "Spol je obavezan.")]
+        public int SpoloviId { get; set; }
 
         public string? DominantnaRuka { get; set; }
 
