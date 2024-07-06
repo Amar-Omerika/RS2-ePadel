@@ -16,6 +16,5 @@ namespace ePadel.Services.SpoloviService
         public SpoloviService(IB190069_ePadelContext context, IMapper mapper) : base(context, mapper)
         {
         }
-
     }
 }

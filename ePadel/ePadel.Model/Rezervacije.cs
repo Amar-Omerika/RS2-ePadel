@@ -16,6 +16,8 @@ namespace ePadel.Model
         public string? DatumRezervacije { get; set; }
         public string? VrijemeRezervacije { get; set; }
         public string? PotrebnaReketa { get; set; }
+
+        public string? PaymentMethod { get; set; }
         public int? BrojReketa { get; set; }
         //public string PaymentMethod
         //{

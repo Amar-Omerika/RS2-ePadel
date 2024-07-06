@@ -4,6 +4,7 @@ using ePadel.Model.Requests.KorisnikRequest;
 using ePadel.Model.Requests.KorisnikUlogeRequest;
 using ePadel.Model.Requests.OcjeneRequest;
 using ePadel.Model.Requests.PlatiRequest;
+using ePadel.Model.Requests.ReportiRequest;
 using ePadel.Model.Requests.RezervacijaRequest;
 using ePadel.Model.Requests.TerenRequest;
 using ePadel.Model.Requests.TipTerenaRequest;
@@ -29,7 +30,9 @@ namespace ePadel.Services.Mapping
             CreateMap<Database.PlatiTermin, Model.PlatiTermin>();
             CreateMap<Database.Feedback, Model.Feedback>();
             CreateMap<Database.Ocjene, Model.Ocjene>();
-    
+            CreateMap<Database.Reporti, Model.Reporti>();
+
+
 
             CreateMap<KorisnikInsertRequest, Database.Korisnik>();
             CreateMap<KorisnikUpdateRequest, Database.Korisnik>();
@@ -49,6 +52,9 @@ namespace ePadel.Services.Mapping
             CreateMap<FeedbackInsertRequest, Database.Feedback>();
 
             CreateMap<OcjeneInsertRequest, Database.Ocjene>();
+
+            CreateMap<ReportiInsertRequest, Database.Reporti>();
+
 
 
 

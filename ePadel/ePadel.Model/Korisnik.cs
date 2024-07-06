@@ -24,6 +24,7 @@ namespace ePadel.Model
         public string? Slika { get; set; }
         public Spol Spolovi { get; set; }
         public virtual ICollection<KorisnikUloge>? KorisnikUloges { get; set; }
+        public virtual IEnumerable<Reporti>? Reportis { get; set; }
 
     }
 }

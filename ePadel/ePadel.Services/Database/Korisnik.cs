@@ -22,7 +22,8 @@ namespace ePadel.Services.Database
         public Spolovi Spolovi { get; set; }
         public virtual ICollection<KorisnikUloge> KorisnikUloges { get; set; }
         public virtual ICollection<Rezervacije>? Rezervacijes { get; set; }
-      
+        public virtual IEnumerable<Reporti>? Reportis { get; set; }
+
         public string Slika { get; set; }
     }
 }

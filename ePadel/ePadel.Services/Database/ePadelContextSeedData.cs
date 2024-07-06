@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Stripe;
 
 namespace ePadel.Services.Database
 {
@@ -176,8 +177,38 @@ namespace ePadel.Services.Database
                     RezervacijaId = 1,
                     KorisnikId = 2,
                     TerenId = 1,
-                    RezervacijaStatus = "Aktivna",
-                }
+                    Cijena = 20,
+                    VrijemeRezervacije = "12:00-13:00",
+                    DatumRezervacije = "2024-09-09",
+                    PotrebnaReketa = "Ne",
+                    PaymentMethod = "cash",
+                    BrojReketa = 0,
+                },
+                  new Rezervacije()
+                {
+                    RezervacijaId = 2,
+                    KorisnikId = 2,
+                    TerenId = 2,
+                    Cijena = 30,
+                    VrijemeRezervacije = "12:00-13:00",
+                    DatumRezervacije = "2024-09-10",
+                    PotrebnaReketa = "Ne",
+                    PaymentMethod = "cash",
+                    BrojReketa = 0,             
+                },
+                 new Rezervacije()
+                {
+                    RezervacijaId = 3,
+                    KorisnikId = 2,
+                    TerenId = 3,
+                    Cijena = 30,
+                    VrijemeRezervacije = "12:00-13:00",
+                    DatumRezervacije = "2024-09-11",
+                    PotrebnaReketa = "Ne",
+                    PaymentMethod = "cash",
+                    BrojReketa = 0,
+                },
+
             });
 
        
