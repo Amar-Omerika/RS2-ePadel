@@ -66,8 +66,12 @@ class _ReportScreenState extends State<ReportScreen> {
   }
 
   void resetSearch() {
-    _selectedYear = '2024';
-    _selectedTeren = 'Sve';
+    setState(() {
+      _selectedYear = '2024';
+      _selectedTeren = 'Sve';
+      _selectedTerenInt = -1;
+      _initializeStatistic();
+    });
   }
 
   @override
@@ -121,95 +125,80 @@ class _ReportScreenState extends State<ReportScreen> {
           Expanded(
             child: Container(
               alignment: Alignment.topCenter,
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 140.0, vertical: 50.0),
-              child: Center(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Center(
-                      child: Text(
-                        "Reporti za terene",
-                        style: TextStyle(
-                          fontSize: 50,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
+              padding: const EdgeInsets.symmetric(horizontal: 50.0, vertical: 20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Center(
+                    child: Text(
+                      "Reporti za terene",
+                      style: TextStyle(
+                        fontSize: 36,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
                       ),
                     ),
-                    const SizedBox(height: 50),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        godine(),
-                        tereni(),
-                      ],
-                    ),
-                    const SizedBox(height: 50),
-                    Align(
-                      alignment: Alignment.topCenter,
-                      child: (_selectedTeren == "Sve")
-                          ? Text(
-                              "Statistika za sve terene u $_selectedYear godini:",
-                              style: const TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold),
-                            )
-                          : Text(
-                              "Statistika za ${_tereni!.result.where((x) => x.terenId.toString() == _selectedTeren).first.naziv} u $_selectedYear godini:",
-                              style: const TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold),
-                            ),
-                    ),
-                    Align(
-                      alignment: Alignment.topCenter,
-                      child: Text(
-                        "Broj rezervacija: ${report?.brojRezervacijeTerena}",
-                        style: const TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.normal),
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment.topCenter,
-                      child: Text(
-                        "Ukupna zarada: ${report?.ukupnaZaradaTerena}KM",
-                        style: const TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.normal),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    const Align(
-                      alignment: Alignment.topCenter,
-                      child: Text(
-                        "Ostala statistika",
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment.topCenter,
-                      child: Text(
-                        "Ukupan broj korisnika aplikacije: ${report?.ukupanBrojKorisnika}",
-                        style: const TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.normal),
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment.topCenter,
-                      child: Text(
-                        "Ukupna zarada kroz aplikaciju: ${report?.ukupnaZaradaSistema}KM",
-                        style: const TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.normal),
-                      ),
-                    ),
-                    pdfButton(),
-                  ],
-                ),
+                  ),
+                  const SizedBox(height: 30),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(child: godine()),
+                      const SizedBox(width: 20),
+                      Expanded(child: tereni()),
+                    ],
+                  ),
+                  const SizedBox(height: 30),
+                  _buildStatisticCard(
+                    title: (_selectedTeren == "Sve")
+                        ? "Statistika za sve terene u $_selectedYear godini:"
+                        : "Statistika za ${_tereni!.result.where((x) => x.terenId.toString() == _selectedTeren).first.naziv} u $_selectedYear godini:",
+                    content: [
+                      "Broj rezervacija: ${report?.brojRezervacijeTerena}",
+                      "Ukupna zarada: ${report?.ukupnaZaradaTerena}KM",
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  _buildStatisticCard(
+                    title: "Statistika sistema",
+                    content: [
+                      "Ukupan broj korisnika aplikacije: ${report?.ukupanBrojKorisnika}",
+                      "Ukupna zarada kroz aplikaciju: ${report?.ukupnaZaradaSistema}KM",
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  pdfButton(),
+                ],
               ),
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildStatisticCard({required String title, required List<String> content}) {
+    return Center(
+      child: Card(
+        elevation: 4,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 10),
+              ...content.map((text) => Text(
+                text,
+                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.normal),
+              )).toList(),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -235,7 +224,7 @@ class _ReportScreenState extends State<ReportScreen> {
               pw.Text('Broj rezervacija: ${report?.brojRezervacijeTerena}'),
               pw.Text('Ukupna zarada: ${report?.ukupnaZaradaTerena}KM'),
               pw.SizedBox(height: 20),
-              pw.Text('Ostala statistika',
+              pw.Text('Statistika sistema',
                   style: const pw.TextStyle(fontSize: 20)),
               pw.SizedBox(height: 20),
               pw.Text(
@@ -290,7 +279,7 @@ class _ReportScreenState extends State<ReportScreen> {
           child: const Padding(
             padding: EdgeInsets.all(10.0),
             child: Text(
-              'Skinite PDF statistike',
+              'Skinite PDF',
               style: TextStyle(
                   color: Colors.white,
                   fontSize: 25,
@@ -316,7 +305,7 @@ class _ReportScreenState extends State<ReportScreen> {
         const SizedBox(height: 8),
         Container(
           height: 40,
-          width: 180,
+          width: double.infinity,
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(5.0),
@@ -376,7 +365,7 @@ class _ReportScreenState extends State<ReportScreen> {
         const SizedBox(height: 8),
         Container(
           height: 40,
-          width: 180,
+          width: double.infinity,
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(5.0),
