@@ -1,6 +1,20 @@
 version: "3"
 
 services:
+  rabbitMQ:
+    image: rabbitmq:3-management
+    container_name: 'rabbitmq_container'
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    ports:
+      - 8050:15672
+      - 5672:5672
+    expose:
+      - 5672
+    networks:
+      - epadelnet 
+
   epadel-db:
     image: mcr.microsoft.com/mssql/server:2019-latest
     environment:
@@ -10,7 +24,7 @@ services:
     ports:
       - 1401:1433
     expose:
-        - 1433
+      - 1433
     networks:
       - epadelnet
 
@@ -21,6 +35,10 @@ services:
     environment:
       - ConnectionStrings:DefaultConnection=Server=epadel-db,1433;Database=ePadel;User=sa;Password=QWElkj132!;ConnectRetryCount=0;TrustServerCertificate=True;
       - ASPNETCORE_ENVIRONMENT=Development
+      - RABBITMQ_HOST=rabbitMQ
+      - RABBITMQ_USERNAME=guest
+      - RABBITMQ_PASSWORD=guest
+      - RABBITMQ_VIRTUALHOST=/
     ports:
       - 5192:5192
     networks:
@@ -29,6 +47,30 @@ services:
       - epadel-db
     depends_on:
       - epadel-db
+      - rabbitMQ
+
+  rabbitmq-service:
+    restart: on-failure
+    build:
+      context: .
+      dockerfile: ePadel/ePadel.Subscriber/Dockerfile
+    environment:
+      - RABBITMQ_HOST=rabbitMQ
+      - RABBITMQ_USERNAME=guest
+      - RABBITMQ_PASSWORD=guest
+      - RABBITMQ_VIRTUALHOST=/
+      - OUTLOOK_MAIL=amar.omerika@edu.fit.ba
+      - OUTLOOK_PASS=Maserati123!
+      - EncryptedApiKey=4afXjVLYhlXVf4hJHOSuhTcyV509+IxjKBuWXXvC6NW/GU+1AcYAc3Cow9HZ781RuamhUEU80QO2slWQ9aPA1MjcMU/tJM/p+rg5+Qkw+Dc=
+      - EncryptionKey=Mc4idWDv7a9pnL8t
+    depends_on:
+      - rabbitMQ
+      - epadel-db
+      - epadel-api
+    networks:
+      - epadelnet
+    ports:
+      - 7101:80
 
 networks:
   epadelnet:
