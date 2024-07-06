@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:epadel_admin/Helpers/eror_dialog.dart';
+import 'package:epadel_admin/utils/util.dart';
 import 'package:flutter/material.dart';
 import 'package:epadel_admin/models/models.dart';
 import 'package:epadel_admin/providers/providers.dart';
@@ -262,11 +264,28 @@ class _ReportScreenState extends State<ReportScreen> {
         padding: const EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 20.0),
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF870000),
+              backgroundColor: Colors.green,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10))),
           onPressed: () async {
             await _pdfGenerator();
+                try {
+              _reportProvider = ReportProvider();
+              Map reportPost = {
+                'BrojRezervacijeTerena': report?.brojRezervacijeTerena,
+                'UkupnaZaradaTerena': report?.ukupnaZaradaTerena,
+                'UkupanBrojKorisnika':
+                    report?.ukupanBrojKorisnika,
+                'UkupnaZaradaSistema': report?.ukupnaZaradaSistema,
+                'KorisnikId': Authorization.korisnikId,
+              };
+              _reportProvider.insert(reportPost);
+            } on Exception catch (e) {
+              String errorMessage =
+                  e.toString().replaceFirst('Exception: ', '');
+              // ignore: use_build_context_synchronously
+              showErrorDialog(context, errorMessage);
+            }
           },
           child: const Padding(
             padding: EdgeInsets.all(10.0),
