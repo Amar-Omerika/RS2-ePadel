@@ -52,8 +52,8 @@ services:
   rabbitmq-service:
     restart: on-failure
     build:
-      context: .
-      dockerfile: ePadel/ePadel.Subscriber/Dockerfile
+      context: ./ePadel
+      dockerfile: ./ePadel.Subscribe/Dockerfile
     environment:
       - RABBITMQ_HOST=rabbitMQ
       - RABBITMQ_USERNAME=guest
