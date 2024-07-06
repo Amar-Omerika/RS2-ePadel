@@ -1,10 +1,7 @@
-
-
+import 'package:epadel_admin/models/models.dart';
+import 'package:epadel_admin/providers/base_provider.dart';
 import 'dart:convert';
 import 'dart:io';
-
-import 'package:epadel_admin/models/models.dart';
-import 'package:epadel_admin/providers/providers.dart';
 import 'package:http/io_client.dart';
 
 class ReportProvider extends BaseProvider<Report> {
@@ -13,7 +10,7 @@ class ReportProvider extends BaseProvider<Report> {
   static String? _baseUrl;
   ReportProvider() : super("Reporti"){
    _baseUrl = const String.fromEnvironment("baseUrl",
-        defaultValue: "http://10.0.2.2:44342/");
+        defaultValue: "https://localhost:44342/");
     print("baseurl: $_baseUrl");
 
     if (_baseUrl!.endsWith("/") == false) {
@@ -26,7 +23,7 @@ class ReportProvider extends BaseProvider<Report> {
   }
 
    Future<Report> getReporti({dynamic search}) async {
-    var url = "$_baseUrl" "/reporti";
+    var url = "$_baseUrl" "Reporti/reporti";
 
     if (search != null) {
       String queryString = getQueryString(search);

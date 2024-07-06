@@ -1,6 +1,7 @@
 import 'package:epadel_admin/providers/auth_provider.dart';
 import 'package:epadel_admin/providers/feedback_provider.dart';
 import 'package:epadel_admin/providers/providers.dart';
+import 'package:epadel_admin/providers/report_provider.dart';
 import 'package:epadel_admin/screens/feedback_screen.dart';
 import 'package:epadel_admin/screens/korisnici_screen.dart';
 import 'package:epadel_admin/screens/main_navigation_screen.dart';
@@ -19,6 +20,7 @@ void main() {
         ChangeNotifierProvider(create: (_) => RezervacijaProvider()),
         ChangeNotifierProvider(create: (_) => FeedbackProvider()),
         ChangeNotifierProvider(create: (_) => GradoviProvider()),
+        ChangeNotifierProvider(create: (_) => ReportProvider()),
       ],
       child: const MyApp(),
     ),
