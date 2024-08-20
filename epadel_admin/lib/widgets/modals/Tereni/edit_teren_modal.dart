@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:epadel_admin/models/models.dart';
+import 'package:epadel_admin/providers/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:epadel_admin/providers/gradovi_provider.dart';
@@ -26,7 +27,10 @@ class _EditTerenModalState extends State<EditTerenModal> {
   late TextEditingController _cijenaController;
   late TextEditingController _cijenaPopustaController;
   late GradoviProvider _gradoviProvider;
+  late TipTerenaProvider _tipTerenaProvider;
+  
   SearchResult<Gradovi>? _gradoviResult;
+  SearchResult<TipTerena>? resultTipTerena;
 
   int? _selectedTipTerena;
   int? _selectedGradoviId;
@@ -39,11 +43,6 @@ class _EditTerenModalState extends State<EditTerenModal> {
   String? _gradoviError;
   String? _cijenaPopustaError;
 
-  final List<Map<String, dynamic>> vrstePodloge = [
-    {"tipTerenaId": 1, "naziv": "Guma"},
-    {"tipTerenaId": 2, "naziv": "Trava"},
-    {"tipTerenaId": 3, "naziv": "Beton"}
-  ];
 
   bool get isSaveButtonDisabled {
     if (_selectedPopust == 'Da' &&
@@ -74,9 +73,12 @@ class _EditTerenModalState extends State<EditTerenModal> {
 
   Future<void> _initializeData() async {
     _gradoviProvider = GradoviProvider();
+    _tipTerenaProvider = TipTerenaProvider();
     var data = await _gradoviProvider.get();
+    var dataTipTerena = await _tipTerenaProvider.get();
     setState(() {
       _gradoviResult = data;
+      resultTipTerena = dataTipTerena;
     });
   }
 
@@ -192,10 +194,10 @@ class _EditTerenModalState extends State<EditTerenModal> {
                                     focusedBorder: InputBorder.none,
                                   ),
                                   value: _selectedTipTerena,
-                                  items: vrstePodloge.map((podloga) {
+                                  items: resultTipTerena?.result.map((podloga) {
                                     return DropdownMenuItem<int>(
-                                      value: podloga['tipTerenaId'],
-                                      child: Text(podloga['naziv']),
+                                      value: podloga.tipTerenaId,
+                                      child: Text(podloga.naziv!),
                                     );
                                   }).toList(),
                                   onChanged: (value) {
