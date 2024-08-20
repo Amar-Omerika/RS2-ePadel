@@ -32,6 +32,12 @@ class _EditTerenModalState extends State<EditTerenModal> {
   int? _selectedGradoviId;
   String? _selectedPopust;
 
+  String? _nazivError;
+  String? _brojTerenaError;
+  String? _cijenaError;
+  String? _tipTerenaError;
+  String? _gradoviError;
+  String? _cijenaPopustaError;
 
   final List<Map<String, dynamic>> vrstePodloge = [
     {"tipTerenaId": 1, "naziv": "Guma"},
@@ -71,6 +77,19 @@ class _EditTerenModalState extends State<EditTerenModal> {
     var data = await _gradoviProvider.get();
     setState(() {
       _gradoviResult = data;
+    });
+  }
+
+  void _validateForm() {
+    setState(() {
+      _nazivError = _nazivController.text.isEmpty ? 'Ovo polje je obavezno' : null;
+      _brojTerenaError = _brojTerenaController.text.isEmpty ? 'Ovo polje je obavezno' : null;
+      _cijenaError = _cijenaController.text.isEmpty ? 'Ovo polje je obavezno' : null;
+      _tipTerenaError = _selectedTipTerena == null ? 'Ovo polje je obavezno' : null;
+      _gradoviError = _selectedGradoviId == null ? 'Ovo polje je obavezno' : null;
+      if (_selectedPopust == 'Da') {
+        _cijenaPopustaError = _cijenaPopustaController.text.isEmpty ? 'Ovo polje je obavezno' : null;
+      }
     });
   }
 
@@ -133,6 +152,17 @@ class _EditTerenModalState extends State<EditTerenModal> {
                                   },
                                 ),
                               ),
+                              if (_nazivError != null)
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 8.0, top: 4.0),
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      _nazivError!,
+                                      style: TextStyle(color: Colors.red, fontSize: 12),
+                                    ),
+                                  ),
+                                ),
                             ],
                           ),
                         ),
@@ -171,6 +201,7 @@ class _EditTerenModalState extends State<EditTerenModal> {
                                   onChanged: (value) {
                                     setState(() {
                                       _selectedTipTerena = value;
+                                      _tipTerenaError = null;
                                     });
                                   },
                                   validator: (value) {
@@ -181,6 +212,17 @@ class _EditTerenModalState extends State<EditTerenModal> {
                                   },
                                 ),
                               ),
+                              if (_tipTerenaError != null)
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 8.0, top: 4.0),
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      _tipTerenaError!,
+                                      style: TextStyle(color: Colors.red, fontSize: 12),
+                                    ),
+                                  ),
+                                ),
                             ],
                           ),
                         ),
@@ -223,6 +265,17 @@ class _EditTerenModalState extends State<EditTerenModal> {
                                   },
                                 ),
                               ),
+                              if (_cijenaError != null)
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 8.0, top: 4.0),
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      _cijenaError!,
+                                      style: TextStyle(color: Colors.red, fontSize: 12),
+                                    ),
+                                  ),
+                                ),
                             ],
                           ),
                         ),
@@ -264,6 +317,17 @@ class _EditTerenModalState extends State<EditTerenModal> {
                                   },
                                 ),
                               ),
+                              if (_brojTerenaError != null)
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 8.0, top: 4.0),
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      _brojTerenaError!,
+                                      style: TextStyle(color: Colors.red, fontSize: 12),
+                                    ),
+                                  ),
+                                ),
                             ],
                           ),
                         ),
@@ -309,6 +373,7 @@ class _EditTerenModalState extends State<EditTerenModal> {
                                   onChanged: (value) {
                                     setState(() {
                                       _selectedGradoviId = value;
+                                      _gradoviError = null;
                                     });
                                   },
                                   validator: (value) {
@@ -319,6 +384,17 @@ class _EditTerenModalState extends State<EditTerenModal> {
                                   },
                                 ),
                               ),
+                              if (_gradoviError != null)
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 8.0, top: 4.0),
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      _gradoviError!,
+                                      style: TextStyle(color: Colors.red, fontSize: 12),
+                                    ),
+                                  ),
+                                ),
                             ],
                           ),
                         ),
@@ -357,6 +433,7 @@ class _EditTerenModalState extends State<EditTerenModal> {
                                   onChanged: (value) {
                                     setState(() {
                                       _selectedPopust = value;
+                                      _cijenaPopustaError = null;
                                     });
                                   },
                                 ),
@@ -405,6 +482,17 @@ class _EditTerenModalState extends State<EditTerenModal> {
                                     },
                                   ),
                                 ),
+                                if (_cijenaPopustaError != null)
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 8.0, top: 4.0),
+                                    child: Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        _cijenaPopustaError!,
+                                        style: TextStyle(color: Colors.red, fontSize: 12),
+                                      ),
+                                    ),
+                                  ),
                               ],
                             ),
                           )
@@ -440,7 +528,13 @@ class _EditTerenModalState extends State<EditTerenModal> {
           onPressed: isSaveButtonDisabled
               ? null
               : () {
-                  if (_formKey.currentState!.validate()) {
+                  _validateForm();
+                  if (_nazivError == null &&
+                      _brojTerenaError == null &&
+                      _cijenaError == null &&
+                      _tipTerenaError == null &&
+                      _gradoviError == null &&
+                      _cijenaPopustaError == null) {
                     widget.handleEdit(
                       widget.teren.terenId!,
                       _nazivController.text,
