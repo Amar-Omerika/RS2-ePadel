@@ -32,6 +32,7 @@ class _EditTerenModalState extends State<EditTerenModal> {
   int? _selectedGradoviId;
   String? _selectedPopust;
 
+
   final List<Map<String, dynamic>> vrstePodloge = [
     {"tipTerenaId": 1, "naziv": "Guma"},
     {"tipTerenaId": 2, "naziv": "Trava"},
