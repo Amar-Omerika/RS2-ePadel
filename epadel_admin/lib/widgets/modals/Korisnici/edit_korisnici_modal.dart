@@ -26,6 +26,9 @@ class _EditKorisnikModalState extends State<EditKorisnikModal> {
   String? _selectedDominantnaRuka;
   int? _selectedSpolId;
 
+  String? _korisnickoImeError;
+  String? _emailError;
+
   final List<String> ruke = ['Lijeva', 'Desna'];
   SearchResult<Spolovi> _spoloviResult = SearchResult<Spolovi>();
 
@@ -52,6 +55,18 @@ class _EditKorisnikModalState extends State<EditKorisnikModal> {
         orElse: () => Spolovi(),
       );
       _selectedSpolId = selectedSpol.id;
+    });
+  }
+
+  void _validateForm() {
+    setState(() {
+      _korisnickoImeError =
+          _korisnickoImeController.text.isEmpty ? 'Ovo polje je obavezno' : null;
+      _emailError = _emailController.text.isEmpty
+          ? 'Ovo polje je obavezno'
+          : (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(_emailController.text)
+              ? 'Unesite važeću email adresu'
+              : null);
     });
   }
 
@@ -107,6 +122,17 @@ class _EditKorisnikModalState extends State<EditKorisnikModal> {
                         },
                       ),
                     ),
+                    if (_korisnickoImeError != null)
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8.0, top: 4.0),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            _korisnickoImeError!,
+                            style: TextStyle(color: Colors.red, fontSize: 12),
+                          ),
+                        ),
+                      ),
                   ],
                 ),
               ),
@@ -147,6 +173,17 @@ class _EditKorisnikModalState extends State<EditKorisnikModal> {
                         },
                       ),
                     ),
+                    if (_emailError != null)
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8.0, top: 4.0),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            _emailError!,
+                            style: TextStyle(color: Colors.red, fontSize: 12),
+                          ),
+                        ),
+                      ),
                   ],
                 ),
               ),
@@ -260,7 +297,8 @@ class _EditKorisnikModalState extends State<EditKorisnikModal> {
         ),
         ElevatedButton(
           onPressed: () {
-            if (_formKey.currentState!.validate()) {
+            _validateForm();
+            if (_korisnickoImeError == null && _emailError == null) {
               widget.handleEdit(
                 widget.korisnik.korisnikId!,
                 _korisnickoImeController.text,
