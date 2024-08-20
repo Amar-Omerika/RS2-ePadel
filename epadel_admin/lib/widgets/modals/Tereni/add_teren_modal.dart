@@ -2,6 +2,7 @@
 
 import 'package:epadel_admin/models/gradovi.dart';
 import 'package:epadel_admin/models/search_result.dart';
+import 'package:epadel_admin/models/tip_terena.dart';
 import 'package:epadel_admin/providers/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -21,7 +22,11 @@ class AddTerenModal extends StatefulWidget {
 class _AddTerenModalState extends State<AddTerenModal> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   late GradoviProvider _gradoviProvider;
+  late TipTerenaProvider _tipTerenaProvider;
+
   SearchResult<Gradovi>? result;
+  SearchResult<TipTerena>? resultTipTerena;
+
   String? naziv;
   int? brojTerena;
   int? cijena;
@@ -36,12 +41,6 @@ class _AddTerenModalState extends State<AddTerenModal> {
   String? tipTerenaIdError = null;
   String? gradoviIdError = null;
   String? cijenaPopustaError = null;
-
-  final List<Map<String, dynamic>> vrstePodloge = [
-    {"tipTerenaId": 1, "naziv": "Guma"},
-    {"tipTerenaId": 2, "naziv": "Trava"},
-    {"tipTerenaId": 3, "naziv": "Beton"}
-  ];
 
   bool get isDodajButtonDisabled {
     if (popust == 'Da' && cijenaPopusta != null && cijena != null) {
@@ -58,9 +57,13 @@ class _AddTerenModalState extends State<AddTerenModal> {
 
   Future<void> _initializeData() async {
     _gradoviProvider = GradoviProvider();
+    _tipTerenaProvider = TipTerenaProvider();
     var data = await _gradoviProvider.get();
+    var dataTipTerena = await _tipTerenaProvider.get();
+
     setState(() {
       result = data;
+      resultTipTerena = dataTipTerena;
     });
   }
 
@@ -172,10 +175,10 @@ class _AddTerenModalState extends State<AddTerenModal> {
                                         enabledBorder: InputBorder.none,
                                         focusedBorder: InputBorder.none,
                                       ),
-                                      items: vrstePodloge.map((podloga) {
+                                      items: resultTipTerena?.result.map((podloga) {
                                         return DropdownMenuItem<int>(
-                                          value: podloga['tipTerenaId'],
-                                          child: Text(podloga['naziv']),
+                                          value: podloga.tipTerenaId,
+                                          child: Text(podloga.naziv!),
                                         );
                                       }).toList(),
                                       onChanged: (value) {
