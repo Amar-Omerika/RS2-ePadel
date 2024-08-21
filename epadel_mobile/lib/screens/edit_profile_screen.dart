@@ -26,10 +26,13 @@ class _EditProfileScreenScreenState extends State<EditProfileScreen> {
       TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   String _dominantnaRuka = 'Desna';
-    final ImagePicker _picker = ImagePicker();
-   String? _pictureBase64;
-     File? _picture;
+  final ImagePicker _picker = ImagePicker();
+  String? _pictureBase64;
+  File? _picture;
   bool updateFailed = false;
+
+  String? korisnickoImeError;
+  String? emailError;
 
   @override
   void initState() {
@@ -50,8 +53,30 @@ class _EditProfileScreenScreenState extends State<EditProfileScreen> {
     });
   }
 
+  void _validateForm() {
+    setState(() {
+      korisnickoImeError = _korisnickoImeController.text.isEmpty
+          ? 'Korisnicko Ime je obavezno'
+          : (_korisnickoImeController.text.length < 4
+              ? 'Korisnicko Ime mora imati najmanje 4 karaktera'
+              : null);
+
+      emailError = _emailController.text.isEmpty
+          ? 'Email je obavezan'
+          : (!_isEmailValid(_emailController.text)
+              ? 'Unesite validnu email adresu'
+              : null);
+    });
+  }
+
+  bool _isEmailValid(String value) {
+    RegExp regex = RegExp(r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$',
+        caseSensitive: false);
+    return regex.hasMatch(value);
+  }
+
   Future<void> pickImage() async {
-   final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
       setState(() {
@@ -62,7 +87,9 @@ class _EditProfileScreenScreenState extends State<EditProfileScreen> {
   }
 
   Future<void> saveData() async {
-    if (formKey.currentState?.validate() ?? false) {
+    _validateForm();
+
+    if (korisnickoImeError == null && emailError == null) {
       formKey.currentState!.save();
       Map<String, dynamic> data = {
         "ime": _korisnik!.ime,
@@ -84,9 +111,6 @@ class _EditProfileScreenScreenState extends State<EditProfileScreen> {
         String errorString =
             exception.toString().replaceFirst("Bad request ", "");
         print(errorString);
-        // setState(() {
-        //   error = errorString;
-        // });
         formKey.currentState!.validate();
       }
     } else {
@@ -95,21 +119,16 @@ class _EditProfileScreenScreenState extends State<EditProfileScreen> {
       });
     }
   }
- void closeToast(context, scaffold) async {
-    scaffold.hideCurrentSnackBar;
-    await Future.delayed(const Duration(milliseconds: 400));
-    Navigator.pop(context);
-  }
 
   void _showToast(BuildContext context) {
     final scaffold = ScaffoldMessenger.of(context);
     scaffold.showSnackBar(
       SnackBar(
         content: const Text('Profil uspijesno azuriran!'),
-        
       ),
     );
   }
+
   @override
   Widget build(BuildContext context) {
     ImageProvider profileImageProvider;
@@ -173,7 +192,9 @@ class _EditProfileScreenScreenState extends State<EditProfileScreen> {
                 ),
               ),
               KorisnickoImeInputWidget(
-                  korisnickoImeController: _korisnickoImeController),
+                korisnickoImeController: _korisnickoImeController,
+                error: korisnickoImeError,
+              ),
               const SizedBox(height: 20),
               Text(
                 'Email',
@@ -183,7 +204,10 @@ class _EditProfileScreenScreenState extends State<EditProfileScreen> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              EmailWidget(emailController: _emailController),
+              EmailWidget(
+                emailController: _emailController,
+                error: emailError,
+              ),
               const SizedBox(height: 20),
               Text(
                 'Dominantna Ruka',
@@ -194,24 +218,31 @@ class _EditProfileScreenScreenState extends State<EditProfileScreen> {
                 ),
               ),
               DropdownWidget(
-                  dominantnaRuka: _dominantnaRuka,
-                  onChanged: (value) {
-                    setState(() {
-                      _dominantnaRuka = value!;
-                    });
-                  }),
+                dominantnaRuka: _dominantnaRuka,
+                onChanged: (value) {
+                  setState(() {
+                    _dominantnaRuka = value!;
+                  });
+                },
+              ),
               const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   ElevatedButton(
+                     style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.black,
+                      ),      
                     onPressed: () {
-                      // Cancel functionality
-                      loadData(); // Reload the original data
+                      loadData(); 
                     },
                     child: Text('Cancel'),
                   ),
                   ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        backgroundColor: Colors.green,                 
+                      ),                  
                     onPressed: saveData,
                     child: Text('Save'),
                   ),
@@ -229,40 +260,46 @@ class KorisnickoImeInputWidget extends StatelessWidget {
   const KorisnickoImeInputWidget({
     super.key,
     required TextEditingController korisnickoImeController,
+    this.error,
   }) : _korisnickoImeController = korisnickoImeController;
 
   final TextEditingController _korisnickoImeController;
-
-  bool isKorisnickoImeValid(String value) {
-    RegExp regex = RegExp(r'^.{4,}$');
-    return regex.hasMatch(value);
-  }
+  final String? error;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(5.0),
-        child: TextFormField(
-          controller: _korisnickoImeController,
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Korisnicko Ime je obavezno';
-            } else if (!isKorisnickoImeValid(value)) {
-              return 'Korisnicko Ime mora imati najmanje 4 karaktera';
-            }
-            return null;
-          },
-          decoration: InputDecoration(
-            border: InputBorder.none,
-            contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(5.0),
+            child: TextFormField(
+              controller: _korisnickoImeController,
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                contentPadding:
+                    EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+              ),
+            ),
           ),
         ),
-      ),
+        if (error != null)
+          Padding(
+            padding: const EdgeInsets.only(left: 8.0, top: 4.0),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                error!,
+                style: TextStyle(color: Colors.red, fontSize: 12),
+              ),
+            ),
+          ),
+      ],
     );
   }
 }
@@ -271,41 +308,46 @@ class EmailWidget extends StatelessWidget {
   const EmailWidget({
     super.key,
     required TextEditingController emailController,
+    this.error,
   }) : _emailController = emailController;
 
   final TextEditingController _emailController;
-
-  bool isEmailValid(String value) {
-    RegExp regex = RegExp(r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$',
-        caseSensitive: false);
-    return regex.hasMatch(value);
-  }
+  final String? error;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(5.0),
-        child: TextFormField(
-          controller: _emailController,
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Email je obavezan';
-            } else if (!isEmailValid(value)) {
-              return 'Unesite validnu email adresu';
-            }
-            return null;
-          },
-          decoration: InputDecoration(
-            border: InputBorder.none,
-            contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(5.0),
+            child: TextFormField(
+              controller: _emailController,
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                contentPadding:
+                    EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+              ),
+            ),
           ),
         ),
-      ),
+        if (error != null)
+          Padding(
+            padding: const EdgeInsets.only(left: 8.0, top: 4.0),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                error!,
+                style: TextStyle(color: Colors.red, fontSize: 12),
+              ),
+            ),
+          ),
+      ],
     );
   }
 }

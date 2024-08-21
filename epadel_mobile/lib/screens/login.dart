@@ -38,6 +38,7 @@ class _LoginScreenState extends State<LoginScreen> {
             color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
         backgroundColor: Colors.green,
         iconTheme: const IconThemeData(color: Colors.white),
+         automaticallyImplyLeading: false,        
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
