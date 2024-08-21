@@ -47,36 +47,68 @@ namespace ePadel.Services.TerenService
         }
         public override Model.Tereni Insert(TerenInsertRequest request)
         {
-            try
+            if (request.Popust != "Da" && request.Popust != "Ne")
             {
-                var tereni = _context.Set<Database.Tereni>().AsQueryable();
-
-                var entity = base.Insert(request);
-
-                _context.SaveChanges();
-
-                return entity;
+                throw new UniversalException("Validation Error", "Definiranje popusta prihvata samo Da ili Ne u ovom formatu.");
             }
-            catch (Exception ex)
+            if (request.Popust == "Da")
             {
+                if (request.CijenaPopusta <= 0)
+                {
+                    throw new UniversalException("Validation Error", "Cijena popusta mora biti veća od nule.");
+                }
 
-                throw new  UniversalException("Error",$"{ex.Message}");
+                if (request.CijenaPopusta >= request.Cijena)
+                {
+                    throw new UniversalException("Validation Error", "Cijena popusta mora biti manja od osnovne cijene.");
+                }
             }
+
+
+            if (request.Popust == "Ne" && request.CijenaPopusta > 0)
+            {
+                throw new UniversalException("Validation Error", "Morate definirati popust kao Da kako bi ste mogli definirati cijenu popusta koja mora biti veca od 0.");
+            }
+
+            var tereni = _context.Set<Database.Tereni>().AsQueryable();
+
+            var entity = base.Insert(request);
+
+            _context.SaveChanges();
+
+            return entity;
+
         }
         public override Model.Tereni Update(int id, TerenUpdateRequest request)
         {
-            try
+            if (request.Popust != "Da" && request.Popust != "Ne")
             {
-                var terenSaImenom = _context.Terenis.Where(x => x.TerenId != id && x.Naziv == request.Naziv).ToList();
-                return base.Update(id, request);
+                throw new UniversalException("Validation Error", "Definiranje popusta prihvata samo Da ili Ne u ovom formatu.");
             }
-            catch (Exception ex)
+            if (request.Popust == "Da")
             {
+                if (request.CijenaPopusta <= 0)
+                {
+                    throw new UniversalException("Validation Error", "Cijena popusta mora biti veća od nule.");
+                }
 
-                throw new UniversalException("Error", $"{ex.Message}");
-            }       
-      
+                if (request.CijenaPopusta >= request.Cijena)
+                {
+                    throw new UniversalException("Validation Error", "Cijena popusta mora biti manja od osnovne cijene.");
+                }
+            }
+
+            if (request.Popust == "Ne" && request.CijenaPopusta > 0)
+            {
+                throw new UniversalException("Validation Error", "Morate definirati popust kao Da kako bi ste mogli definirati cijenu popusta koja mora biti veca od 0.");
+            }
+
+            var terenSaImenom = _context.Terenis.Where(x => x.TerenId != id && x.Naziv == request.Naziv).ToList();
+            
+            return base.Update(id, request);
+  
         }
+
         public List<Model.Tereni> TereniSaPopustom()
         {
             var tereniSaPopustom = _context.Terenis

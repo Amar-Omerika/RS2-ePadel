@@ -47,7 +47,7 @@ class _EditTerenModalState extends State<EditTerenModal> {
   bool get isSaveButtonDisabled {
     if (_selectedPopust == 'Da' &&
         _cijenaPopustaController.text.isNotEmpty &&
-        _cijenaController.text.isNotEmpty) {
+        _cijenaController.text.isNotEmpty ) {
       int cijenaPopusta = int.tryParse(_cijenaPopustaController.text) ?? 0;
       int cijena = int.tryParse(_cijenaController.text) ?? 0;
       return cijenaPopusta > cijena;
@@ -90,7 +90,7 @@ class _EditTerenModalState extends State<EditTerenModal> {
       _tipTerenaError = _selectedTipTerena == null ? 'Ovo polje je obavezno' : null;
       _gradoviError = _selectedGradoviId == null ? 'Ovo polje je obavezno' : null;
       if (_selectedPopust == 'Da') {
-        _cijenaPopustaError = _cijenaPopustaController.text.isEmpty ? 'Ovo polje je obavezno' : null;
+        _cijenaPopustaError = _cijenaPopustaController.text.isEmpty || int.tryParse(_cijenaPopustaController.text) == 0 ? 'Ovo polje je obavezno i mora imati vrijednost vecu od 0' : null;
       }
     });
   }
@@ -250,6 +250,7 @@ class _EditTerenModalState extends State<EditTerenModal> {
                                   controller: _cijenaController,
                                   maxLength: 3,
                                   decoration: InputDecoration(
+                                    hintText: "Moguce unijeti samo numericke vrijednosti",
                                     contentPadding: EdgeInsets.all(8.0),
                                     border: InputBorder.none,
                                     enabledBorder: InputBorder.none,
@@ -302,6 +303,7 @@ class _EditTerenModalState extends State<EditTerenModal> {
                                 child: TextFormField(
                                   controller: _brojTerenaController,
                                   decoration: InputDecoration(
+                                    hintText: "Moguce unijeti samo numericke vrijednosti",
                                     contentPadding: EdgeInsets.all(8.0),
                                     border: InputBorder.none,
                                     enabledBorder: InputBorder.none,
@@ -466,6 +468,7 @@ class _EditTerenModalState extends State<EditTerenModal> {
                                     controller: _cijenaPopustaController,
                                     maxLength: 3,
                                     decoration: InputDecoration(
+                                      hintText: "Moguce unijeti samo numericke vrijednosti",
                                       contentPadding: EdgeInsets.all(8.0),
                                       border: InputBorder.none,
                                       enabledBorder: InputBorder.none,

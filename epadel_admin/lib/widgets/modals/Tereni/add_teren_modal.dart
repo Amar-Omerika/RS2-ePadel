@@ -77,7 +77,7 @@ class _AddTerenModalState extends State<AddTerenModal> {
       gradoviIdError = gradoviId == null ? 'Ovo polje je obavezno' : null;
       if (popust == 'Da') {
         cijenaPopustaError = cijenaPopusta == null || cijenaPopusta == 0
-            ? 'Ovo polje je obavezno'
+            ? 'Ovo polje je obavezno i mora imati vrijednost vecu od 0'
             : null;
       }
     });
@@ -230,6 +230,7 @@ class _AddTerenModalState extends State<AddTerenModal> {
                                     TextFormField(
                                       maxLength: 3,
                                       decoration: InputDecoration(
+                                        hintText: "Moguce unijeti samo numericke vrijednosti",
                                         contentPadding: EdgeInsets.all(8.0),
                                         border: InputBorder.none,
                                         enabledBorder: InputBorder.none,
@@ -287,6 +288,7 @@ class _AddTerenModalState extends State<AddTerenModal> {
                                   children: [
                                     TextFormField(
                                       decoration: InputDecoration(
+                                        hintText: "Moguce unijeti samo numericke vrijednosti",
                                         contentPadding: EdgeInsets.all(8.0),
                                         border: InputBorder.none,
                                         enabledBorder: InputBorder.none,
@@ -461,6 +463,7 @@ class _AddTerenModalState extends State<AddTerenModal> {
                                       TextFormField(
                                         maxLength: 3,
                                         decoration: InputDecoration(
+                                          hintText: "Moguce unijeti samo numericke vrijednosti",
                                           contentPadding: EdgeInsets.all(8.0),
                                           border: InputBorder.none,
                                           enabledBorder: InputBorder.none,
