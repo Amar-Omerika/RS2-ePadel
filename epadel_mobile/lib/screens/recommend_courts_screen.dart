@@ -36,6 +36,7 @@ class _RecommendScreenState extends State<RecommendScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFF618264),
+        foregroundColor: Colors.white,
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           color: Color(0xFFB0D9B1),
@@ -43,7 +44,10 @@ class _RecommendScreenState extends State<RecommendScreen> {
           onPressed: () {
             Navigator.pop(context);
           },
+          
         ),
+        title: Text('Preporuceni tereni'),
+        centerTitle: true,
       ),
       backgroundColor: const Color(0xFF618264),
       body: SafeArea(
@@ -54,10 +58,6 @@ class _RecommendScreenState extends State<RecommendScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const Center(
-                    child: Text('Preporuceni tereni',
-                        style: TextStyle(color: Colors.white, fontSize: 24)),
-                  ),
                   const SizedBox(height: 5.0),
                   Expanded(
                     child: _tereni.isEmpty

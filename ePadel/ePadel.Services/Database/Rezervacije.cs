@@ -16,6 +16,7 @@ namespace ePadel.Services.Database
         public string? DatumRezervacije { get; set; }
         public string? VrijemeRezervacije { get; set; }
         public string? PaymentMethod { get; set; }
+        public string? Lokacija { get; set; }
         public virtual Korisnik? Korisnik { get; set; }
         public virtual Tereni? Teren { get; set; }
         public DateTime DatumKreiranja { get; set; } = DateTime.Now;

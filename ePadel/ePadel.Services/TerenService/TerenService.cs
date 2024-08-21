@@ -81,7 +81,7 @@ namespace ePadel.Services.TerenService
         {
             var tereniSaPopustom = _context.Terenis
                 .Where(t => t.Popust == "Da")
-                .Include(t => t.TipTerena)
+                .Include(t => t.TipTerena).Include(g=>g.Gradovi)
                 .ToList();
 
             foreach (var teren in tereniSaPopustom)
@@ -99,7 +99,7 @@ namespace ePadel.Services.TerenService
         public List<Model.Tereni> TereniRecommendedSystem()
         {
             var rezervacije = _context.Rezervacijes
-                .Include(r => r.Teren).Include(r => r.Teren.TipTerena)
+                .Include(r => r.Teren).Include(r => r.Teren.TipTerena).Include(g => g.Teren.Gradovi)
                 .ToList();
 
             if (rezervacije.Count < 3)

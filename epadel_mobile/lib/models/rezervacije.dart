@@ -13,6 +13,7 @@ class Rezervacija {
   String? paymentMethod;
   String? potrebnaReketa;
   String? korisnickoIme;
+  String? lokacija;
   int? cijena;
   int? brojReketa;
   Teren? teren;
@@ -20,6 +21,7 @@ class Rezervacija {
   Rezervacija({
     this.terenNaziv,
     this.korisnickoIme,
+    this.lokacija,
     this.cijena,
     this.brojReketa,
     this.teren,

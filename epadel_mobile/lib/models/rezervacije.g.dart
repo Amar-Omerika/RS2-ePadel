@@ -9,6 +9,7 @@ part of 'rezervacije.dart';
 Rezervacija _$RezervacijaFromJson(Map<String, dynamic> json) => Rezervacija(
       terenNaziv: json['terenNaziv'] as String?,
       korisnickoIme: json['korisnickoIme'] as String?,
+      lokacija: json['lokacija'] as String?,
       cijena: (json['cijena'] as num?)?.toInt(),
       brojReketa: (json['brojReketa'] as num?)?.toInt(),
       teren: json['teren'] == null
@@ -32,6 +33,7 @@ Map<String, dynamic> _$RezervacijaToJson(Rezervacija instance) =>
       'paymentMethod': instance.paymentMethod,
       'potrebnaReketa': instance.potrebnaReketa,
       'korisnickoIme': instance.korisnickoIme,
+      'lokacija': instance.lokacija,
       'cijena': instance.cijena,
       'brojReketa': instance.brojReketa,
       'teren': instance.teren,

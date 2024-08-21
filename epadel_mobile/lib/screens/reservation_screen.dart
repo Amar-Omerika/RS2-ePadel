@@ -404,7 +404,8 @@ class _ReservationScreenState extends State<ReservationScreen> {
                                   'paymentMethod': method,
                                   'cijena': widget.teren!.cijena,
                                   'potrebnaReket': potrebnaReketa,
-                                  'brojReketa': brojReketa
+                                  'brojReketa': brojReketa,
+                                  'lokacija': widget.teren!.lokacija,
                                 };
                                 print(reservationData);
                                 try {

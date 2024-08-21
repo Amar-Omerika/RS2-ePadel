@@ -30,6 +30,7 @@ namespace ePadel.Model.Requests.RezervacijaRequest
 
         [Range(0, 4, ErrorMessage = "Broj reketa moze biti od 0 do 4 ")]
         public int? BrojReketa { get; set; }
+        public string? Lokacija { get; set; }
 
         //public virtual ICollection<Ocijene>? Ocijenes { get; set; }
     }

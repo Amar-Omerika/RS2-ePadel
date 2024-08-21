@@ -63,7 +63,7 @@ class RezervacijaCard extends StatelessWidget {
                       ),
                     ),
                     Text('Tip: ${rezervacija.teren?.tipTerena?.naziv ?? 'N/A'}'),
-                    Text('Lokacija: ${rezervacija.teren?.lokacija ?? 'N/A'}'),
+                    Text('Lokacija: ${rezervacija.lokacija ?? 'N/A'}'),
                     Text('Datum Rez: ${rezervacija.datumRezervacije ?? 'N/A'}'),
                   ],
                 ),
