@@ -10,25 +10,26 @@ class HistoryReservationScreen extends StatefulWidget {
   const HistoryReservationScreen({super.key});
 
   @override
-  State<HistoryReservationScreen> createState() => _HistoryReservationScreenState();
+  State<HistoryReservationScreen> createState() =>
+      _HistoryReservationScreenState();
 }
 
 class _HistoryReservationScreenState extends State<HistoryReservationScreen> {
   late RezervacijaProvider _rezervacijaProvider;
-   AuthProvider? _authProvider;
+  AuthProvider? _authProvider;
   SearchResult<Rezervacija>? _rezervacije;
 
   @override
   void initState() {
     super.initState();
-     _authProvider = context.read<AuthProvider>();
+    _authProvider = context.read<AuthProvider>();
     _rezervacijaProvider = context.read<RezervacijaProvider>();
     loadData();
   }
 
   Future<void> loadData() async {
     var data = await _rezervacijaProvider
-        .getHistory(search: {'korisnikId':_authProvider!.getLoggedUserId()});
+        .getHistory(search: {'korisnikId': _authProvider!.getLoggedUserId()});
     setState(() {
       _rezervacije = data;
     });
@@ -38,16 +39,26 @@ class _HistoryReservationScreenState extends State<HistoryReservationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFF618264),
+      appBar: AppBar(
+        backgroundColor: const Color(0xFF618264),
+        foregroundColor:  Colors.white,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          color: const Color(0xFFB0D9B1),
+          iconSize: 40,
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        title: const Text('Historija Rezervacija'),
+        centerTitle: true,
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const Center(
-                child: Text('Historija Rezervacija',
-                    style: TextStyle(color: Colors.white, fontSize: 24)),
-              ),
               const SizedBox(height: 5.0),
               Expanded(
                 child: _rezervacije == null
@@ -55,8 +66,9 @@ class _HistoryReservationScreenState extends State<HistoryReservationScreen> {
                     : _rezervacije!.result.isEmpty
                         ? const Center(
                             child: Text(
-                              'Nema dostupnih historijskih rezervacija...',
-                              style: TextStyle(color: Colors.white, fontSize: 18),
+                              'Nema dostupnih rezervacija...',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 18),
                             ),
                           )
                         : ListView.builder(

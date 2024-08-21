@@ -45,7 +45,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
   void fetchSlots() async {
     var dateString = selektiraniDatum.toString().split(" ")[0];
     print(selektiraniDatum);
-    var data = await _rezervacijaProvider!.getSlotsByDate(
+    var data = await _rezervacijaProvider.getSlotsByDate(
         {'terenId': widget.terenId, 'datumRezervacije': dateString});
     setState(() {
       _slots = data;
@@ -90,6 +90,20 @@ class _ReservationScreenState extends State<ReservationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFF618264),
+      appBar: AppBar(
+        backgroundColor: const Color(0xFF618264),
+        foregroundColor: Colors.white,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          color: Color(0xFFB0D9B1),
+          iconSize: 40,
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        title: Text('Rezervacija'),
+        centerTitle: true,
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -112,14 +126,12 @@ class _ReservationScreenState extends State<ReservationScreen> {
                           ),
                           Spacer(),
                           IconButton(
-                            icon:
-                                Icon(Icons.calendar_today, color: Colors.black),
+                            icon: Icon(Icons.calendar_today, color: Colors.black),
                             onPressed: () async {
                               DateTime? pickedDate = await showDatePicker(
                                 context: context,
                                 initialDate: selektiraniDatum,
-                                firstDate:
-                                    DateTime.now().add(Duration(days: 1)),
+                                firstDate: DateTime.now().add(Duration(days: 1)),
                                 lastDate: DateTime(2101),
                               );
                               if (pickedDate != null &&
@@ -301,7 +313,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                         Expanded(
                           child: ElevatedButton(
                             onPressed: () async {
-                              print('pressed cancel');
+                              Navigator.pop(context);
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.white,
@@ -356,15 +368,11 @@ class _ReservationScreenState extends State<ReservationScreen> {
                                 };
                                 print(reservationData);
                                 try {
-                                  var data = await _rezervacijaProvider!
-                                      .insert(reservationData);
-                                  Navigator.popAndPushNamed(context,
-                                      ReservationSuccessfulScreen.routeName);
+                                  var data = await _rezervacijaProvider!.insert(reservationData);
+                                  Navigator.popAndPushNamed(context, ReservationSuccessfulScreen.routeName);
                                 } on Exception catch (error) {
                                   print(error.toString());
-                                  if (error
-                                      .toString()
-                                      .contains("Bad request")) {
+                                  if (error.toString().contains("Bad request")) {
                                     print('Reservation failed');
                                   }
                                 }
@@ -378,20 +386,16 @@ class _ReservationScreenState extends State<ReservationScreen> {
                                   'cijena': widget.teren!.cijena,
                                 };
                                 _platiTerenProvider = PlatiTerenProvider();
-                                var data = await _platiTerenProvider
-                                    .insert(_platiTerenData);
+                                var data = await _platiTerenProvider.insert(_platiTerenData);
                                     print(data);
                                 await Stripe.instance.initPaymentSheet(
-                                  paymentSheetParameters:
-                                      SetupPaymentSheetParameters(
-                                    paymentIntentClientSecret:
-                                        data!.paymentIntentId,
+                                  paymentSheetParameters: SetupPaymentSheetParameters(
+                                    paymentIntentClientSecret: data!.paymentIntentId,
                                     style: ThemeMode.light,
                                     merchantDisplayName: "ePadel",
                                   ),
                                 );
-                                var result =
-                                    await Stripe.instance.presentPaymentSheet();
+                                var result = await Stripe.instance.presentPaymentSheet();
                                          Map<String, dynamic> reservationData = {
                                   'korisnikId': _authProvider.getLoggedUserId(),
                                   'terenId': widget.terenId,
@@ -404,15 +408,11 @@ class _ReservationScreenState extends State<ReservationScreen> {
                                 };
                                 print(reservationData);
                                 try {
-                                  var data = await _rezervacijaProvider!
-                                      .insert(reservationData);
-                                  Navigator.popAndPushNamed(context,
-                                      PaymentSuccessfullScreen.routeName);
+                                  var data = await _rezervacijaProvider!.insert(reservationData);
+                                  Navigator.popAndPushNamed(context, PaymentSuccessfullScreen.routeName);
                                 } on Exception catch (error) {
                                   print(error.toString());
-                                  if (error
-                                      .toString()
-                                      .contains("Bad request")) {
+                                  if (error.toString().contains("Bad request")) {
                                     print('Reservation failed');
                                   }
                                 }
