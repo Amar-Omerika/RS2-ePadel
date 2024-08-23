@@ -11,7 +11,7 @@ class TerenProvider extends BaseProvider<Teren> {
 
   TerenProvider() : super("Teren") {
     _baseUrl = const String.fromEnvironment("baseUrl",
-        defaultValue: "http://10.0.2.2:5258/");
+        defaultValue: "http://localhost:5192/");
     print("baseurl: $_baseUrl");
 
     if (_baseUrl!.endsWith("/") == false) {
