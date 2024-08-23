@@ -48,10 +48,10 @@ namespace ePadel.Services.Database
                 KorisnikId = 1,
                 Ime = "Admin",
                 Prezime = "Admin",
-                KorisnickoIme = "Admin",
-                Email = "adminmail00@gmal.com",
-                LozinkaHash = "523l3SXvXt/OIGacFmI0PUlXkJM=",
-                LozinkaSalt = "ORNOSgr59Nd5PGJx/GNMKg==",
+                KorisnickoIme = "TestAdmin",
+                Email = "admin@admin.com",
+                LozinkaHash = "UelRf6tm5pFSJb/v8LPopEQp0gE=",
+                LozinkaSalt = "0aJMk8P2QiQUZ/6YRA7I9g==",
                 DominantnaRuka = "Desna",
                 SpoloviId = 1,
                 Slika = profilnaSlikaKorisnika,
@@ -60,14 +60,14 @@ namespace ePadel.Services.Database
             new Korisnik()
             {
                     KorisnikId = 2,
-                    Ime = "John",
-                    Prezime = "Doe",
-                    KorisnickoIme = "JohnDoe",
-                    Email = "johndoe@gmail.com",
-                    LozinkaHash = "523l3SXvXt/OIGacFmI0PUlXkJM=",
-                    LozinkaSalt = "ORNOSgr59Nd5PGJx/GNMKg==",
+                    Ime = "User",
+                    Prezime = "Guest",
+                    KorisnickoIme = "UserGuest",
+                    Email = "user@guest.com",
+                    LozinkaHash = "4R118CK/ix59z8FFAzE0oc9vGCE=",
+                    LozinkaSalt = "gXmUGQzsWURgepc8sGp0jw==",
                     DominantnaRuka = "Desna",
-                    SpoloviId = 2,
+                    SpoloviId = 1,
                     Slika = profilnaSlikaKorisnika,
                     Aktivan = true
             }
@@ -183,6 +183,7 @@ namespace ePadel.Services.Database
                     PotrebnaReketa = "Ne",
                     PaymentMethod = "cash",
                     BrojReketa = 0,
+                    Lokacija="Mostar"
                 },
                   new Rezervacije()
                 {
@@ -194,7 +195,8 @@ namespace ePadel.Services.Database
                     DatumRezervacije = "2024-09-10",
                     PotrebnaReketa = "Ne",
                     PaymentMethod = "cash",
-                    BrojReketa = 0,             
+                    BrojReketa = 0,
+                    Lokacija="Mostar"
                 },
                  new Rezervacije()
                 {
@@ -207,6 +209,7 @@ namespace ePadel.Services.Database
                     PotrebnaReketa = "Ne",
                     PaymentMethod = "cash",
                     BrojReketa = 0,
+                    Lokacija="Mostar"
                 },
 
             });

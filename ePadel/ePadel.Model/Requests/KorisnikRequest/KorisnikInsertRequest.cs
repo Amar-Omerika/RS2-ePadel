@@ -30,6 +30,8 @@ namespace ePadel.Model.Requests.KorisnikRequest
 
         public string? PasswordPotvrda { get; set; }
         public string? Slika { get; set; }
+
+        [Required(ErrorMessage = "Uloga je obavezna unesite 1 za admin privilegiju ili 2 za korisnik.")]
         public List<int>? Uloge { get; set; } = new List<int>();
         public bool? Aktivan { get; set; }
     }

@@ -28,7 +28,7 @@ namespace ePadel.Services.OcjenaService
 
             if (insert.TerenId == null)
             {
-                throw new OcjeneException("Da bi ste dali ocjenu potrebma je staza!");
+                throw new OcjeneException("Da bi ste dali ocjenu potreban je teren!");
             }
 
             if (insert.Ocjena == null)
