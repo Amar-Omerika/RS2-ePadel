@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ePadel.Services.Database;
 
@@ -11,9 +12,10 @@ using ePadel.Services.Database;
 namespace ePadel.Services.Migrations
 {
     [DbContext(typeof(IB190069_ePadelContext))]
-    partial class IB190069_ePadelContextModelSnapshot : ModelSnapshot
+    [Migration("20240706105936_init")]
+    partial class init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -318,9 +320,6 @@ namespace ePadel.Services.Migrations
                         .HasColumnType("int")
                         .HasColumnName("KorisnikID");
 
-                    b.Property<string>("Lokacija")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("PaymentMethod")
                         .HasColumnType("nvarchar(max)");
 
@@ -352,7 +351,7 @@ namespace ePadel.Services.Migrations
                             RezervacijaId = 1,
                             BrojReketa = 0,
                             Cijena = 20,
-                            DatumKreiranja = new DateTime(2024, 8, 21, 23, 26, 46, 595, DateTimeKind.Local).AddTicks(9291),
+                            DatumKreiranja = new DateTime(2024, 7, 6, 12, 59, 35, 495, DateTimeKind.Local).AddTicks(2846),
                             DatumRezervacije = "2024-09-09",
                             KorisnikId = 2,
                             PaymentMethod = "cash",
@@ -365,7 +364,7 @@ namespace ePadel.Services.Migrations
                             RezervacijaId = 2,
                             BrojReketa = 0,
                             Cijena = 30,
-                            DatumKreiranja = new DateTime(2024, 8, 21, 23, 26, 46, 595, DateTimeKind.Local).AddTicks(9334),
+                            DatumKreiranja = new DateTime(2024, 7, 6, 12, 59, 35, 495, DateTimeKind.Local).AddTicks(2914),
                             DatumRezervacije = "2024-09-10",
                             KorisnikId = 2,
                             PaymentMethod = "cash",
@@ -378,7 +377,7 @@ namespace ePadel.Services.Migrations
                             RezervacijaId = 3,
                             BrojReketa = 0,
                             Cijena = 30,
-                            DatumKreiranja = new DateTime(2024, 8, 21, 23, 26, 46, 595, DateTimeKind.Local).AddTicks(9338),
+                            DatumKreiranja = new DateTime(2024, 7, 6, 12, 59, 35, 495, DateTimeKind.Local).AddTicks(2923),
                             DatumRezervacije = "2024-09-11",
                             KorisnikId = 2,
                             PaymentMethod = "cash",
