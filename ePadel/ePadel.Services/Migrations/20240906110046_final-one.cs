@@ -5,64 +5,54 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ePadel.Services.Migrations
 {
-    public partial class addlocationfieldtorezervacije : Migration
+    public partial class finalone : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
-                name: "Lokacija",
-                table: "Rezervacije",
-                type: "nvarchar(max)",
-                nullable: true);
-
             migrationBuilder.UpdateData(
                 table: "Rezervacije",
                 keyColumn: "RezervacijaID",
                 keyValue: 1,
                 column: "DatumKreiranja",
-                value: new DateTime(2024, 8, 21, 23, 26, 46, 595, DateTimeKind.Local).AddTicks(9291));
+                value: new DateTime(2024, 9, 6, 13, 0, 46, 234, DateTimeKind.Local).AddTicks(843));
 
             migrationBuilder.UpdateData(
                 table: "Rezervacije",
                 keyColumn: "RezervacijaID",
                 keyValue: 2,
                 column: "DatumKreiranja",
-                value: new DateTime(2024, 8, 21, 23, 26, 46, 595, DateTimeKind.Local).AddTicks(9334));
+                value: new DateTime(2024, 9, 6, 13, 0, 46, 234, DateTimeKind.Local).AddTicks(889));
 
             migrationBuilder.UpdateData(
                 table: "Rezervacije",
                 keyColumn: "RezervacijaID",
                 keyValue: 3,
                 column: "DatumKreiranja",
-                value: new DateTime(2024, 8, 21, 23, 26, 46, 595, DateTimeKind.Local).AddTicks(9338));
+                value: new DateTime(2024, 9, 6, 13, 0, 46, 234, DateTimeKind.Local).AddTicks(894));
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "Lokacija",
-                table: "Rezervacije");
-
             migrationBuilder.UpdateData(
                 table: "Rezervacije",
                 keyColumn: "RezervacijaID",
                 keyValue: 1,
                 column: "DatumKreiranja",
-                value: new DateTime(2024, 7, 6, 12, 59, 35, 495, DateTimeKind.Local).AddTicks(2846));
+                value: new DateTime(2024, 8, 26, 22, 12, 12, 433, DateTimeKind.Local).AddTicks(8940));
 
             migrationBuilder.UpdateData(
                 table: "Rezervacije",
                 keyColumn: "RezervacijaID",
                 keyValue: 2,
                 column: "DatumKreiranja",
-                value: new DateTime(2024, 7, 6, 12, 59, 35, 495, DateTimeKind.Local).AddTicks(2914));
+                value: new DateTime(2024, 8, 26, 22, 12, 12, 433, DateTimeKind.Local).AddTicks(8979));
 
             migrationBuilder.UpdateData(
                 table: "Rezervacije",
                 keyColumn: "RezervacijaID",
                 keyValue: 3,
                 column: "DatumKreiranja",
-                value: new DateTime(2024, 7, 6, 12, 59, 35, 495, DateTimeKind.Local).AddTicks(2923));
+                value: new DateTime(2024, 8, 26, 22, 12, 12, 433, DateTimeKind.Local).AddTicks(8983));
         }
     }
 }
