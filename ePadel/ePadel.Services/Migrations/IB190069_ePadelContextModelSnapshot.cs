@@ -308,9 +308,6 @@ namespace ePadel.Services.Migrations
                     b.Property<int?>("Cijena")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("DatumKreiranja")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("DatumRezervacije")
                         .HasColumnType("nvarchar(255)");
 
@@ -352,7 +349,6 @@ namespace ePadel.Services.Migrations
                             RezervacijaId = 1,
                             BrojReketa = 0,
                             Cijena = 20,
-                            DatumKreiranja = new DateTime(2024, 9, 6, 13, 0, 46, 234, DateTimeKind.Local).AddTicks(843),
                             DatumRezervacije = "2024-09-09",
                             KorisnikId = 2,
                             Lokacija = "Mostar",
@@ -366,7 +362,6 @@ namespace ePadel.Services.Migrations
                             RezervacijaId = 2,
                             BrojReketa = 0,
                             Cijena = 30,
-                            DatumKreiranja = new DateTime(2024, 9, 6, 13, 0, 46, 234, DateTimeKind.Local).AddTicks(889),
                             DatumRezervacije = "2024-09-10",
                             KorisnikId = 2,
                             Lokacija = "Mostar",
@@ -380,7 +375,6 @@ namespace ePadel.Services.Migrations
                             RezervacijaId = 3,
                             BrojReketa = 0,
                             Cijena = 30,
-                            DatumKreiranja = new DateTime(2024, 9, 6, 13, 0, 46, 234, DateTimeKind.Local).AddTicks(894),
                             DatumRezervacije = "2024-09-11",
                             KorisnikId = 2,
                             Lokacija = "Mostar",
