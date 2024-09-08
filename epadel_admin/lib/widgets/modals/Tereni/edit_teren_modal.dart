@@ -28,7 +28,7 @@ class _EditTerenModalState extends State<EditTerenModal> {
   late TextEditingController _cijenaPopustaController;
   late GradoviProvider _gradoviProvider;
   late TipTerenaProvider _tipTerenaProvider;
-  
+
   SearchResult<Gradovi>? _gradoviResult;
   SearchResult<TipTerena>? resultTipTerena;
 
@@ -42,18 +42,6 @@ class _EditTerenModalState extends State<EditTerenModal> {
   String? _tipTerenaError;
   String? _gradoviError;
   String? _cijenaPopustaError;
-
-
-  bool get isSaveButtonDisabled {
-    if (_selectedPopust == 'Da' &&
-        _cijenaPopustaController.text.isNotEmpty &&
-        _cijenaController.text.isNotEmpty ) {
-      int cijenaPopusta = int.tryParse(_cijenaPopustaController.text) ?? 0;
-      int cijena = int.tryParse(_cijenaController.text) ?? 0;
-      return cijenaPopusta > cijena;
-    }
-    return false;
-  }
 
   @override
   void initState() {
@@ -84,13 +72,25 @@ class _EditTerenModalState extends State<EditTerenModal> {
 
   void _validateForm() {
     setState(() {
-      _nazivError = _nazivController.text.isEmpty ? 'Ovo polje je obavezno' : null;
-      _brojTerenaError = _brojTerenaController.text.isEmpty ? 'Ovo polje je obavezno' : null;
-      _cijenaError = _cijenaController.text.isEmpty ? 'Ovo polje je obavezno' : null;
-      _tipTerenaError = _selectedTipTerena == null ? 'Ovo polje je obavezno' : null;
-      _gradoviError = _selectedGradoviId == null ? 'Ovo polje je obavezno' : null;
+      _nazivError =
+          _nazivController.text.isEmpty ? 'Ovo polje je obavezno' : null;
+      _brojTerenaError =
+          _brojTerenaController.text.isEmpty ? 'Ovo polje je obavezno' : null;
+      _cijenaError =
+          _cijenaController.text.isEmpty ? 'Ovo polje je obavezno' : null;
+      _tipTerenaError =
+          _selectedTipTerena == null ? 'Ovo polje je obavezno' : null;
+      _gradoviError =
+          _selectedGradoviId == null ? 'Ovo polje je obavezno' : null;
       if (_selectedPopust == 'Da') {
-        _cijenaPopustaError = _cijenaPopustaController.text.isEmpty || int.tryParse(_cijenaPopustaController.text) == 0 ? 'Ovo polje je obavezno i mora imati vrijednost vecu od 0' : null;
+        int cijena = int.tryParse(_cijenaController.text) ?? 0;
+        int cijenaPopusta = int.tryParse(_cijenaPopustaController.text) ?? 0;
+        _cijenaPopustaError =
+            _cijenaPopustaController.text.isEmpty || cijenaPopusta == 0
+                ? 'Ovo polje je obavezno i mora imati vrijednost vecu od 0'
+                : (cijenaPopusta > cijena
+                    ? 'Cijena popusta mora biti manja od ukupne cijene'
+                    : null);
       }
     });
   }
@@ -156,12 +156,14 @@ class _EditTerenModalState extends State<EditTerenModal> {
                               ),
                               if (_nazivError != null)
                                 Padding(
-                                  padding: const EdgeInsets.only(left: 8.0, top: 4.0),
+                                  padding: const EdgeInsets.only(
+                                      left: 8.0, top: 4.0),
                                   child: Align(
                                     alignment: Alignment.centerLeft,
                                     child: Text(
                                       _nazivError!,
-                                      style: TextStyle(color: Colors.red, fontSize: 12),
+                                      style: TextStyle(
+                                          color: Colors.red, fontSize: 12),
                                     ),
                                   ),
                                 ),
@@ -216,12 +218,14 @@ class _EditTerenModalState extends State<EditTerenModal> {
                               ),
                               if (_tipTerenaError != null)
                                 Padding(
-                                  padding: const EdgeInsets.only(left: 8.0, top: 4.0),
+                                  padding: const EdgeInsets.only(
+                                      left: 8.0, top: 4.0),
                                   child: Align(
                                     alignment: Alignment.centerLeft,
                                     child: Text(
                                       _tipTerenaError!,
-                                      style: TextStyle(color: Colors.red, fontSize: 12),
+                                      style: TextStyle(
+                                          color: Colors.red, fontSize: 12),
                                     ),
                                   ),
                                 ),
@@ -250,7 +254,8 @@ class _EditTerenModalState extends State<EditTerenModal> {
                                   controller: _cijenaController,
                                   maxLength: 3,
                                   decoration: InputDecoration(
-                                    hintText: "Moguce unijeti samo numericke vrijednosti",
+                                    hintText:
+                                        "Moguce unijeti samo numericke vrijednosti",
                                     contentPadding: EdgeInsets.all(8.0),
                                     border: InputBorder.none,
                                     enabledBorder: InputBorder.none,
@@ -270,12 +275,14 @@ class _EditTerenModalState extends State<EditTerenModal> {
                               ),
                               if (_cijenaError != null)
                                 Padding(
-                                  padding: const EdgeInsets.only(left: 8.0, top: 4.0),
+                                  padding: const EdgeInsets.only(
+                                      left: 8.0, top: 4.0),
                                   child: Align(
                                     alignment: Alignment.centerLeft,
                                     child: Text(
                                       _cijenaError!,
-                                      style: TextStyle(color: Colors.red, fontSize: 12),
+                                      style: TextStyle(
+                                          color: Colors.red, fontSize: 12),
                                     ),
                                   ),
                                 ),
@@ -303,7 +310,8 @@ class _EditTerenModalState extends State<EditTerenModal> {
                                 child: TextFormField(
                                   controller: _brojTerenaController,
                                   decoration: InputDecoration(
-                                    hintText: "Moguce unijeti samo numericke vrijednosti",
+                                    hintText:
+                                        "Moguce unijeti samo numericke vrijednosti",
                                     contentPadding: EdgeInsets.all(8.0),
                                     border: InputBorder.none,
                                     enabledBorder: InputBorder.none,
@@ -323,12 +331,14 @@ class _EditTerenModalState extends State<EditTerenModal> {
                               ),
                               if (_brojTerenaError != null)
                                 Padding(
-                                  padding: const EdgeInsets.only(left: 8.0, top: 4.0),
+                                  padding: const EdgeInsets.only(
+                                      left: 8.0, top: 4.0),
                                   child: Align(
                                     alignment: Alignment.centerLeft,
                                     child: Text(
                                       _brojTerenaError!,
-                                      style: TextStyle(color: Colors.red, fontSize: 12),
+                                      style: TextStyle(
+                                          color: Colors.red, fontSize: 12),
                                     ),
                                   ),
                                 ),
@@ -390,12 +400,14 @@ class _EditTerenModalState extends State<EditTerenModal> {
                               ),
                               if (_gradoviError != null)
                                 Padding(
-                                  padding: const EdgeInsets.only(left: 8.0, top: 4.0),
+                                  padding: const EdgeInsets.only(
+                                      left: 8.0, top: 4.0),
                                   child: Align(
                                     alignment: Alignment.centerLeft,
                                     child: Text(
                                       _gradoviError!,
-                                      style: TextStyle(color: Colors.red, fontSize: 12),
+                                      style: TextStyle(
+                                          color: Colors.red, fontSize: 12),
                                     ),
                                   ),
                                 ),
@@ -468,7 +480,8 @@ class _EditTerenModalState extends State<EditTerenModal> {
                                     controller: _cijenaPopustaController,
                                     maxLength: 3,
                                     decoration: InputDecoration(
-                                      hintText: "Moguce unijeti samo numericke vrijednosti",
+                                      hintText:
+                                          "Moguce unijeti samo numericke vrijednosti",
                                       contentPadding: EdgeInsets.all(8.0),
                                       border: InputBorder.none,
                                       enabledBorder: InputBorder.none,
@@ -489,12 +502,14 @@ class _EditTerenModalState extends State<EditTerenModal> {
                                 ),
                                 if (_cijenaPopustaError != null)
                                   Padding(
-                                    padding: const EdgeInsets.only(left: 8.0, top: 4.0),
+                                    padding: const EdgeInsets.only(
+                                        left: 8.0, top: 4.0),
                                     child: Align(
                                       alignment: Alignment.centerLeft,
                                       child: Text(
                                         _cijenaPopustaError!,
-                                        style: TextStyle(color: Colors.red, fontSize: 12),
+                                        style: TextStyle(
+                                            color: Colors.red, fontSize: 12),
                                       ),
                                     ),
                                   ),
@@ -530,28 +545,29 @@ class _EditTerenModalState extends State<EditTerenModal> {
           ),
         ),
         ElevatedButton(
-          onPressed: isSaveButtonDisabled
-              ? null
-              : () {
-                  _validateForm();
-                  if (_nazivError == null &&
-                      _brojTerenaError == null &&
-                      _cijenaError == null &&
-                      _tipTerenaError == null &&
-                      _gradoviError == null &&
-                      _cijenaPopustaError == null) {
-                    widget.handleEdit(
-                      widget.teren.terenId!,
-                      _nazivController.text,
-                      int.tryParse(_cijenaController.text),
-                      int.tryParse(_brojTerenaController.text),
-                      _selectedTipTerena,
-                      _selectedPopust,
-                      int.tryParse(_cijenaPopustaController.text),
-                      _selectedGradoviId,
-                    );
-                  }
-                },
+          onPressed: () {
+            _validateForm();
+            if (_selectedPopust == 'Ne') {
+              _cijenaPopustaController.text = '0';
+            }
+            if (_nazivError == null &&
+                _brojTerenaError == null &&
+                _cijenaError == null &&
+                _tipTerenaError == null &&
+                _gradoviError == null &&
+                _cijenaPopustaError == null) {
+              widget.handleEdit(
+                widget.teren.terenId!,
+                _nazivController.text,
+                int.tryParse(_cijenaController.text),
+                int.tryParse(_brojTerenaController.text),
+                _selectedTipTerena,
+                _selectedPopust,
+                int.tryParse(_cijenaPopustaController.text),
+                _selectedGradoviId,
+              );
+            }
+          },
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.green,
             shape: RoundedRectangleBorder(
