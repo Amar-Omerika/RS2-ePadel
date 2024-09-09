@@ -88,7 +88,7 @@ class _EditTerenModalState extends State<EditTerenModal> {
         _cijenaPopustaError =
             _cijenaPopustaController.text.isEmpty || cijenaPopusta == 0
                 ? 'Ovo polje je obavezno i mora imati vrijednost vecu od 0'
-                : (cijenaPopusta > cijena
+                : (cijenaPopusta > cijena || cijenaPopusta == cijena
                     ? 'Cijena popusta mora biti manja od ukupne cijene'
                     : null);
       }
