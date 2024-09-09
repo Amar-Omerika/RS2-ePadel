@@ -199,7 +199,8 @@ class _TereniScreenState extends State<TereniScreen> {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         backgroundColor: Colors.red,
-                        content: Text('Ne možete obrisati ovaj Teren!'),
+                        content: Text(
+                            'Ne možete obrisati ovaj Teren jer ovaj teren ima rezervacija!'),
                       ),
                     );
                   }
