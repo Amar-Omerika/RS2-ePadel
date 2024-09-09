@@ -14,7 +14,7 @@ class AuthProvider extends BaseProvider<Korisnik> {
   static String? _baseUrl;
   AuthProvider() : super("Korisnik") {
     _baseUrl = const String.fromEnvironment("baseUrl",
-        defaultValue: "http://localhost:5192/");
+        defaultValue: "http://10.0.2.2:5192/");
     print("baseurl: $_baseUrl");
 
     if (_baseUrl!.endsWith("/") == false) {

@@ -96,7 +96,7 @@ class _EditProfileScreenScreenState extends State<EditProfileScreen> {
         'prezime': _korisnik!.prezime,
         "korisnickoIme": _korisnickoImeController.text,
         "email": _emailController.text,
-        'spol': _korisnik!.spol,
+        'spoloviId': 1,
         "dominantnaRuka": _dominantnaRuka,
         "slika": _pictureBase64 ?? _korisnik!.slika,
       };
