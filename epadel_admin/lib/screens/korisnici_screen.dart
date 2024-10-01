@@ -1,4 +1,6 @@
+import 'package:epadel_admin/providers/auth_provider.dart';
 import 'package:epadel_admin/screens/feedback_screen.dart';
+import 'package:epadel_admin/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:epadel_admin/models/models.dart';
 import 'package:epadel_admin/providers/providers.dart';
@@ -19,6 +21,7 @@ class KorisniciScreen extends StatefulWidget {
 
 class _KorisniciScreenState extends State<KorisniciScreen> {
   KorisnikProvider? _korisnikProvider;
+  AuthProvider? _authProvider;
   SearchResult<Korisnik>? result;
   final TextEditingController _searchController = TextEditingController();
   final TextEditingController _searchSpolController = TextEditingController();
@@ -29,6 +32,7 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
   void initState() {
     super.initState();
     _korisnikProvider = context.read<KorisnikProvider>();
+    _authProvider = context.read<AuthProvider>();
     _initializeData();
   }
 
@@ -202,7 +206,53 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
                                 ),
                               ),
                               const SizedBox(width: 8),
+                              Container(
+                                margin: EdgeInsets.symmetric(vertical: 10),
+                                child: ElevatedButton(
+                                  style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            Colors.black),
+                                    foregroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            Colors.white),
+                                    minimumSize:
+                                        MaterialStateProperty.all<Size>(
+                                            const Size(10, 45)),
+                                    shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                      ),
+                                    ),
+                                  ),
+                                  onPressed: () async {
+                                    _authProvider?.logout();
+                                    Navigator.of(context).pushReplacement(
+                                      PageRouteBuilder(
+                                        transitionDuration: Duration.zero,
+                                        pageBuilder: (_, __, ___) =>
+                                            const LoginScreen(),
+                                      ),
+                                    );
+                                  },
+                                  child: Container(
+                                    child: const Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 8.0, vertical: 10),
+                                      child: Center(
+                                        child: Text(
+                                          'Log out',
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ],
+                            
                           ),
                         ),
                       ),
@@ -303,7 +353,7 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
                               ],
                             ),
                           ),
-                        ],
+                        ],                  
                       ),
                     ],
                   ),
