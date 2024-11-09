@@ -89,7 +89,10 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
   }
 
   void handleEdit(int id, String? korisnickoIme, String? email,
-      String? dominantnaRuka, int? spoloviId, String? slika) async {
+      String? dominantnaRuka,
+      int? spoloviId,
+      String? slika,
+      bool? aktivan) async {
         print("id: $id, korisnickoIme: $korisnickoIme, email: $email, dominantnaRuka: $dominantnaRuka, spoloviId: $spoloviId");
     try {
       await _korisnikProvider!.update(id, {
@@ -98,6 +101,7 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
         'dominantnaRuka': dominantnaRuka,
         'spoloviId': spoloviId,
         'slika': slika,
+        'aktivan': aktivan
       });
       if (context.mounted) {
         Navigator.pop(context);

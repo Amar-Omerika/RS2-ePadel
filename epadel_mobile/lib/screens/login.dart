@@ -20,6 +20,7 @@ class _LoginScreenState extends State<LoginScreen> {
   late AuthProvider _authProvider;
   String? userName;
   String? password;
+  String? errorMessage;
   bool loginFailed = false;
 
   @override
@@ -97,9 +98,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   const SizedBox(height: 16.0),
                   if (loginFailed)
-                    const Text(
-                      'Login Failed: Pogrešno korisničko ime ili lozinka!',
-                      style: TextStyle(color: Colors.red),
+                    Text(
+                      errorMessage ?? '',
+                      style: const TextStyle(color: Colors.red),
                     ),
                   const SizedBox(height: 16.0),
                   ElevatedButton(
@@ -134,9 +135,12 @@ class _LoginScreenState extends State<LoginScreen> {
                           }
                         } on Exception catch (error) {
                           print(error.toString());
-                          if (error.toString().contains("Internal server error")) {
+                          if (error.toString().contains("Exception")) {
                             setState(() {
                               loginFailed = true;
+                              errorMessage = error
+                                  .toString()
+                                  .replaceFirst("Exception: ", "");
                             });
                           }
                         }

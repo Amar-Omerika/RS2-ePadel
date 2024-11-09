@@ -28,6 +28,7 @@ class _EditKorisnikModalState extends State<EditKorisnikModal> {
 
   String? _korisnickoImeError;
   String? _emailError;
+  bool _isAktivan = true;
 
   final List<String> ruke = ['Lijeva', 'Desna'];
   SearchResult<Spolovi> _spoloviResult = SearchResult<Spolovi>();
@@ -40,7 +41,7 @@ class _EditKorisnikModalState extends State<EditKorisnikModal> {
     _emailController = TextEditingController(text: widget.korisnik.email);
     _selectedDominantnaRuka = widget.korisnik.dominantnaRuka ?? ruke.first;
     _selectedSpolId = null;
-
+    _isAktivan = widget.korisnik.aktivan ?? true;
     loadSpolovi();
   }
 
@@ -88,6 +89,7 @@ class _EditKorisnikModalState extends State<EditKorisnikModal> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              // Korisnicko Ime Field
               Container(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
@@ -136,6 +138,7 @@ class _EditKorisnikModalState extends State<EditKorisnikModal> {
                   ],
                 ),
               ),
+              // Email Field
               Container(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
@@ -187,6 +190,7 @@ class _EditKorisnikModalState extends State<EditKorisnikModal> {
                   ],
                 ),
               ),
+              // Dominantna Ruka Field
               Container(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
@@ -229,6 +233,7 @@ class _EditKorisnikModalState extends State<EditKorisnikModal> {
                   ],
                 ),
               ),
+              // Spol Field
               Container(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
@@ -271,6 +276,30 @@ class _EditKorisnikModalState extends State<EditKorisnikModal> {
                   ],
                 ),
               ),
+              // Aktivan Checkbox
+              Container(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    Checkbox(
+                      value: _isAktivan,
+                      onChanged: (bool? newValue) {
+                        setState(() {
+                          _isAktivan = newValue ?? false;
+                        });
+                      },
+                    ),
+                    const Text(
+                      'Aktivan',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
@@ -306,6 +335,7 @@ class _EditKorisnikModalState extends State<EditKorisnikModal> {
                 _selectedDominantnaRuka,
                 _selectedSpolId,
                 widget.korisnik.slika,
+                _isAktivan,
               );
             }
           },

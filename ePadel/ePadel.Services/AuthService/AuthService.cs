@@ -70,6 +70,11 @@ namespace ePadel.Services.AuthService
                 throw new KorisnikException("Kredencijali nisu ispravni", "Netacno korisnicko ime ili lozinka!");
             }
 
+            if (entity.Aktivan == false)
+            {
+                throw new KorisnikException("Korisnik nije aktivan", "Vaš račun je deaktiviran. Kontaktirajte podršku.");
+            }
+
             var hash = Helper.PasswordHelper.GenerateHash(entity.LozinkaSalt, request.Lozinka);
 
             if (hash != entity.LozinkaHash)
