@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:json_annotation/json_annotation.dart';
 
 part 'korisnik.g.dart';
@@ -13,7 +15,8 @@ class Korisnik {
   String? brTelefona;
   String? lozinka;
   String? dominantnaRuka;
-  String? spol;
+  int? spol;
+  String? spolString;
   String? slika;
   bool? aktivan;
 
@@ -28,6 +31,7 @@ class Korisnik {
       this.lozinka,
       this.dominantnaRuka,
       this.spol,
+      this.spolString,
       this.slika,
       this.aktivan});
 

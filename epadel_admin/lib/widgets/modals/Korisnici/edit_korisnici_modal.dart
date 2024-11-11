@@ -31,33 +31,22 @@ class _EditKorisnikModalState extends State<EditKorisnikModal> {
   bool _isAktivan = true;
 
   final List<String> ruke = ['Lijeva', 'Desna'];
-  SearchResult<Spolovi> _spoloviResult = SearchResult<Spolovi>();
+final List<Map<String, dynamic>> spolovi = [
+    {'id': 1, 'tipSpola': 'Muško'},
+    {'id': 2, 'tipSpola': 'Žensko'}
+  ];
 
-  @override
+@override
   void initState() {
     super.initState();
     _korisnickoImeController =
         TextEditingController(text: widget.korisnik.korisnickoIme);
     _emailController = TextEditingController(text: widget.korisnik.email);
     _selectedDominantnaRuka = widget.korisnik.dominantnaRuka ?? ruke.first;
-    _selectedSpolId = null;
+    _selectedSpolId = widget.korisnik.spol;
     _isAktivan = widget.korisnik.aktivan ?? true;
-    loadSpolovi();
-  }
+}
 
-  Future<void> loadSpolovi() async {
-    var tmpData = await context.read<SpoloviProvider>().get();
-    setState(() {
-      _spoloviResult = tmpData;
-
-      // Set the _selectedSpolId based on the spol value from korisnik
-      Spolovi? selectedSpol = _spoloviResult.result.firstWhere(
-        (spol) => spol.tipSpola == widget.korisnik.spol,
-        orElse: () => Spolovi(),
-      );
-      _selectedSpolId = selectedSpol.id;
-    });
-  }
 
   void _validateForm() {
     setState(() {
@@ -254,10 +243,10 @@ class _EditKorisnikModalState extends State<EditKorisnikModal> {
                       ),
                       child: DropdownButtonFormField<int>(
                         value: _selectedSpolId,
-                        items: _spoloviResult.result.map((Spolovi spol) {
+                        items: spolovi.map((spol) {
                           return DropdownMenuItem<int>(
-                            value: spol.id,
-                            child: Text(spol.tipSpola!),
+                            value: spol['id'],
+                            child: Text(spol['tipSpola']),
                           );
                         }).toList(),
                         onChanged: (newValue) {

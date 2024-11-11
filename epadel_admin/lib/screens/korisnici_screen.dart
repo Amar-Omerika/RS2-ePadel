@@ -90,16 +90,17 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
 
   void handleEdit(int id, String? korisnickoIme, String? email,
       String? dominantnaRuka,
-      int? spoloviId,
+      int? spol,
       String? slika,
       bool? aktivan) async {
-        print("id: $id, korisnickoIme: $korisnickoIme, email: $email, dominantnaRuka: $dominantnaRuka, spoloviId: $spoloviId");
+    print(
+        "id: $id, korisnickoIme: $korisnickoIme, email: $email, dominantnaRuka: $dominantnaRuka, spol: $spol");
     try {
       await _korisnikProvider!.update(id, {
         'korisnickoIme': korisnickoIme,
         'email': email,
         'dominantnaRuka': dominantnaRuka,
-        'spoloviId': spoloviId,
+        'spol': spol,
         'slika': slika,
         'aktivan': aktivan
       });
@@ -474,9 +475,9 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
                       ? 'Nepoznato'
                       : korisnik.dominantnaRuka!)),
                   DataCell(Text(
-                      korisnik.spol == null
+                      korisnik.spolString == null
                       ? 'Nepoznato'
-                      : korisnik.spol!)),
+                      : korisnik.spolString!)),
                   DataCell(Text(
                       korisnik.email == null ? 'Nepoznato' : korisnik.email!)),
                   DataCell(IconButton(
