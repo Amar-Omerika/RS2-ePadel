@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ePadel.Model;
+using ePadel.Model.Enums;
 using ePadel.Model.Requests.KorisnikRequest;
 using ePadel.Model.SearchObjects;
 using ePadel.Services.BaseService;
@@ -14,25 +15,35 @@ namespace ePadel.Services.KorisnikService
         {
 
         }
-        public override IQueryable<ePadel.Services.Database.Korisnik> AddInclude(IQueryable<ePadel.Services.Database.Korisnik> query, KorisnikSearchObject search = null)
+        public override IQueryable<Database.Korisnik> AddInclude(IQueryable<Database.Korisnik> query, KorisnikSearchObject search = null)
         {
-            query = query.Include(x => x.KorisnikUloges).Include(x=>x.Spolovi);
+            query = query.Include(x => x.KorisnikUloges);
             return base.AddInclude(query, search);
         }
 
-        public override IQueryable<ePadel.Services.Database.Korisnik> AddFilter(IQueryable<ePadel.Services.Database.Korisnik> query, KorisnikSearchObject search = null)
+    public override IQueryable<Database.Korisnik> AddFilter(IQueryable<Database.Korisnik> query, KorisnikSearchObject search = null)
         {
             var filteredQuery = base.AddFilter(query, search);
-
             if (!string.IsNullOrWhiteSpace(search?.Tekst))
-                filteredQuery = filteredQuery.Where(x =>  x.KorisnickoIme.ToLower().Contains(search.Tekst.ToLower()));
-
+                filteredQuery = filteredQuery.Where(x => x.KorisnickoIme.ToLower().Contains(search.Tekst.ToLower()));
+            //specific case where I needed to retrieve from database string value of the enum and mapped it to the model, adjusted search also
             if (!string.IsNullOrWhiteSpace(search?.Spol))
-                filteredQuery = filteredQuery.Where(x => x.Spolovi.TipSpola.ToLower().Contains(search.Spol.ToLower()));
-
+            {
+                if (Enum.TryParse<Spol>(search.Spol, true, out var spolEnum))
+                {
+                    filteredQuery = filteredQuery.Where(x => x.Spol == spolEnum);
+                    if (!filteredQuery.Any())
+                    {
+                        return _context.Korisniks.Where(x => false); // Return an empty query
+                    }
+                }
+                else
+                {
+                    // Handle invalid Spol value if necessary
+                    return _context.Korisniks.Where(x => false); // Return an empty query
+                }
+            }
             return filteredQuery;
-
-       
         }
 
         public override void BeforeInsert(KorisnikInsertRequest insert, Database.Korisnik entity)

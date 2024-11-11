@@ -4,11 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ePadel.Model
+namespace ePadel.Model.Enums
 {
-    public class Spol
+    public enum Spol
     {
-        public int Id { get; set; }
-        public string TipSpola { get; set; }
+        Muško = 1,
+        Žensko = 2,
+
+
     }
 }

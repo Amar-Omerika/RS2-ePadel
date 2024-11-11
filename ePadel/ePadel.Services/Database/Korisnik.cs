@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ePadel.Model.Enums;
+using System;
 using System.Collections.Generic;
 
 namespace ePadel.Services.Database
@@ -16,10 +17,10 @@ namespace ePadel.Services.Database
         public string? LozinkaSalt { get; set; }
         public string? DominantnaRuka { get; set; }
 
-        public int SpoloviId { get; set; }
+        public Spol Spol { get; set; }
         public bool? Aktivan { get; set; }
 
-        public Spolovi Spolovi { get; set; }
+        
         public virtual ICollection<KorisnikUloge> KorisnikUloges { get; set; }
         public virtual ICollection<Rezervacije>? Rezervacijes { get; set; }
         public virtual IEnumerable<Reporti>? Reportis { get; set; }

@@ -19,7 +19,8 @@ namespace ePadel.Services.Mapping
     public class MappingProfile:Profile
     {
         public MappingProfile() {
-            CreateMap<Database.Spolovi, Model.Spol>();
+            CreateMap<Database.Korisnik, Model.Korisnik>()
+                .ForMember(dest => dest.SpolString, opt => opt.MapFrom(src => src.Spol.ToString()));
             CreateMap<Database.Korisnik, Model.Korisnik>();
             CreateMap<Database.KorisnikUloge, Model.KorisnikUloge>();
             CreateMap<Database.Uloga, Model.Uloga>();

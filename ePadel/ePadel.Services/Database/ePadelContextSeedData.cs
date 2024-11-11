@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using ePadel.Model.Enums;
+using Microsoft.EntityFrameworkCore;
 using Stripe;
 
 namespace ePadel.Services.Database
@@ -28,19 +29,7 @@ namespace ePadel.Services.Database
                 Naziv = "Igrac"
             }
             });
-            modelBuilder.Entity<Spolovi>().HasData(new Spolovi[]
-{
-            new Spolovi()
-            {
-                Id = 1,
-                TipSpola = "Musko",
-            },
-           new Spolovi()
-            {
-                Id = 2,
-                TipSpola = "Zensko",
-            },
-            });
+
             modelBuilder.Entity<Korisnik>().HasData(new Korisnik[]
             {
             new Korisnik()
@@ -53,7 +42,7 @@ namespace ePadel.Services.Database
                 LozinkaHash = "UelRf6tm5pFSJb/v8LPopEQp0gE=",
                 LozinkaSalt = "0aJMk8P2QiQUZ/6YRA7I9g==",
                 DominantnaRuka = "Desna",
-                SpoloviId = 1,
+                Spol = Spol.Muško,
                 Slika = profilnaSlikaKorisnika,
                 Aktivan = true
             },
@@ -67,7 +56,7 @@ namespace ePadel.Services.Database
                     LozinkaHash = "4R118CK/ix59z8FFAzE0oc9vGCE=",
                     LozinkaSalt = "gXmUGQzsWURgepc8sGp0jw==",
                     DominantnaRuka = "Desna",
-                    SpoloviId = 1,
+                    Spol = Spol.Muško,
                     Slika = profilnaSlikaKorisnika,
                     Aktivan = true
             }

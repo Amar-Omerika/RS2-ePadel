@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using ePadel.Model.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace ePadel.Model.Requests.KorisnikRequest
 {
@@ -18,7 +19,7 @@ namespace ePadel.Model.Requests.KorisnikRequest
         public string? KorisnickoIme { get; set; }
 
         [Required(ErrorMessage = "Spol je obavezan.")]
-        public int SpoloviId { get; set; }
+        public Spol Spol { get; set; }
 
         public string? DominantnaRuka { get; set; }
 

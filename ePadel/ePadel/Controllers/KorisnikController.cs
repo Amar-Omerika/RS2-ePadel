@@ -1,4 +1,5 @@
 using ePadel.Model;
+using ePadel.Model.Enums;
 using ePadel.Model.Requests.KorisnikRequest;
 using ePadel.Model.SearchObjects;
 using ePadel.Services.BaseService;
@@ -26,6 +27,13 @@ namespace ePadel.Controllers
         public override Model.Korisnik Update(int id, [FromBody] KorisnikUpdateRequest request)
         {
             return base.Update(id, request);
+        }
+
+        [HttpGet("spolovi")]
+        public ActionResult<IEnumerable<string>> GetSpolovi()
+        {
+            var spolovi = Enum.GetValues(typeof(Spol)).Cast<Spol>().Select(s => s.ToString()).ToList();
+            return Ok(spolovi);
         }
     }
 }

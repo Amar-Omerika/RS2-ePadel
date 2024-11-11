@@ -41,6 +41,7 @@ namespace ePadel.Services.Database
             modelBuilder.Entity<Korisnik>(entity =>
             {
                 entity.ToTable("Korisnik");
+                entity.Property(e => e.Spol).HasConversion<int>();
             });
 
             modelBuilder.Entity<KorisnikUloge>(entity =>
