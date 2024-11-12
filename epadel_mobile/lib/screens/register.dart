@@ -1,9 +1,11 @@
-import 'package:epadel_mobile/models/models.dart';
+import 'dart:convert';
+import 'dart:typed_data';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show rootBundle;
+import 'package:provider/provider.dart';
 import 'package:epadel_mobile/providers/auth_provider.dart';
 import 'package:epadel_mobile/screens/screens.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:provider/provider.dart';
+import 'package:epadel_mobile/utils/util.dart';
 
 class RegisterScreen extends StatefulWidget {
   static const routeName = "/register";
@@ -20,7 +22,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
   String? password;
   String? firstName;
   String? lastName;
-  int? selectedSpolId = 1; 
+  String? email;
+  String? defaultImageBase64;
+  int? selectedSpolId = 1;
   String? dominantnaRuka = 'Desna';
   List<int> uloge = [2];
   final List<Map<String, dynamic>> spolovi = [
@@ -33,6 +37,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
   void initState() {
     super.initState();
     _authProvider = context.read<AuthProvider>();
+    _loadDefaultImage();
+  }
+
+  void _loadDefaultImage() async {
+    final ByteData bytes = await rootBundle.load('assets/noprofile.jpeg');
+    final buffer = bytes.buffer;
+    final base64Image = base64String(Uint8List.view(buffer));
+    setState(() {
+      defaultImageBase64 = base64Image;
+    });
   }
 
   @override
@@ -100,7 +114,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         if (value!.isEmpty) {
                           return "Ovo polje je obavezno";
                         }
-                        if (!regexKorisnicko.hasMatch(value)) {
+                        if (!RegExp(r'^.{4,}$').hasMatch(value)) {
                           return 'Korisničko ime mora sadržavati najmanje 4 karaktera!';
                         }
                         return null;
@@ -112,12 +126,29 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     const SizedBox(height: 20),
                     TextFormField(
+                      onSaved: (newValue) => email = newValue,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "Ovo polje je obavezno";
+                        }
+                        if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+                          return 'Unesite važeću email adresu';
+                        }
+                        return null;
+                      },
+                      decoration: const InputDecoration(
+                        labelText: 'Email',
+                        hintText: 'Email',
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    TextFormField(
                       onSaved: (newValue) => password = newValue,
                       validator: (value) {
                         if (value!.isEmpty) {
                           return "Ovo polje je obavezno";
                         }
-                        if (!regexLozinka.hasMatch(value)) {
+                        if (!RegExp(r'^.{8,}$').hasMatch(value)) {
                           return 'Lozinka mora sadržavati 8 karaktera!';
                         }
                         return null;
@@ -190,14 +221,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             'ime': firstName!,
                             'prezime': lastName!,
                             'korisnickoIme': userName!,
-                            'lozinka': password!,
+                            'email': email!,
+                            'password': password!,
                             'spol': selectedSpolId!,
                             'dominantnaRuka': dominantnaRuka!,
-                            'uloge': [2]
+                            'uloge': [2],
+                            'slika': defaultImageBase64
                           };
+                          print(user);
                           try {
                             var data = await _authProvider.register(user);
-
                             if (context.mounted) {
                               Navigator.popAndPushNamed(
                                   context, LoginScreen.routeName);

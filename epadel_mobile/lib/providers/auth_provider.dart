@@ -61,6 +61,7 @@ class AuthProvider extends BaseProvider<Korisnik> {
       return fromJson(data);
     } else {
       return jsonDecode(response.body);
+      
     }
   }
 
