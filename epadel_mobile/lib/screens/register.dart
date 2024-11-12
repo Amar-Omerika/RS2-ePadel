@@ -1,6 +1,5 @@
 import 'package:epadel_mobile/models/models.dart';
 import 'package:epadel_mobile/providers/auth_provider.dart';
-import 'package:epadel_mobile/providers/spolovi_provider.dart'; // Import the provider
 import 'package:epadel_mobile/screens/screens.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -17,7 +16,6 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreenState extends State<RegisterScreen> {
   final formKey = GlobalKey<FormState>();
   late AuthProvider _authProvider;
-  late SpoloviProvider _spoloviProvider; // Add SpoloviProvider
   String? userName;
   String? password;
   String? firstName;
@@ -25,22 +23,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
   int? selectedSpolId = 1; 
   String? dominantnaRuka = 'Desna';
   List<int> uloge = [2];
-  SearchResult<Spolovi> _spoloviResult = SearchResult<Spolovi>();
+  final List<Map<String, dynamic>> spolovi = [
+    {'id': 1, 'tipSpola': 'Muško'},
+    {'id': 2, 'tipSpola': 'Žensko'}
+  ];
   bool registrationFailed = false;
 
   @override
   void initState() {
     super.initState();
     _authProvider = context.read<AuthProvider>();
-    _spoloviProvider = context.read<SpoloviProvider>();
-    loadSpolovi();
   }
-  Future<void> loadSpolovi() async {
-    var tmpData = await _spoloviProvider.get();
-    setState(() {
-      _spoloviResult = tmpData;
-    });
-  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -136,26 +130,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    Consumer<SpoloviProvider>(
-                      builder: (context, provider, child) {
-                        return DropdownButtonFormField<int>(
-                          value: selectedSpolId,
-                          items:_spoloviResult.result.map((spol) {
-                            return DropdownMenuItem(
-                              value: spol.id,
-                              child: Text(spol.tipSpola!),
-                            );
-                          }).toList(),
-                          onChanged: (value) {
-                            setState(() {
-                              selectedSpolId = value;
-                            });
-                          },
-                          decoration: const InputDecoration(
-                            labelText: 'Spol',
-                          ),
+                    DropdownButtonFormField<int>(
+                      value: selectedSpolId,
+                      items: spolovi.map((spol) {
+                        return DropdownMenuItem<int>(
+                          value: spol['id'],
+                          child: Text(spol['tipSpola']),
                         );
+                      }).toList(),
+                      onChanged: (newValue) {
+                        setState(() {
+                          selectedSpolId = newValue;
+                        });
                       },
+                      decoration: const InputDecoration(
+                        labelText: 'Spol',
+                      ),
                     ),
                     const SizedBox(height: 20),
                     DropdownButtonFormField<String>(
@@ -201,7 +191,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             'prezime': lastName!,
                             'korisnickoIme': userName!,
                             'lozinka': password!,
-                            'spoloviId': selectedSpolId!,
+                            'spol': selectedSpolId!,
                             'dominantnaRuka': dominantnaRuka!,
                             'uloge': [2]
                           };
