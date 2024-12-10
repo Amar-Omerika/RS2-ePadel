@@ -282,7 +282,6 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
                                   ),
                                   child: TextField(
                                     controller: _searchController,
-                                    maxLines: null, // Allow multiline input
                                     keyboardType: TextInputType.multiline,
                                     decoration: InputDecoration(
                                       filled: true,
@@ -308,7 +307,6 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
                                   ),
                                   child: TextField(
                                     controller: _searchSpolController,
-                                    maxLines: null,
                                     keyboardType: TextInputType.multiline,
                                     decoration: InputDecoration(
                                       filled: true,

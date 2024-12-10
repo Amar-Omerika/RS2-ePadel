@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors, use_build_context_synchronously
+
 import 'package:epadel_admin/models/models.dart';
 import 'package:epadel_admin/providers/providers.dart';
 import 'package:epadel_admin/screens/appsidebar.dart';
@@ -12,7 +14,7 @@ import 'package:provider/provider.dart';
 
 class TereniScreen extends StatefulWidget {
   static const String routeName = '/tereni';
-  
+
   const TereniScreen({Key? key}) : super(key: key);
 
   @override
@@ -23,10 +25,14 @@ class _TereniScreenState extends State<TereniScreen> {
   TerenProvider? _terenProvider;
   SearchResult<Teren>? result;
   final TextEditingController _searchController = TextEditingController();
-  final TextEditingController _searchTipTerenaController =
-      TextEditingController();
   int _currentPage = 1;
   int _pageSize = 5;
+
+  late TipTerenaProvider _tipTerenaProvider;
+  SearchResult<TipTerena>? resultTipTerena;
+  int? _selectedTipTerena = null;
+
+  String? selectedPodlogaNaziv = '';
 
   @override
   void initState() {
@@ -36,6 +42,8 @@ class _TereniScreenState extends State<TereniScreen> {
   }
 
   Future<void> _initializeData() async {
+    _tipTerenaProvider = TipTerenaProvider();
+    var dataTipTerena = await _tipTerenaProvider.get();
     Map<String, String> filters = {
       'page': (_currentPage - 1).toString(),
       'pageSize': _pageSize.toString()
@@ -44,13 +52,13 @@ class _TereniScreenState extends State<TereniScreen> {
     if (_searchController.text.isNotEmpty) {
       filters['Tekst'] = _searchController.text;
     }
-    if (_searchTipTerenaController.text.isNotEmpty) {
-      filters['TipTerenaTekst'] = _searchTipTerenaController.text;
+    if (_selectedTipTerena != null) {
+      filters['TipTerenaTekst'] = selectedPodlogaNaziv!;
     }
-
     var data = await _terenProvider!.get(filters);
     setState(() {
       result = data;
+      resultTipTerena = dataTipTerena;
     });
   }
 
@@ -89,11 +97,11 @@ class _TereniScreenState extends State<TereniScreen> {
 
   void resetSearch() {
     _searchController.text = '';
-    _searchTipTerenaController.text = '';
+    selectedPodlogaNaziv = '';
   }
 
-  void handleAdd(String? naziv, int? cijena, int? brojTerena, int? tipTerenaId, 
-       String? popust, int? cijenaPopusta, int? gradoviId) async {
+  void handleAdd(String? naziv, int? cijena, int? brojTerena, int? tipTerenaId,
+      String? popust, int? cijenaPopusta, int? gradoviId) async {
     await _terenProvider!.insert({
       'naziv': naziv,
       'cijena': cijena,
@@ -132,7 +140,8 @@ class _TereniScreenState extends State<TereniScreen> {
       int? brojTerena,
       int? tipTerenaId,
       String? popust,
-      int? cijenaPopusta, int? gradoviId) async {
+      int? cijenaPopusta,
+      int? gradoviId) async {
     await _terenProvider!.update(id, {
       'naziv': naziv,
       'cijena': cijena,
@@ -247,16 +256,14 @@ class _TereniScreenState extends State<TereniScreen> {
                     pageBuilder: (_, __, ___) => const RezervacijeScreen(),
                   ),
                 );
-              } 
-                  else if (page == 'feedback') {
+              } else if (page == 'feedback') {
                 Navigator.of(context).pushReplacement(
                   PageRouteBuilder(
                     transitionDuration: Duration.zero,
                     pageBuilder: (_, __, ___) => const FeedbackScreen(),
                   ),
                 );
-              } 
-              else if (page == 'report') {
+              } else if (page == 'report') {
                 Navigator.of(context).pushReplacement(
                   PageRouteBuilder(
                     transitionDuration: Duration.zero,
@@ -332,7 +339,7 @@ class _TereniScreenState extends State<TereniScreen> {
                             child: Row(
                               children: [
                                 Container(
-                                  width: 250, // Set the desired width
+                                  width: 250,
                                   padding: const EdgeInsets.all(8.0),
                                   decoration: BoxDecoration(
                                     color: Colors.grey[200],
@@ -340,7 +347,6 @@ class _TereniScreenState extends State<TereniScreen> {
                                   ),
                                   child: TextField(
                                     controller: _searchController,
-                                    maxLines: null, // Allow multiline input
                                     keyboardType: TextInputType.multiline,
                                     decoration: InputDecoration(
                                       filled: true,
@@ -348,7 +354,8 @@ class _TereniScreenState extends State<TereniScreen> {
                                       hintText: 'Pretrazi po nazivu terena',
                                       contentPadding:
                                           const EdgeInsets.symmetric(
-                                              vertical: 8.0),
+                                              vertical: 8.0,
+                                              horizontal: 4.0),
                                       border: OutlineInputBorder(
                                         borderRadius:
                                             BorderRadius.circular(10.0),
@@ -359,28 +366,59 @@ class _TereniScreenState extends State<TereniScreen> {
                                 ),
                                 Container(
                                   width: 250, // Set the desired width
-                                  padding: const EdgeInsets.all(8.0),
+                                  // padding: const EdgeInsets.all(8.0),
                                   decoration: BoxDecoration(
-                                    color: Colors.grey[200],
+                                    color: Colors.white,
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
-                                  child: TextField(
-                                    controller: _searchTipTerenaController,
-                                    maxLines: null, // Allow multiline input
-                                    keyboardType: TextInputType.multiline,
+                                  child: DropdownButtonFormField<int>(
+                                    dropdownColor: Colors.white,
                                     decoration: InputDecoration(
-                                      filled: true,
-                                      fillColor: Colors.white,
-                                      hintText: 'Pretrazi po vrsti podloge',
                                       contentPadding:
-                                          const EdgeInsets.symmetric(
-                                              vertical: 8.0),
+                                          EdgeInsets.symmetric(vertical: 8.0),
+                                      hintText: 'Pretrazi po vrsti podloge',
                                       border: OutlineInputBorder(
                                         borderRadius:
                                             BorderRadius.circular(10.0),
-                                        borderSide: BorderSide.none,
                                       ),
                                     ),
+                                    value: _selectedTipTerena,
+                                    items: [
+                                      // Add "Svi tereni" as the default option
+                                      DropdownMenuItem<int>(
+                                        value:
+                                            null, // Null value represents "Svi tereni"
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 4.0),
+                                          child: Text('Svi tereni'),
+                                        ),
+                                      ),
+                                      if (resultTipTerena != null)
+                                        ...resultTipTerena!.result
+                                            .map((podloga) {
+                                          return DropdownMenuItem<int>(
+                                            value: podloga.tipTerenaId,
+                                            child: Padding(
+                                                padding: const EdgeInsets.only(
+                                              left: 4.0),
+                                              child: Text(podloga.naziv!),
+                                            ),
+                                          );
+                                        }).toList(),
+                                    ],
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _selectedTipTerena = value;
+                                        selectedPodlogaNaziv = value == null
+                                            ? '' // Empty string for "Svi tereni"
+                                            : resultTipTerena?.result
+                                                .firstWhere((podloga) =>
+                                                    podloga.tipTerenaId ==
+                                                    value)
+                                                .naziv;
+                                      });
+                                    },
                                   ),
                                 ),
                                 const SizedBox(
@@ -410,8 +448,7 @@ class _TereniScreenState extends State<TereniScreen> {
                                   child: const Row(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
-                                      Icon(Icons
-                                          .search), // Add the search icon here
+                                      Icon(Icons.search),
                                     ],
                                   ),
                                 )
