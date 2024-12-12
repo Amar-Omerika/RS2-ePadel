@@ -78,11 +78,9 @@ abstract class BaseProvider<T> with ChangeNotifier {
   Future<T?> insert(dynamic request) async {
     var url = "$_baseUrl$_endpoint";
     var uri = Uri.parse(url);
-
     Map<String, String> headers = createHeaders();
     var jsonRequest = jsonEncode(request);
     var response = await http!.post(uri, headers: headers, body: jsonRequest);
-
     if (isValidResponseCode(response)) {
       var data = jsonDecode(response.body);
       return fromJson(data);
@@ -187,7 +185,18 @@ abstract class BaseProvider<T> with ChangeNotifier {
     } else if (response.statusCode == 404) {
       throw Exception("Not found");
     } else if (response.statusCode == 500) {
-      throw Exception("Internal server error");
+          if (response.body.isNotEmpty) {
+        var data = jsonDecode(response.body);
+        if (data['errors'] != null && !data['errors'].isEmpty) {
+          var errorData = data["errors"] as Map<dynamic, dynamic>;
+          var firstKey = errorData.keys.toList().first;
+          var errorString = data['errors'][firstKey];
+          print("Error string is $errorString");
+          throw Exception("Bad request $errorString");
+        }
+        throw Exception('Bad request');
+      }
+           throw Exception('Internal Server Error');
     } else {
       throw Exception("Exception... handle this gracefully");
     }

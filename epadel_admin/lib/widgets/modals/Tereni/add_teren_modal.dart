@@ -67,21 +67,25 @@ class _AddTerenModalState extends State<AddTerenModal> {
     });
   }
 
-  void _validateForm() {
-    setState(() {
-      nazivError =
-          naziv == null || naziv!.isEmpty ? 'Ovo polje je obavezno' : null;
-      brojTerenaError = brojTerena == null ? 'Ovo polje je obavezno' : null;
-      cijenaError = cijena == null ? 'Ovo polje je obavezno' : null;
-      tipTerenaIdError = tipTerenaId == null ? 'Ovo polje je obavezno' : null;
-      gradoviIdError = gradoviId == null ? 'Ovo polje je obavezno' : null;
-      if (popust == 'Da') {
-        cijenaPopustaError = cijenaPopusta == null || cijenaPopusta == 0
-            ? 'Ovo polje je obavezno i mora imati vrijednost vecu od 0'
-            : null;
-      }
-    });
-  }
+void _validateForm() {
+  setState(() {
+    nazivError = naziv == null || naziv!.isEmpty ? 'Ovo polje je obavezno' : null;
+    brojTerenaError = brojTerena == null ? 'Ovo polje je obavezno' : null;
+    cijenaError = cijena == null ? 'Ovo polje je obavezno' : null;
+    tipTerenaIdError = tipTerenaId == null ? 'Ovo polje je obavezno' : null;
+    gradoviIdError = gradoviId == null ? 'Ovo polje je obavezno' : null;
+    if (popust == 'Da') {
+      int cijena = this.cijena ?? 0;
+      int cijenaPopusta = this.cijenaPopusta ?? 0;
+      cijenaPopustaError =
+          cijenaPopusta == 0
+              ? 'Ovo polje je obavezno i mora imati vrijednost vecu od 0'
+              : (cijenaPopusta > cijena || cijenaPopusta == cijena
+                  ? 'Cijena popusta mora biti manja od ukupne cijene'
+                  : null);
+    }
+  });
+}
 
   @override
   Widget build(BuildContext context) {
