@@ -27,6 +27,10 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
   final TextEditingController _searchSpolController = TextEditingController();
   int _currentPage = 1;
   int _pageSize = 5;
+  final List<Map<String, dynamic>> spolovi = [
+    {'id': 1, 'tipSpola': 'Muško'},
+    {'id': 2, 'tipSpola': 'Žensko'}
+  ];
 
   @override
   void initState() {
@@ -89,10 +93,7 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
   }
 
   void handleEdit(int id, String? korisnickoIme, String? email,
-      String? dominantnaRuka,
-      int? spol,
-      String? slika,
-      bool? aktivan) async {
+      String? dominantnaRuka, int? spol, String? slika, bool? aktivan) async {
     print(
         "id: $id, korisnickoIme: $korisnickoIme, email: $email, dominantnaRuka: $dominantnaRuka, spol: $spol");
     try {
@@ -177,15 +178,14 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
                     pageBuilder: (_, __, ___) => const FeedbackScreen(),
                   ),
                 );
-              } 
-              else if (page == 'report') {
+              } else if (page == 'report') {
                 Navigator.of(context).pushReplacement(
                   PageRouteBuilder(
                     transitionDuration: Duration.zero,
                     pageBuilder: (_, __, ___) => const ReportScreen(),
                   ),
                 );
-              }              
+              }
             },
           ),
           // Main content
@@ -257,7 +257,6 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
                                 ),
                               ),
                             ],
-                            
                           ),
                         ),
                       ),
@@ -289,7 +288,7 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
                                       hintText: 'Pretrazi po korisnickom imenu',
                                       contentPadding:
                                           const EdgeInsets.symmetric(
-                                              vertical: 8.0),
+                                              vertical: 8.0, horizontal: 4.0),
                                       border: OutlineInputBorder(
                                         borderRadius:
                                             BorderRadius.circular(10.0),
@@ -305,22 +304,43 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
                                     color: Colors.grey[200],
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
-                                  child: TextField(
-                                    controller: _searchSpolController,
-                                    keyboardType: TextInputType.multiline,
+                                  child: DropdownButtonFormField<int>(
+                                    value:
+                                        null, // Initial value (null means no selection)
                                     decoration: InputDecoration(
                                       filled: true,
                                       fillColor: Colors.white,
                                       hintText: 'Pretrazi po spolu',
                                       contentPadding:
                                           const EdgeInsets.symmetric(
-                                              vertical: 8.0),
+                                              horizontal: 10.0),
                                       border: OutlineInputBorder(
                                         borderRadius:
                                             BorderRadius.circular(10.0),
                                         borderSide: BorderSide.none,
                                       ),
                                     ),
+                                    items: [
+                                      DropdownMenuItem<int>(
+                                        value: null,
+                                        child: Text('Svi'),
+                                      ),
+                                      ...spolovi
+                                          .map((spol) => DropdownMenuItem<int>(
+                                                value: spol['id'],
+                                                child: Text(spol['tipSpola']),
+                                              )),
+                                    ],
+                                    onChanged: (value) {
+                                      setState(() {
+                                        if (value != null) {
+                                          _searchSpolController.text =
+                                              value.toString();
+                                        } else {
+                                          _searchSpolController.clear();
+                                        }
+                                      });
+                                    },
                                   ),
                                 ),
                                 const SizedBox(width: 8),
@@ -356,7 +376,7 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
                               ],
                             ),
                           ),
-                        ],                  
+                        ],
                       ),
                     ],
                   ),
@@ -472,8 +492,7 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
                   DataCell(Text(korisnik.dominantnaRuka == null
                       ? 'Nepoznato'
                       : korisnik.dominantnaRuka!)),
-                  DataCell(Text(
-                      korisnik.spolString == null
+                  DataCell(Text(korisnik.spolString == null
                       ? 'Nepoznato'
                       : korisnik.spolString!)),
                   DataCell(Text(
@@ -562,9 +581,7 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
           Container(
             padding: const EdgeInsets.all(8),
             decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.green
-            ),
+                shape: BoxShape.circle, color: Colors.green),
             child: Text(
               '$_currentPage',
               style: const TextStyle(fontSize: 24, color: Colors.white),
