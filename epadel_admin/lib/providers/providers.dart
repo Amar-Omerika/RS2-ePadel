@@ -4,3 +4,4 @@ export 'korisnik_provider.dart';
 export 'rezervacije_provider.dart';
 export 'gradovi_provider.dart';
 export 'tip_terena_provider.dart';
+export 'obavijesti_provider.dart';
