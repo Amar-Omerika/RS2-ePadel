@@ -205,6 +205,28 @@ namespace ePadel.Services.Migrations
                         });
                 });
 
+            modelBuilder.Entity("ePadel.Services.Database.Obavijesti", b =>
+                {
+                    b.Property<int>("ObavijestId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ObavijestId"), 1L, 1);
+
+                    b.Property<DateTime?>("DatumObjave")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Naslov")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Sadrzaj")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ObavijestId");
+
+                    b.ToTable("Obavijestis");
+                });
+
             modelBuilder.Entity("ePadel.Services.Database.Ocjene", b =>
                 {
                     b.Property<int>("OcjeneId")

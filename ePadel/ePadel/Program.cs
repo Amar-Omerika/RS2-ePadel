@@ -5,6 +5,7 @@ using ePadel.Services.Database;
 using ePadel.Services.FeedbackService;
 using ePadel.Services.Gradovi;
 using ePadel.Services.KorisnikService;
+using ePadel.Services.ObavijestiService;
 using ePadel.Services.OcjenaService;
 using ePadel.Services.PaymentService;
 using ePadel.Services.PlatiService;
@@ -33,6 +34,8 @@ builder.Services.AddTransient<IFeedbackService, FeedbackService>();
 builder.Services.AddTransient<IOcjenaService, OcjenaService>();
 builder.Services.AddTransient<IGradoviService, GradoviService>();
 builder.Services.AddTransient<IReportiService, ReportiService>();
+builder.Services.AddTransient<IObavijestiService, ObavijestiService>();
+
 
 builder.Services.AddTransient<StripeService>();
 

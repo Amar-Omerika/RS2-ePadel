@@ -12,7 +12,7 @@ using ePadel.Services.Database;
 namespace ePadel.Services.Migrations
 {
     [DbContext(typeof(IB190069_ePadelContext))]
-    [Migration("20241111135516_init")]
+    [Migration("20250108140741_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -205,6 +205,28 @@ namespace ePadel.Services.Migrations
                             KorisnikId = 2,
                             UlogaId = 2
                         });
+                });
+
+            modelBuilder.Entity("ePadel.Services.Database.Obavijesti", b =>
+                {
+                    b.Property<int>("ObavijestId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ObavijestId"), 1L, 1);
+
+                    b.Property<DateTime?>("DatumObjave")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Naslov")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Sadrzaj")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ObavijestId");
+
+                    b.ToTable("Obavijestis");
                 });
 
             modelBuilder.Entity("ePadel.Services.Database.Ocjene", b =>

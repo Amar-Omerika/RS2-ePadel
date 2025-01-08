@@ -46,6 +46,21 @@ namespace ePadel.Services.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Obavijestis",
+                columns: table => new
+                {
+                    ObavijestId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Naslov = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Sadrzaj = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DatumObjave = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Obavijestis", x => x.ObavijestId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "TipTerena",
                 columns: table => new
                 {
@@ -390,6 +405,9 @@ namespace ePadel.Services.Migrations
 
             migrationBuilder.DropTable(
                 name: "KorisnikUloge");
+
+            migrationBuilder.DropTable(
+                name: "Obavijestis");
 
             migrationBuilder.DropTable(
                 name: "Ocjene");
