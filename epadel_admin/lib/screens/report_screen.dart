@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:epadel_admin/Helpers/eror_dialog.dart';
+import 'package:epadel_admin/screens/obavijesti_screen.dart';
 import 'package:epadel_admin/utils/util.dart';
 import 'package:flutter/material.dart';
 import 'package:epadel_admin/models/models.dart';
@@ -116,6 +117,14 @@ class _ReportScreenState extends State<ReportScreen> {
                   PageRouteBuilder<void>(
                     transitionDuration: Duration.zero,
                     pageBuilder: (_, __, ___) => const ReportScreen(),
+                  ),
+                );
+              }
+              else if (page == 'obavijesti') {
+                Navigator.of(context).pushReplacement(
+                  PageRouteBuilder<void>(
+                    transitionDuration: Duration.zero,
+                    pageBuilder: (_, __, ___) => const ObavijestiScreen(),
                   ),
                 );
               }

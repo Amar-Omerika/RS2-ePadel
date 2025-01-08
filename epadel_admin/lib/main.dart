@@ -5,6 +5,7 @@ import 'package:epadel_admin/providers/report_provider.dart';
 import 'package:epadel_admin/screens/feedback_screen.dart';
 import 'package:epadel_admin/screens/korisnici_screen.dart';
 import 'package:epadel_admin/screens/main_navigation_screen.dart';
+import 'package:epadel_admin/screens/obavijesti_screen.dart';
 import 'package:epadel_admin/screens/rezervacije_screen.dart';
 import 'package:epadel_admin/screens/tereni_screen.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +22,8 @@ void main() {
         ChangeNotifierProvider(create: (_) => FeedbackProvider()),
         ChangeNotifierProvider(create: (_) => GradoviProvider()),
         ChangeNotifierProvider(create: (_) => ReportProvider()),
+        ChangeNotifierProvider(create: (_) => ObavijestiProvider()),
+
       ],
       child: const MyApp(),
     ),
@@ -46,6 +49,8 @@ class MyApp extends StatelessWidget {
         KorisniciScreen.routeName: (context) => const KorisniciScreen(),
         RezervacijeScreen.routeName: (context) => const RezervacijeScreen(),
         FeedbackScreen.routeName: (context) => const FeedbackScreen(),
+        ObavijestiScreen.routeName: (context) => const ObavijestiScreen(),
+
       },
     );
   }

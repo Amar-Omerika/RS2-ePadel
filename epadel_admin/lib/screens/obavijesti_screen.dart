@@ -5,24 +5,24 @@ import 'package:epadel_admin/providers/providers.dart';
 import 'package:epadel_admin/screens/appsidebar.dart';
 import 'package:epadel_admin/screens/feedback_screen.dart';
 import 'package:epadel_admin/screens/korisnici_screen.dart';
-import 'package:epadel_admin/screens/obavijesti_screen.dart';
 import 'package:epadel_admin/screens/report_screen.dart';
 import 'package:epadel_admin/screens/rezervacije_screen.dart';
+import 'package:epadel_admin/screens/tereni_screen.dart';
 import 'package:epadel_admin/widgets/modals/Tereni/add_teren_modal.dart';
 import 'package:epadel_admin/widgets/modals/Tereni/edit_teren_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class TereniScreen extends StatefulWidget {
-  static const String routeName = '/tereni';
+class ObavijestiScreen extends StatefulWidget {
+  static const String routeName = '/obavijesti';
 
-  const TereniScreen({Key? key}) : super(key: key);
+  const ObavijestiScreen({Key? key}) : super(key: key);
 
   @override
-  _TereniScreenState createState() => _TereniScreenState();
+  _ObavijestiScreenState createState() => _ObavijestiScreenState();
 }
 
-class _TereniScreenState extends State<TereniScreen> {
+class _ObavijestiScreenState extends State<ObavijestiScreen> {
   TerenProvider? _terenProvider;
   SearchResult<Teren>? result;
   final TextEditingController _searchController = TextEditingController();
@@ -234,13 +234,13 @@ class _TereniScreenState extends State<TereniScreen> {
         children: [
           // Sidebar
           SidebarNavigation(
-            selectedPage: 'tereni',
+            selectedPage: 'obavijesti',
             onPageSelected: (page) {
-              if (page == 'tereni') {
+              if (page == 'obavijesti') {
                 Navigator.of(context).pushReplacement(
                   PageRouteBuilder(
                     transitionDuration: Duration.zero,
-                    pageBuilder: (_, __, ___) => const TereniScreen(),
+                    pageBuilder: (_, __, ___) => const ObavijestiScreen(),
                   ),
                 );
               } else if (page == 'korisnici') {
@@ -271,12 +271,11 @@ class _TereniScreenState extends State<TereniScreen> {
                     pageBuilder: (_, __, ___) => const ReportScreen(),
                   ),
                 );
-              }
-              else if (page == 'obavijesti') {
+              } else if (page == 'tereni') {
                 Navigator.of(context).pushReplacement(
                   PageRouteBuilder(
                     transitionDuration: Duration.zero,
-                    pageBuilder: (_, __, ___) => const ObavijestiScreen(),
+                    pageBuilder: (_, __, ___) => const TereniScreen(),
                   ),
                 );
               }
@@ -297,7 +296,7 @@ class _TereniScreenState extends State<TereniScreen> {
                               Transform.translate(
                                 offset: const Offset(-120, 0),
                                 child: const Text(
-                                  'Tereni',
+                                  'Obavijesti',
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 20),
@@ -363,8 +362,7 @@ class _TereniScreenState extends State<TereniScreen> {
                                       hintText: 'Pretrazi po nazivu terena',
                                       contentPadding:
                                           const EdgeInsets.symmetric(
-                                              vertical: 8.0,
-                                              horizontal: 4.0),
+                                              vertical: 8.0, horizontal: 4.0),
                                       border: OutlineInputBorder(
                                         borderRadius:
                                             BorderRadius.circular(10.0),
@@ -398,8 +396,8 @@ class _TereniScreenState extends State<TereniScreen> {
                                         value:
                                             null, // Null value represents "Svi tereni"
                                         child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 4.0),
+                                          padding:
+                                              const EdgeInsets.only(left: 4.0),
                                           child: Text('Svi tereni'),
                                         ),
                                       ),
@@ -409,8 +407,8 @@ class _TereniScreenState extends State<TereniScreen> {
                                           return DropdownMenuItem<int>(
                                             value: podloga.tipTerenaId,
                                             child: Padding(
-                                                padding: const EdgeInsets.only(
-                                              left: 4.0),
+                                              padding: const EdgeInsets.only(
+                                                  left: 4.0),
                                               child: Text(podloga.naziv!),
                                             ),
                                           );

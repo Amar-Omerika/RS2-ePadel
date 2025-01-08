@@ -1,5 +1,7 @@
+import 'package:epadel_admin/models/models.dart';
 import 'package:epadel_admin/screens/korisnici_screen.dart';
 import 'package:epadel_admin/screens/login_screen.dart';
+import 'package:epadel_admin/screens/obavijesti_screen.dart';
 import 'package:epadel_admin/screens/report_screen.dart';
 import 'package:epadel_admin/screens/rezervacije_screen.dart';
 import 'package:epadel_admin/screens/tereni_screen.dart';
@@ -30,9 +32,8 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
     NavigationItem(label: 'Korisnici', widget: const KorisniciScreen()),
     NavigationItem(label: 'Rezervacije', widget: const RezervacijeScreen()),
     NavigationItem(label: 'Report', widget: const ReportScreen()),
+    NavigationItem(label: 'Obavijesti', widget: const ObavijestiScreen()),
     NavigationItem(label: 'Login', widget: const LoginScreen()),
-
-
   ];
 
   void _onItemTapped(int index) {
