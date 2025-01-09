@@ -11,7 +11,6 @@ import 'package:epadel_admin/screens/rezervacije_screen.dart';
 import 'package:epadel_admin/screens/tereni_screen.dart';
 import 'package:epadel_admin/widgets/modals/Obavijesti/add_obavijest_modal.dart';
 import 'package:epadel_admin/widgets/modals/Obavijesti/edit_obavijest_modal.dart';
-import 'package:epadel_admin/widgets/modals/Tereni/edit_teren_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -137,7 +136,7 @@ void openEditModal(int id, String naslov, String sadrzaj) {
   );
 }
 
-  void openDeleteModal(Teren teren) {
+  void openDeleteModal(Obavijesti obavijest) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -159,7 +158,7 @@ void openEditModal(int id, String naslov, String sadrzaj) {
             ElevatedButton(
               onPressed: () async {
                 try {
-                  await _obavijestiProvider!.remove(teren.terenId!);
+                  await _obavijestiProvider!.remove(obavijest.obavijestId!);
                   if (context.mounted) {
                     Navigator.pop(context);
                     _initializeData();
@@ -170,7 +169,7 @@ void openEditModal(int id, String naslov, String sadrzaj) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         backgroundColor: Colors.red,
-                        content: Text('Ne možete obrisati ovu obavijest'),
+                        content: Text('Ne možete obrisati ovu obavijest!'),
                       ),
                     );
                   }
@@ -396,8 +395,7 @@ void openEditModal(int id, String naslov, String sadrzaj) {
                   DataCell(IconButton(
                     icon: const Icon(Icons.delete, color: Color(0xFFFF9A62)),
                     onPressed: () {
-                      // openDeleteModal(teren);
-                      print('Edit');
+                      openDeleteModal(obavijest);
                     },
                   )),
                 ]);
