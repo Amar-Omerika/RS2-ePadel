@@ -7,3 +7,4 @@ export 'plati_teren.dart';
 export 'feedback.dart';
 export 'ocjene.dart';
 export 'spolovi.dart';
+export 'obavijesti.dart';
