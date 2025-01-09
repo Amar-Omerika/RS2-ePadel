@@ -1,5 +1,6 @@
 import 'package:epadel_mobile/providers/auth_provider.dart';
 import 'package:epadel_mobile/providers/providers.dart';
+import 'package:epadel_mobile/screens/obavijesti_screen.dart';
 import 'package:epadel_mobile/screens/recommend_courts_screen.dart';
 import 'package:epadel_mobile/screens/screens.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +29,7 @@ void main() async {
         ChangeNotifierProvider(create: (_) => FeedbackProvider()),
         ChangeNotifierProvider(create: (_) => OcjeneProvider()),
         ChangeNotifierProvider(create: (_) => SpoloviProvider()),
+        ChangeNotifierProvider(create: (_) => ObavijestiProvider()),
       ],
       child: const MyApp(),
     ),
@@ -57,6 +59,7 @@ class MyApp extends StatelessWidget {
        EditProfileScreen.routeName: (context) => const EditProfileScreen(),
        HistoryReservationScreen.routeName: (context) => const HistoryReservationScreen(),
        RecommendScreen.routeName: (context) => const RecommendScreen(),
+       ObavijestiScreen.routeName: (context) => const ObavijestiScreen(),
        
       },
     );

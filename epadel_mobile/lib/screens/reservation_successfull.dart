@@ -1,4 +1,6 @@
 // reservation_successful_screen.dart
+// ignore_for_file: prefer_const_constructors
+
 import 'package:epadel_mobile/Helpers/eror_dialog.dart';
 import 'package:epadel_mobile/Helpers/success_dialog.dart';
 import 'package:epadel_mobile/providers/auth_provider.dart';

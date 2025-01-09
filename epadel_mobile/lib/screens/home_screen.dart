@@ -68,22 +68,40 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Align(
-                      alignment: AlignmentDirectional.centerEnd,
-                      child: IconButton(
-                        icon: const Icon(
-                          Icons.filter_list,
-                          color: Colors.white,
-                          size: 40,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Align(
+                          alignment: AlignmentDirectional.centerStart,
+                          child: IconButton(
+                            icon: const Icon(
+                              Icons.newspaper,
+                              color: Colors.white,
+                              size: 40,
+                            ),
+                            onPressed: () {
+                              Navigator.pushNamed(context, '/obavijesti');
+                            },
+                          ),
                         ),
-                        onPressed: () {
-                          setState(() {
-                            _showFilters = !_showFilters;
-                          });
-                        },
-                      ),
+                        Align(
+                          alignment: AlignmentDirectional.centerEnd,
+                          child: IconButton(
+                            icon: const Icon(
+                              Icons.filter_list,
+                              color: Colors.white,
+                              size: 40,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _showFilters = !_showFilters;
+                              });
+                            },
+                          ),
+                        ),
+                      ],
                     ),
-                  ),        
+                  ),
                   Container(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -95,7 +113,6 @@ class _HomeScreenState extends State<HomeScreen> {
                               onFilterChanged: _onFilterChanged,
                             ),
                           ),
-                        
                         ],
                       ),
                     ),
