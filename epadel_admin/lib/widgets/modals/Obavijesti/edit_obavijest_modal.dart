@@ -84,6 +84,9 @@ class _EditObavijestModalState extends State<EditObavijestModal> {
                                   color: Colors.white,
                                   borderRadius: BorderRadius.circular(12.0),
                                 ),
+                                constraints: BoxConstraints(
+                                  maxHeight: 80, // Set a maximum height for the TextFormField
+                                ),
                                 child: TextFormField(
                                   controller: _naslovController,
                                   maxLines: null,
@@ -134,21 +137,26 @@ class _EditObavijestModalState extends State<EditObavijestModal> {
                                   color: Colors.white,
                                   borderRadius: BorderRadius.circular(12.0),
                                 ),
-                                child: TextFormField(
-                                  controller: _sadrzajController,
-                                  maxLines: null,
-                                  keyboardType: TextInputType.multiline,
-                                  decoration: InputDecoration(
-                                    contentPadding: EdgeInsets.all(8.0),
-                                    border: InputBorder.none,
-                                    enabledBorder: InputBorder.none,
-                                    focusedBorder: InputBorder.none,
+                                constraints: BoxConstraints(
+                                  maxHeight: 200, // Set a maximum height for the TextFormField
+                                ),
+                                child: SingleChildScrollView(
+                                  child: TextFormField(
+                                    controller: _sadrzajController,
+                                    maxLines: null,
+                                    keyboardType: TextInputType.multiline,
+                                    decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.all(8.0),
+                                      border: InputBorder.none,
+                                      enabledBorder: InputBorder.none,
+                                      focusedBorder: InputBorder.none,
+                                    ),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _sadrzajError = null;
+                                      });
+                                    },
                                   ),
-                                  onChanged: (value) {
-                                    setState(() {
-                                      _sadrzajError = null;
-                                    });
-                                  },
                                 ),
                               ),
                               if (_sadrzajError != null)

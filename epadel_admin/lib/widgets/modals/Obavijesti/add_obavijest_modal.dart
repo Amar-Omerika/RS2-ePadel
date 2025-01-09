@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class AddObavijestModal extends StatefulWidget {
   final Function handleAdd;
@@ -73,10 +72,13 @@ class _AddObavijestModalState extends State<AddObavijestModal> {
                                   color: Colors.white,
                                   borderRadius: BorderRadius.circular(12.0),
                                 ),
+                                constraints: BoxConstraints(
+                                  maxHeight:
+                                      80, // Set a maximum height for the TextFormField
+                                ),
                                 child: TextFormField(
-                                  maxLines: null, // Allows unlimited lines
-                                  keyboardType: TextInputType
-                                      .multiline, // Allows multiline input
+                                  maxLines: null,
+                                  keyboardType: TextInputType.multiline,
                                   decoration: InputDecoration(
                                     contentPadding: EdgeInsets.all(8.0),
                                     border: InputBorder.none,
@@ -91,28 +93,22 @@ class _AddObavijestModalState extends State<AddObavijestModal> {
                                   },
                                 ),
                               ),
+                              if (naslovError != null)
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 8.0, top: 4.0),
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      naslovError!,
+                                      style: TextStyle(
+                                          color: Colors.red, fontSize: 12),
+                                    ),
+                                  ),
+                                ),
                             ],
                           ),
                         ),
-                        if (naslovError != null)
-                          Padding(
-                            padding: const EdgeInsets.only(left: 8.0, top: 4.0),
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                naslovError!,
-                                style:
-                                    TextStyle(color: Colors.red, fontSize: 12),
-                              ),
-                            ),
-                          ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(width: 16),
-                  Expanded(
-                    child: Column(
-                      children: [
                         Container(
                           padding: const EdgeInsets.all(8.0),
                           child: Column(
@@ -132,39 +128,45 @@ class _AddObavijestModalState extends State<AddObavijestModal> {
                                   color: Colors.white,
                                   borderRadius: BorderRadius.circular(12.0),
                                 ),
-                                child: TextFormField(
-                                  maxLines: null, // Allows unlimited lines
-                                  keyboardType: TextInputType
-                                      .multiline, // Allows multiline input
-                                  decoration: InputDecoration(
-                                    contentPadding: EdgeInsets.all(8.0),
-                                    border: InputBorder.none,
-                                    enabledBorder: InputBorder.none,
-                                    focusedBorder: InputBorder.none,
+                                constraints: BoxConstraints(
+                                  maxHeight:
+                                      200, // Set a maximum height for the TextFormField
+                                ),
+                                child: SingleChildScrollView(
+                                  child: TextFormField(
+                                    maxLines: null,
+                                    keyboardType: TextInputType.multiline,
+                                    decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.all(8.0),
+                                      border: InputBorder.none,
+                                      enabledBorder: InputBorder.none,
+                                      focusedBorder: InputBorder.none,
+                                    ),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        sadrzaj = value;
+                                        sadrzajError = null;
+                                      });
+                                    },
                                   ),
-                                  onChanged: (value) {
-                                    setState(() {
-                                      sadrzaj = value;
-                                      sadrzajError = null;
-                                    });
-                                  },
                                 ),
                               ),
+                              if (sadrzajError != null)
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 8.0, top: 4.0),
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      sadrzajError!,
+                                      style: TextStyle(
+                                          color: Colors.red, fontSize: 12),
+                                    ),
+                                  ),
+                                ),
                             ],
                           ),
                         ),
-                        if (sadrzajError != null)
-                          Padding(
-                            padding: const EdgeInsets.only(left: 8.0, top: 4.0),
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                naslovError!,
-                                style:
-                                    TextStyle(color: Colors.red, fontSize: 12),
-                              ),
-                            ),
-                          ),
                       ],
                     ),
                   ),
