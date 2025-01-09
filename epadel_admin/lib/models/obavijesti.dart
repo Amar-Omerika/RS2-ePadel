@@ -6,6 +6,7 @@ part 'obavijesti.g.dart';
 
 @JsonSerializable()
 class Obavijesti {
+  int? obavijestId;
   String? naslov;
   String? sadrzaj;
   String? datumObjave;

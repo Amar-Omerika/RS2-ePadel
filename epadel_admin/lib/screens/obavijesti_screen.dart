@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, use_build_context_synchronously
 
 import 'package:epadel_admin/models/models.dart';
+import 'package:epadel_admin/providers/obavijesti_provider.dart';
 import 'package:epadel_admin/providers/providers.dart';
 import 'package:epadel_admin/screens/appsidebar.dart';
 import 'package:epadel_admin/screens/feedback_screen.dart';
@@ -8,7 +9,8 @@ import 'package:epadel_admin/screens/korisnici_screen.dart';
 import 'package:epadel_admin/screens/report_screen.dart';
 import 'package:epadel_admin/screens/rezervacije_screen.dart';
 import 'package:epadel_admin/screens/tereni_screen.dart';
-import 'package:epadel_admin/widgets/modals/Tereni/add_teren_modal.dart';
+import 'package:epadel_admin/widgets/modals/Obavijesti/add_obavijest_modal.dart';
+import 'package:epadel_admin/widgets/modals/Obavijesti/edit_obavijest_modal.dart';
 import 'package:epadel_admin/widgets/modals/Tereni/edit_teren_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -23,28 +25,20 @@ class ObavijestiScreen extends StatefulWidget {
 }
 
 class _ObavijestiScreenState extends State<ObavijestiScreen> {
-  TerenProvider? _terenProvider;
-  SearchResult<Teren>? result;
+  ObavijestiProvider? _obavijestiProvider;
+  SearchResult<Obavijesti>? result;
   final TextEditingController _searchController = TextEditingController();
   int _currentPage = 1;
   int _pageSize = 5;
 
-  late TipTerenaProvider _tipTerenaProvider;
-  SearchResult<TipTerena>? resultTipTerena;
-  int? _selectedTipTerena = null;
-
-  String? selectedPodlogaNaziv = '';
-
   @override
   void initState() {
     super.initState();
-    _terenProvider = context.read<TerenProvider>();
+    _obavijestiProvider = context.read<ObavijestiProvider>();
     _initializeData();
   }
 
   Future<void> _initializeData() async {
-    _tipTerenaProvider = TipTerenaProvider();
-    var dataTipTerena = await _tipTerenaProvider.get();
     Map<String, String> filters = {
       'page': (_currentPage - 1).toString(),
       'pageSize': _pageSize.toString()
@@ -53,20 +47,10 @@ class _ObavijestiScreenState extends State<ObavijestiScreen> {
     if (_searchController.text.isNotEmpty) {
       filters['Tekst'] = _searchController.text;
     }
-    if (_selectedTipTerena != null) {
-      filters['TipTerenaTekst'] = selectedPodlogaNaziv!;
-    }
-    var data = await _terenProvider!.get(filters);
+
+    var data = await _obavijestiProvider!.get(filters);
     setState(() {
       result = data;
-      resultTipTerena = dataTipTerena;
-    });
-  }
-
-  void _resetPage() {
-    setState(() {
-      _currentPage = 1;
-      _initializeData();
     });
   }
 
@@ -96,30 +80,18 @@ class _ObavijestiScreenState extends State<ObavijestiScreen> {
     });
   }
 
-  void resetSearch() {
-    _searchController.text = '';
-    selectedPodlogaNaziv = '';
-  }
-
-  void handleAdd(String? naziv, int? cijena, int? brojTerena, int? tipTerenaId,
-      String? popust, int? cijenaPopusta, int? gradoviId) async {
-    await _terenProvider!.insert({
-      'naziv': naziv,
-      'cijena': cijena,
-      'brojTerena': brojTerena,
-      'tipTerenaId': tipTerenaId,
-      'popust': popust,
-      'cijenaPopusta': cijenaPopusta,
-      'gradoviId': gradoviId,
+  void handleAdd(String? naslov, String? sadrzaj) async {
+    await _obavijestiProvider!.insert({
+      'naslov': naslov,
+      'sadrzaj': sadrzaj,
     });
     if (context.mounted) {
       Navigator.pop(context);
-      resetSearch();
       _initializeData();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           backgroundColor: Theme.of(context).primaryColor,
-          content: const Text('Uspješno ste dodali novi teren!'),
+          content: const Text('Uspješno ste dodali novu obavijest!'),
         ),
       );
     }
@@ -129,52 +101,41 @@ class _ObavijestiScreenState extends State<ObavijestiScreen> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AddTerenModal(handleAdd: handleAdd);
+        return AddObavijestModal(handleAdd: handleAdd);
       },
     );
   }
 
-  void handleEdit(
-      int id,
-      String? naziv,
-      int? cijena,
-      int? brojTerena,
-      int? tipTerenaId,
-      String? popust,
-      int? cijenaPopusta,
-      int? gradoviId) async {
-    await _terenProvider!.update(id, {
-      'naziv': naziv,
-      'cijena': cijena,
-      'brojTerena': brojTerena,
-      'tipTerenaId': tipTerenaId,
-      'popust': popust,
-      'cijenaPopusta': cijenaPopusta,
-      'gradoviId': gradoviId
-    });
-    if (context.mounted) {
-      Navigator.pop(context);
-      _initializeData();
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: Theme.of(context).primaryColor,
-          content: const Text('Uspješno ste editovali Teren!'),
-        ),
+void handleEdit(int id, String naslov, String sadrzaj) async {
+  await _obavijestiProvider!.update(id, {
+    'naslov': naslov,
+    'sadrzaj': sadrzaj,
+  });
+  if (context.mounted) {
+    Navigator.pop(context);
+    _initializeData();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: Theme.of(context).primaryColor,
+        content: const Text('Uspješno ste editovali obavijest!'),
+      ),
+    );
+  }
+}
+
+void openEditModal(int id, String naslov, String sadrzaj) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return EditObavijestModal(
+        id: id,
+        naslov: naslov,
+        sadrzaj: sadrzaj,
+        handleEdit: handleEdit,
       );
-    }
-  }
-
-  void openEditModal(Teren teren) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return EditTerenModal(
-          teren: teren,
-          handleEdit: handleEdit,
-        );
-      },
-    );
-  }
+    },
+  );
+}
 
   void openDeleteModal(Teren teren) {
     showDialog(
@@ -185,7 +146,7 @@ class _ObavijestiScreenState extends State<ObavijestiScreen> {
           content: const Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text('Da li ste sigurni da želite da obrišete Teren?'),
+              Text('Da li ste sigurni da želite da obrišete ovu Obavijest?'),
             ],
           ),
           actions: [
@@ -198,7 +159,7 @@ class _ObavijestiScreenState extends State<ObavijestiScreen> {
             ElevatedButton(
               onPressed: () async {
                 try {
-                  await _terenProvider!.remove(teren.terenId!);
+                  await _obavijestiProvider!.remove(teren.terenId!);
                   if (context.mounted) {
                     Navigator.pop(context);
                     _initializeData();
@@ -209,8 +170,7 @@ class _ObavijestiScreenState extends State<ObavijestiScreen> {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         backgroundColor: Colors.red,
-                        content: Text(
-                            'Ne možete obrisati ovaj Teren jer ovaj teren ima rezervacija!'),
+                        content: Text('Ne možete obrisati ovu obavijest'),
                       ),
                     );
                   }
@@ -289,8 +249,10 @@ class _ObavijestiScreenState extends State<ObavijestiScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Expanded(
+                      Align(
+                        alignment: Alignment.centerLeft,
                         child: Container(
+                          margin: const EdgeInsets.only(left: 120),
                           child: Column(
                             children: [
                               Transform.translate(
@@ -309,7 +271,7 @@ class _ObavijestiScreenState extends State<ObavijestiScreen> {
                                   onPressed: () {
                                     openAddModal();
                                   },
-                                  child: const Text('Dodaj Teren'),
+                                  child: const Text('Dodaj Obavijest'),
                                   style: ButtonStyle(
                                     backgroundColor:
                                         MaterialStateProperty.all<Color>(
@@ -333,136 +295,6 @@ class _ObavijestiScreenState extends State<ObavijestiScreen> {
                             ],
                           ),
                         ),
-                      ),
-                      const SizedBox(width: 10),
-                      Column(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 3.0, horizontal: 8.0),
-                            decoration: BoxDecoration(
-                              color: Colors.grey[200],
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            child: Row(
-                              children: [
-                                Container(
-                                  width: 250,
-                                  padding: const EdgeInsets.all(8.0),
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey[200],
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  child: TextField(
-                                    controller: _searchController,
-                                    keyboardType: TextInputType.multiline,
-                                    decoration: InputDecoration(
-                                      filled: true,
-                                      fillColor: Colors.white,
-                                      hintText: 'Pretrazi po nazivu terena',
-                                      contentPadding:
-                                          const EdgeInsets.symmetric(
-                                              vertical: 8.0, horizontal: 4.0),
-                                      border: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10.0),
-                                        borderSide: BorderSide.none,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  width: 250, // Set the desired width
-                                  // padding: const EdgeInsets.all(8.0),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  child: DropdownButtonFormField<int>(
-                                    dropdownColor: Colors.white,
-                                    decoration: InputDecoration(
-                                      contentPadding:
-                                          EdgeInsets.symmetric(vertical: 8.0),
-                                      hintText: 'Pretrazi po vrsti podloge',
-                                      border: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10.0),
-                                      ),
-                                    ),
-                                    value: _selectedTipTerena,
-                                    items: [
-                                      // Add "Svi tereni" as the default option
-                                      DropdownMenuItem<int>(
-                                        value:
-                                            null, // Null value represents "Svi tereni"
-                                        child: Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 4.0),
-                                          child: Text('Svi tereni'),
-                                        ),
-                                      ),
-                                      if (resultTipTerena != null)
-                                        ...resultTipTerena!.result
-                                            .map((podloga) {
-                                          return DropdownMenuItem<int>(
-                                            value: podloga.tipTerenaId,
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 4.0),
-                                              child: Text(podloga.naziv!),
-                                            ),
-                                          );
-                                        }).toList(),
-                                    ],
-                                    onChanged: (value) {
-                                      setState(() {
-                                        _selectedTipTerena = value;
-                                        selectedPodlogaNaziv = value == null
-                                            ? '' // Empty string for "Svi tereni"
-                                            : resultTipTerena?.result
-                                                .firstWhere((podloga) =>
-                                                    podloga.tipTerenaId ==
-                                                    value)
-                                                .naziv;
-                                      });
-                                    },
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 8,
-                                ),
-                                ElevatedButton(
-                                  onPressed: () {
-                                    _resetPage();
-                                  },
-                                  style: ButtonStyle(
-                                      backgroundColor:
-                                          MaterialStateProperty.all<Color>(
-                                              Colors.green),
-                                      foregroundColor:
-                                          MaterialStateProperty.all<Color>(
-                                              Colors.white),
-                                      minimumSize:
-                                          MaterialStateProperty.all<Size>(
-                                              const Size(10, 45)),
-                                      shape: MaterialStateProperty.all<
-                                          RoundedRectangleBorder>(
-                                        RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
-                                        ),
-                                      )),
-                                  child: const Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Icon(Icons.search),
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        ],
                       ),
                     ],
                   ),
@@ -520,16 +352,7 @@ class _ObavijestiScreenState extends State<ObavijestiScreen> {
                 DataColumn(
                   label: Expanded(
                     child: Text(
-                      'Naziv terena',
-                      style: TextStyle(
-                          fontWeight: FontWeight.w500, color: Colors.white),
-                    ),
-                  ),
-                ),
-                DataColumn(
-                  label: Expanded(
-                    child: Text(
-                      'Vrsta podloge',
+                      'Naslov',
                       style: TextStyle(
                           fontWeight: FontWeight.w500, color: Colors.white),
                     ),
@@ -554,20 +377,27 @@ class _ObavijestiScreenState extends State<ObavijestiScreen> {
                   ),
                 ),
               ],
-              rows: result!.result.map((Teren teren) {
+              rows: result!.result.map((Obavijesti obavijest) {
                 return DataRow(cells: [
-                  DataCell(Text(teren.naziv!)),
-                  DataCell(Text(teren.tipTerena!.naziv!)),
+                  DataCell(
+                    Text(
+                      maxLines: 1,
+                      obavijest.naslov!.length > 30
+                          ? '${obavijest.naslov!.substring(0, 30)}...'
+                          : obavijest.naslov!,
+                    ),
+                  ),
                   DataCell(IconButton(
                     icon: const Icon(Icons.edit),
                     onPressed: () {
-                      openEditModal(teren);
+                      openEditModal(obavijest.obavijestId!, obavijest.naslov!, obavijest.sadrzaj!);
                     },
                   )),
                   DataCell(IconButton(
                     icon: const Icon(Icons.delete, color: Color(0xFFFF9A62)),
                     onPressed: () {
-                      openDeleteModal(teren);
+                      // openDeleteModal(teren);
+                      print('Edit');
                     },
                   )),
                 ]);
