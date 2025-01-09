@@ -15,6 +15,7 @@ class ObavijestiScreen extends StatefulWidget {
 class _ObavijestiScreenState extends State<ObavijestiScreen> {
   late ObavijestiProvider _obavijestiProvider;
   SearchResult<Obavijesti> _obavijesti = SearchResult<Obavijesti>();
+  final Map<int, bool> _expanded = {};
 
   @override
   void initState() {
@@ -27,6 +28,11 @@ class _ObavijestiScreenState extends State<ObavijestiScreen> {
     var tmpData = await _obavijestiProvider.get();
     setState(() {
       _obavijesti = tmpData as SearchResult<Obavijesti>;
+      // Initialize the expanded state for each item
+      _expanded.clear();
+      for (int i = 0; i < _obavijesti.result.length; i++) {
+        _expanded[i] = false;
+      }
     });
   }
 
@@ -48,7 +54,10 @@ class _ObavijestiScreenState extends State<ObavijestiScreen> {
             : ListView.builder(
                 itemCount: _obavijesti.result.length,
                 itemBuilder: (context, index) {
+                  if (_obavijesti.result.isEmpty) return const SizedBox.shrink(); // Guard against empty data
                   final obavijest = _obavijesti.result[index];
+                  final isExpanded = _expanded[index] ?? false;
+
                   return Container(
                     margin: const EdgeInsets.symmetric(
                       vertical: 8.0,
@@ -79,14 +88,34 @@ class _ObavijestiScreenState extends State<ObavijestiScreen> {
                         ),
                         const SizedBox(height: 4.0),
                         Text(
-                          obavijest.sadrzaj ?? 'N/A',
+                          isExpanded
+                              ? (obavijest.sadrzaj ?? 'N/A')
+                              : ((obavijest.sadrzaj?.length ?? 0) > 100
+                                  ? '${obavijest.sadrzaj?.substring(0, 100)}...'
+                                  : obavijest.sadrzaj ?? 'N/A'),
                           style: const TextStyle(fontSize: 14.0),
                         ),
+                        if ((obavijest.sadrzaj?.length ?? 0) > 100)
+                          TextButton(
+                            onPressed: () {
+                              setState(() {
+                                _expanded[index] = !isExpanded;
+                              });
+                            },
+                            child: Text(
+                              isExpanded ? 'Show Less' : 'Show More',
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+
+                              ),
+                            ),
+                          ),
                         const SizedBox(height: 8.0),
                         Align(
                           alignment: Alignment.bottomRight,
                           child: Text(
-                            obavijest.datumObjave ?? 'N/A',
+                            obavijest.datumObjave!.substring(0, 10) ?? 'N/A',
                             style: TextStyle(
                               color: Colors.grey[700],
                               fontStyle: FontStyle.italic,
