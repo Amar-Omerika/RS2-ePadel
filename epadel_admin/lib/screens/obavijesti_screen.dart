@@ -6,6 +6,7 @@ import 'package:epadel_admin/providers/providers.dart';
 import 'package:epadel_admin/screens/appsidebar.dart';
 import 'package:epadel_admin/screens/feedback_screen.dart';
 import 'package:epadel_admin/screens/korisnici_screen.dart';
+import 'package:epadel_admin/screens/partneri_screen.dart';
 import 'package:epadel_admin/screens/report_screen.dart';
 import 'package:epadel_admin/screens/rezervacije_screen.dart';
 import 'package:epadel_admin/screens/tereni_screen.dart';
@@ -238,6 +239,14 @@ void openEditModal(int id, String naslov, String sadrzaj) {
                   ),
                 );
               }
+               else if (page == 'partneri') {
+                Navigator.of(context).pushReplacement(
+                  PageRouteBuilder(
+                    transitionDuration: Duration.zero,
+                    pageBuilder: (_, __, ___) => const PartneriScreen(),
+                  ),
+                );
+              }
             },
           ),
           Expanded(
@@ -314,7 +323,7 @@ void openEditModal(int id, String naslov, String sadrzaj) {
       return Container(
         padding: const EdgeInsets.all(16.0),
         child: const Text(
-          'Ne postoje podadci sa vasom pretragom. Pokusajte ponovo sa drugim kljucnim rijecima.',
+          'Nema rezultata!',
           style: TextStyle(
               fontSize: 18, color: Color.fromARGB(255, 119, 119, 119)),
         ),

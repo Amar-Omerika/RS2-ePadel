@@ -1,73 +1,51 @@
 // ignore_for_file: prefer_const_constructors, use_build_context_synchronously
 
 import 'package:epadel_admin/models/models.dart';
+import 'package:epadel_admin/providers/partneri_provider.dart';
 import 'package:epadel_admin/providers/providers.dart';
 import 'package:epadel_admin/screens/appsidebar.dart';
 import 'package:epadel_admin/screens/feedback_screen.dart';
 import 'package:epadel_admin/screens/korisnici_screen.dart';
 import 'package:epadel_admin/screens/obavijesti_screen.dart';
-import 'package:epadel_admin/screens/partneri_screen.dart';
 import 'package:epadel_admin/screens/report_screen.dart';
 import 'package:epadel_admin/screens/rezervacije_screen.dart';
-import 'package:epadel_admin/widgets/modals/Tereni/add_teren_modal.dart';
-import 'package:epadel_admin/widgets/modals/Tereni/edit_teren_modal.dart';
+import 'package:epadel_admin/screens/tereni_screen.dart';
+import 'package:epadel_admin/widgets/modals/Partneri/add_partneri_modal.dart';
+import 'package:epadel_admin/widgets/modals/Partneri/edit_partneri_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class TereniScreen extends StatefulWidget {
-  static const String routeName = '/tereni';
+class PartneriScreen extends StatefulWidget {
+  static const String routeName = '/partneri';
 
-  const TereniScreen({Key? key}) : super(key: key);
+  const PartneriScreen({Key? key}) : super(key: key);
 
   @override
-  _TereniScreenState createState() => _TereniScreenState();
+  _PartneriScreenState createState() => _PartneriScreenState();
 }
 
-class _TereniScreenState extends State<TereniScreen> {
-  TerenProvider? _terenProvider;
-  SearchResult<Teren>? result;
-  final TextEditingController _searchController = TextEditingController();
+class _PartneriScreenState extends State<PartneriScreen> {
+  PartneriProvider? _partneriProvider;
+  SearchResult<Partneri>? result;
   int _currentPage = 1;
   int _pageSize = 5;
-
-  late TipTerenaProvider _tipTerenaProvider;
-  SearchResult<TipTerena>? resultTipTerena;
-  int? _selectedTipTerena = null;
-
-  String? selectedPodlogaNaziv = '';
 
   @override
   void initState() {
     super.initState();
-    _terenProvider = context.read<TerenProvider>();
+    _partneriProvider = context.read<PartneriProvider>();
     _initializeData();
   }
 
   Future<void> _initializeData() async {
-    _tipTerenaProvider = TipTerenaProvider();
-    var dataTipTerena = await _tipTerenaProvider.get();
     Map<String, String> filters = {
       'page': (_currentPage - 1).toString(),
       'pageSize': _pageSize.toString()
     };
 
-    if (_searchController.text.isNotEmpty) {
-      filters['Tekst'] = _searchController.text;
-    }
-    if (_selectedTipTerena != null) {
-      filters['TipTerenaTekst'] = selectedPodlogaNaziv!;
-    }
-    var data = await _terenProvider!.get(filters);
+    var data = await _partneriProvider!.get(filters);
     setState(() {
       result = data;
-      resultTipTerena = dataTipTerena;
-    });
-  }
-
-  void _resetPage() {
-    setState(() {
-      _currentPage = 1;
-      _initializeData();
     });
   }
 
@@ -97,30 +75,18 @@ class _TereniScreenState extends State<TereniScreen> {
     });
   }
 
-  void resetSearch() {
-    _searchController.text = '';
-    selectedPodlogaNaziv = '';
-  }
-
-  void handleAdd(String? naziv, int? cijena, int? brojTerena, int? tipTerenaId,
-      String? popust, int? cijenaPopusta, int? gradoviId) async {
-    await _terenProvider!.insert({
+  void handleAdd(String? naziv, String? deskripcija) async {
+    await _partneriProvider!.insert({
       'naziv': naziv,
-      'cijena': cijena,
-      'brojTerena': brojTerena,
-      'tipTerenaId': tipTerenaId,
-      'popust': popust,
-      'cijenaPopusta': cijenaPopusta,
-      'gradoviId': gradoviId,
+      'deskripcija': deskripcija,
     });
     if (context.mounted) {
       Navigator.pop(context);
-      resetSearch();
       _initializeData();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           backgroundColor: Theme.of(context).primaryColor,
-          content: const Text('Uspješno ste dodali novi teren!'),
+          content: const Text('Uspješno ste dodali novog partnera!'),
         ),
       );
     }
@@ -130,28 +96,15 @@ class _TereniScreenState extends State<TereniScreen> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AddTerenModal(handleAdd: handleAdd);
+        return AddPartneriModal(handleAdd: handleAdd);
       },
     );
   }
 
-  void handleEdit(
-      int id,
-      String? naziv,
-      int? cijena,
-      int? brojTerena,
-      int? tipTerenaId,
-      String? popust,
-      int? cijenaPopusta,
-      int? gradoviId) async {
-    await _terenProvider!.update(id, {
+  void handleEdit(int id, String naziv, String deskripcija) async {
+    await _partneriProvider!.update(id, {
       'naziv': naziv,
-      'cijena': cijena,
-      'brojTerena': brojTerena,
-      'tipTerenaId': tipTerenaId,
-      'popust': popust,
-      'cijenaPopusta': cijenaPopusta,
-      'gradoviId': gradoviId
+      'deskripcija': deskripcija,
     });
     if (context.mounted) {
       Navigator.pop(context);
@@ -159,25 +112,27 @@ class _TereniScreenState extends State<TereniScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           backgroundColor: Theme.of(context).primaryColor,
-          content: const Text('Uspješno ste editovali Teren!'),
+          content: const Text('Uspješno ste editovali partnera!'),
         ),
       );
     }
   }
 
-  void openEditModal(Teren teren) {
+  void openEditModal(int id, String naziv, String deskripcija) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return EditTerenModal(
-          teren: teren,
+        return EditPartneriModal(
+          id: id,
+          naziv: naziv,
+          deskripcija: deskripcija,
           handleEdit: handleEdit,
         );
       },
     );
   }
 
-  void openDeleteModal(Teren teren) {
+  void openDeleteModal(Partneri partner) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -186,7 +141,7 @@ class _TereniScreenState extends State<TereniScreen> {
           content: const Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text('Da li ste sigurni da želite da obrišete Teren?'),
+              Text('Da li ste sigurni da želite da obrišete ovog partnera?'),
             ],
           ),
           actions: [
@@ -199,7 +154,7 @@ class _TereniScreenState extends State<TereniScreen> {
             ElevatedButton(
               onPressed: () async {
                 try {
-                  await _terenProvider!.remove(teren.terenId!);
+                  await _partneriProvider!.remove(partner.partnerId!);
                   if (context.mounted) {
                     Navigator.pop(context);
                     _initializeData();
@@ -210,8 +165,7 @@ class _TereniScreenState extends State<TereniScreen> {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         backgroundColor: Colors.red,
-                        content: Text(
-                            'Ne možete obrisati ovaj Teren jer ovaj teren ima rezervacija!'),
+                        content: Text('Ne možete obrisati ovog partnera!'),
                       ),
                     );
                   }
@@ -235,13 +189,13 @@ class _TereniScreenState extends State<TereniScreen> {
         children: [
           // Sidebar
           SidebarNavigation(
-            selectedPage: 'tereni',
+            selectedPage: 'partneri',
             onPageSelected: (page) {
-              if (page == 'tereni') {
+              if (page == 'partneri') {
                 Navigator.of(context).pushReplacement(
                   PageRouteBuilder(
                     transitionDuration: Duration.zero,
-                    pageBuilder: (_, __, ___) => const TereniScreen(),
+                    pageBuilder: (_, __, ___) => const PartneriScreen(),
                   ),
                 );
               } else if (page == 'korisnici') {
@@ -272,20 +226,18 @@ class _TereniScreenState extends State<TereniScreen> {
                     pageBuilder: (_, __, ___) => const ReportScreen(),
                   ),
                 );
-              }
-              else if (page == 'obavijesti') {
+              } else if (page == 'tereni') {
+                Navigator.of(context).pushReplacement(
+                  PageRouteBuilder(
+                    transitionDuration: Duration.zero,
+                    pageBuilder: (_, __, ___) => const TereniScreen(),
+                  ),
+                );
+              } else if (page == 'obavijesti') {
                 Navigator.of(context).pushReplacement(
                   PageRouteBuilder(
                     transitionDuration: Duration.zero,
                     pageBuilder: (_, __, ___) => const ObavijestiScreen(),
-                  ),
-                );
-              }
-              else if (page == 'partneri') {
-                Navigator.of(context).pushReplacement(
-                  PageRouteBuilder(
-                    transitionDuration: Duration.zero,
-                    pageBuilder: (_, __, ___) => const PartneriScreen(),
                   ),
                 );
               }
@@ -299,14 +251,16 @@ class _TereniScreenState extends State<TereniScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Expanded(
+                      Align(
+                        alignment: Alignment.centerLeft,
                         child: Container(
+                          margin: const EdgeInsets.only(left: 120),
                           child: Column(
                             children: [
                               Transform.translate(
                                 offset: const Offset(-120, 0),
                                 child: const Text(
-                                  'Tereni',
+                                  'Partneri',
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 20),
@@ -319,7 +273,7 @@ class _TereniScreenState extends State<TereniScreen> {
                                   onPressed: () {
                                     openAddModal();
                                   },
-                                  child: const Text('Dodaj Teren'),
+                                  child: const Text('Dodaj Partnera'),
                                   style: ButtonStyle(
                                     backgroundColor:
                                         MaterialStateProperty.all<Color>(
@@ -344,137 +298,6 @@ class _TereniScreenState extends State<TereniScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(width: 10),
-                      Column(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 3.0, horizontal: 8.0),
-                            decoration: BoxDecoration(
-                              color: Colors.grey[200],
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            child: Row(
-                              children: [
-                                Container(
-                                  width: 250,
-                                  padding: const EdgeInsets.all(8.0),
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey[200],
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  child: TextField(
-                                    controller: _searchController,
-                                    keyboardType: TextInputType.multiline,
-                                    decoration: InputDecoration(
-                                      filled: true,
-                                      fillColor: Colors.white,
-                                      hintText: 'Pretrazi po nazivu terena',
-                                      contentPadding:
-                                          const EdgeInsets.symmetric(
-                                              vertical: 8.0,
-                                              horizontal: 4.0),
-                                      border: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10.0),
-                                        borderSide: BorderSide.none,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  width: 250, // Set the desired width
-                                  // padding: const EdgeInsets.all(8.0),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  child: DropdownButtonFormField<int>(
-                                    dropdownColor: Colors.white,
-                                    decoration: InputDecoration(
-                                      contentPadding:
-                                          EdgeInsets.symmetric(vertical: 8.0),
-                                      hintText: 'Pretrazi po vrsti podloge',
-                                      border: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10.0),
-                                      ),
-                                    ),
-                                    value: _selectedTipTerena,
-                                    items: [
-                                      // Add "Svi tereni" as the default option
-                                      DropdownMenuItem<int>(
-                                        value:
-                                            null, // Null value represents "Svi tereni"
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 4.0),
-                                          child: Text('Svi tereni'),
-                                        ),
-                                      ),
-                                      if (resultTipTerena != null)
-                                        ...resultTipTerena!.result
-                                            .map((podloga) {
-                                          return DropdownMenuItem<int>(
-                                            value: podloga.tipTerenaId,
-                                            child: Padding(
-                                                padding: const EdgeInsets.only(
-                                              left: 4.0),
-                                              child: Text(podloga.naziv!),
-                                            ),
-                                          );
-                                        }).toList(),
-                                    ],
-                                    onChanged: (value) {
-                                      setState(() {
-                                        _selectedTipTerena = value;
-                                        selectedPodlogaNaziv = value == null
-                                            ? '' // Empty string for "Svi tereni"
-                                            : resultTipTerena?.result
-                                                .firstWhere((podloga) =>
-                                                    podloga.tipTerenaId ==
-                                                    value)
-                                                .naziv;
-                                      });
-                                    },
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 8,
-                                ),
-                                ElevatedButton(
-                                  onPressed: () {
-                                    _resetPage();
-                                  },
-                                  style: ButtonStyle(
-                                      backgroundColor:
-                                          MaterialStateProperty.all<Color>(
-                                              Colors.green),
-                                      foregroundColor:
-                                          MaterialStateProperty.all<Color>(
-                                              Colors.white),
-                                      minimumSize:
-                                          MaterialStateProperty.all<Size>(
-                                              const Size(10, 45)),
-                                      shape: MaterialStateProperty.all<
-                                          RoundedRectangleBorder>(
-                                        RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
-                                        ),
-                                      )),
-                                  child: const Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Icon(Icons.search),
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
                     ],
                   ),
                   const SizedBox(height: 20),
@@ -494,7 +317,7 @@ class _TereniScreenState extends State<TereniScreen> {
       return Container(
         padding: const EdgeInsets.all(16.0),
         child: const Text(
-          'Ne postoje podadci sa vasom pretragom. Pokusajte ponovo sa drugim kljucnim rijecima.',
+          'Ne postoje podaci sa vašom pretragom. Pokušajte ponovo sa drugim ključnim riječima.',
           style: TextStyle(
               fontSize: 18, color: Color.fromARGB(255, 119, 119, 119)),
         ),
@@ -531,16 +354,7 @@ class _TereniScreenState extends State<TereniScreen> {
                 DataColumn(
                   label: Expanded(
                     child: Text(
-                      'Naziv terena',
-                      style: TextStyle(
-                          fontWeight: FontWeight.w500, color: Colors.white),
-                    ),
-                  ),
-                ),
-                DataColumn(
-                  label: Expanded(
-                    child: Text(
-                      'Vrsta podloge',
+                      'Naziv',
                       style: TextStyle(
                           fontWeight: FontWeight.w500, color: Colors.white),
                     ),
@@ -565,20 +379,26 @@ class _TereniScreenState extends State<TereniScreen> {
                   ),
                 ),
               ],
-              rows: result!.result.map((Teren teren) {
+              rows: result!.result.map((Partneri partner) {
                 return DataRow(cells: [
-                  DataCell(Text(teren.naziv!)),
-                  DataCell(Text(teren.tipTerena!.naziv!)),
+                  DataCell(
+                    Text(
+                      maxLines: 1,
+                      partner.naziv!.length > 30
+                          ? '${partner.naziv!.substring(0, 30)}...'
+                          : partner.naziv!,
+                    ),
+                  ),
                   DataCell(IconButton(
                     icon: const Icon(Icons.edit),
                     onPressed: () {
-                      openEditModal(teren);
+                      openEditModal(partner.partnerId!, partner.naziv!, partner.deskripcija!);
                     },
                   )),
                   DataCell(IconButton(
                     icon: const Icon(Icons.delete, color: Color(0xFFFF9A62)),
                     onPressed: () {
-                      openDeleteModal(teren);
+                      openDeleteModal(partner);
                     },
                   )),
                 ]);

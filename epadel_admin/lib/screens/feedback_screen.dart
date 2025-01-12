@@ -3,6 +3,7 @@ import 'package:epadel_admin/providers/feedback_provider.dart';
 import 'package:epadel_admin/screens/appsidebar.dart';
 import 'package:epadel_admin/screens/korisnici_screen.dart';
 import 'package:epadel_admin/screens/obavijesti_screen.dart';
+import 'package:epadel_admin/screens/partneri_screen.dart';
 import 'package:epadel_admin/screens/report_screen.dart';
 import 'package:epadel_admin/screens/rezervacije_screen.dart';
 import 'package:epadel_admin/screens/tereni_screen.dart';
@@ -142,6 +143,14 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                   PageRouteBuilder(
                     transitionDuration: Duration.zero,
                     pageBuilder: (_, __, ___) => const ObavijestiScreen(),
+                  ),
+                );
+              }
+               else if (page == 'partneri') {
+                Navigator.of(context).pushReplacement(
+                  PageRouteBuilder(
+                    transitionDuration: Duration.zero,
+                    pageBuilder: (_, __, ___) => const PartneriScreen(),
                   ),
                 );
               }

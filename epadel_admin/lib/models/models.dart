@@ -7,3 +7,4 @@ export 'feedback.dart';
 export 'gradovi.dart';
 export 'reporti.dart';
 export 'obavijesti.dart';
+export 'partneri.dart';

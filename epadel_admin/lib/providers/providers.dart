@@ -5,3 +5,4 @@ export 'rezervacije_provider.dart';
 export 'gradovi_provider.dart';
 export 'tip_terena_provider.dart';
 export 'obavijesti_provider.dart';
+export 'partneri_provider.dart';

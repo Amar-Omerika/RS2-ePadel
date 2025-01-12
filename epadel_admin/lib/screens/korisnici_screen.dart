@@ -2,6 +2,7 @@ import 'package:epadel_admin/providers/auth_provider.dart';
 import 'package:epadel_admin/screens/feedback_screen.dart';
 import 'package:epadel_admin/screens/login_screen.dart';
 import 'package:epadel_admin/screens/obavijesti_screen.dart';
+import 'package:epadel_admin/screens/partneri_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:epadel_admin/models/models.dart';
 import 'package:epadel_admin/providers/providers.dart';
@@ -192,6 +193,14 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
                   PageRouteBuilder(
                     transitionDuration: Duration.zero,
                     pageBuilder: (_, __, ___) => const ObavijestiScreen(),
+                  ),
+                );
+              }
+                  else if (page == 'partneri') {
+                Navigator.of(context).pushReplacement(
+                  PageRouteBuilder(
+                    transitionDuration: Duration.zero,
+                    pageBuilder: (_, __, ___) => const PartneriScreen(),
                   ),
                 );
               }

@@ -7,6 +7,7 @@ import 'package:epadel_admin/screens/appsidebar.dart';
 import 'package:epadel_admin/screens/feedback_screen.dart';
 import 'package:epadel_admin/screens/korisnici_screen.dart';
 import 'package:epadel_admin/screens/obavijesti_screen.dart';
+import 'package:epadel_admin/screens/partneri_screen.dart';
 import 'package:epadel_admin/screens/report_screen.dart';
 import 'package:epadel_admin/screens/tereni_screen.dart';
 import 'package:flutter/material.dart';
@@ -157,6 +158,14 @@ class _RezervacijeScreenState extends State<RezervacijeScreen> {
                   PageRouteBuilder(
                     transitionDuration: Duration.zero,
                     pageBuilder: (_, __, ___) => const ObavijestiScreen(),
+                  ),
+                );
+              }
+                else if (page == 'partneri') {
+                Navigator.of(context).pushReplacement(
+                  PageRouteBuilder(
+                    transitionDuration: Duration.zero,
+                    pageBuilder: (_, __, ___) => const PartneriScreen(),
                   ),
                 );
               }
