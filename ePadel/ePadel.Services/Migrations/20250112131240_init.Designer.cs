@@ -12,7 +12,7 @@ using ePadel.Services.Database;
 namespace ePadel.Services.Migrations
 {
     [DbContext(typeof(IB190069_ePadelContext))]
-    [Migration("20250108140741_init")]
+    [Migration("20250112131240_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -248,6 +248,28 @@ namespace ePadel.Services.Migrations
                     b.HasIndex("TerenId");
 
                     b.ToTable("Ocjene");
+                });
+
+            modelBuilder.Entity("ePadel.Services.Database.Partneri", b =>
+                {
+                    b.Property<int>("PartnerId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PartnerId"), 1L, 1);
+
+                    b.Property<DateTime?>("DatumObjave")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Deskripcija")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Naziv")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("PartnerId");
+
+                    b.ToTable("Partneris");
                 });
 
             modelBuilder.Entity("ePadel.Services.Database.PlatiTermin", b =>

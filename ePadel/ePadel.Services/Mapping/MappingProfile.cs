@@ -4,6 +4,7 @@ using ePadel.Model.Requests.KorisnikRequest;
 using ePadel.Model.Requests.KorisnikUlogeRequest;
 using ePadel.Model.Requests.ObavijestiRequest;
 using ePadel.Model.Requests.OcjeneRequest;
+using ePadel.Model.Requests.PartneriRequest;
 using ePadel.Model.Requests.PlatiRequest;
 using ePadel.Model.Requests.ReportiRequest;
 using ePadel.Model.Requests.RezervacijaRequest;
@@ -34,6 +35,9 @@ namespace ePadel.Services.Mapping
             CreateMap<Database.Ocjene, Model.Ocjene>();
             CreateMap<Database.Reporti, Model.Reporti>();
             CreateMap<Database.Obavijesti, Model.Obavijesti>();
+            CreateMap<Database.Partneri, Model.Partneri>();
+
+
 
 
 
@@ -61,6 +65,11 @@ namespace ePadel.Services.Mapping
 
             CreateMap<ObavijestiInsertRequest, Database.Obavijesti>();
             CreateMap<ObavijestiUpdateRequest, Database.Obavijesti>();
+
+            CreateMap<PartneriInsertRequest, Database.Partneri>();
+            CreateMap<PartneriUpdateRequest, Database.Partneri>();
+
+
 
 
 

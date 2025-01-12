@@ -61,6 +61,21 @@ namespace ePadel.Services.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Partneris",
+                columns: table => new
+                {
+                    PartnerId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Naziv = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Deskripcija = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DatumObjave = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Partneris", x => x.PartnerId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "TipTerena",
                 columns: table => new
                 {
@@ -411,6 +426,9 @@ namespace ePadel.Services.Migrations
 
             migrationBuilder.DropTable(
                 name: "Ocjene");
+
+            migrationBuilder.DropTable(
+                name: "Partneris");
 
             migrationBuilder.DropTable(
                 name: "PlatiTermins");

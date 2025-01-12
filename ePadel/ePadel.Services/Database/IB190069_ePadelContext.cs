@@ -25,6 +25,8 @@ namespace ePadel.Services.Database
         public virtual DbSet<PlatiTermin> PlatiTermins { get; set; } = null!;
         public virtual DbSet<Feedback> Feedbacks { get; set; } = null!;
         public virtual DbSet<Obavijesti> Obavijestis { get; set; } = null!;
+        public virtual DbSet<Partneri> Partneris { get; set; } = null!;
+
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

@@ -248,6 +248,28 @@ namespace ePadel.Services.Migrations
                     b.ToTable("Ocjene");
                 });
 
+            modelBuilder.Entity("ePadel.Services.Database.Partneri", b =>
+                {
+                    b.Property<int>("PartnerId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PartnerId"), 1L, 1);
+
+                    b.Property<DateTime?>("DatumObjave")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Deskripcija")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Naziv")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("PartnerId");
+
+                    b.ToTable("Partneris");
+                });
+
             modelBuilder.Entity("ePadel.Services.Database.PlatiTermin", b =>
                 {
                     b.Property<int>("PlatiTerminId")
