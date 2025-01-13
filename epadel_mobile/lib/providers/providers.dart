@@ -7,3 +7,4 @@ export 'feedback_provider.dart';
 export 'ocjene_provider.dart';
 export 'spolovi_provider.dart';
 export 'obavijesti_provider.dart';
+export 'partneri_provider.dart';

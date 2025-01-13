@@ -155,7 +155,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ),
             ),
-             const SizedBox(height: 20),
+            const SizedBox(height: 5),
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 10),
+              child: InkWell(
+                onTap: () {
+                  Navigator.pushNamed(context, PartneriScreen.routeName);
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Colors.green[500],
+                      borderRadius: BorderRadius.circular(5)),
+                  child: const Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 8.0, vertical: 10),
+                    child: Center(
+                      child: Text(
+                        'Prikazi oficijalne partnere',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
             Container(
               margin: EdgeInsets.symmetric(vertical: 10),
               child: InkWell(

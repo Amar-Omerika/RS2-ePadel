@@ -30,6 +30,8 @@ void main() async {
         ChangeNotifierProvider(create: (_) => OcjeneProvider()),
         ChangeNotifierProvider(create: (_) => SpoloviProvider()),
         ChangeNotifierProvider(create: (_) => ObavijestiProvider()),
+        ChangeNotifierProvider(create: (_) => PartneriProvider()),
+
       ],
       child: const MyApp(),
     ),
@@ -60,6 +62,8 @@ class MyApp extends StatelessWidget {
        HistoryReservationScreen.routeName: (context) => const HistoryReservationScreen(),
        RecommendScreen.routeName: (context) => const RecommendScreen(),
        ObavijestiScreen.routeName: (context) => const ObavijestiScreen(),
+        PartneriScreen.routeName: (context) => const PartneriScreen(),
+
        
       },
     );

@@ -3,33 +3,33 @@ import 'package:provider/provider.dart';
 import 'package:epadel_mobile/models/models.dart';
 import 'package:epadel_mobile/providers/providers.dart';
 
-class ObavijestiScreen extends StatefulWidget {
-  static const String routeName = '/obavijesti';
-  const ObavijestiScreen({super.key});
+class PartneriScreen extends StatefulWidget {
+  static const String routeName = '/partneri';
+  const PartneriScreen({super.key});
 
   @override
-  _ObavijestiScreenState createState() => _ObavijestiScreenState();
+  _PartneriScreenState createState() => _PartneriScreenState();
 }
 
-class _ObavijestiScreenState extends State<ObavijestiScreen> {
-  late ObavijestiProvider _obavijestiProvider;
-  SearchResult<Obavijesti> _obavijesti = SearchResult<Obavijesti>();
+class _PartneriScreenState extends State<PartneriScreen> {
+  late PartneriProvider _partneriProvider;
+  SearchResult<Partneri> _partneri = SearchResult<Partneri>();
   final Map<int, bool> _expanded = {};
 
   @override
   void initState() {
     super.initState();
-    _obavijestiProvider = context.read<ObavijestiProvider>();
+    _partneriProvider = context.read<PartneriProvider>();
     loadData();
   }
 
   Future<void> loadData() async {
-    var tmpData = await _obavijestiProvider.get();
+    var tmpData = await _partneriProvider.get();
     setState(() {
-      _obavijesti = tmpData as SearchResult<Obavijesti>;
+      _partneri = tmpData as SearchResult<Partneri>;
       // Initialize the expanded state for each item
       _expanded.clear();
-      for (int i = 0; i < _obavijesti.result.length; i++) {
+      for (int i = 0; i < _partneri.result.length; i++) {
         _expanded[i] = false;
       }
     });
@@ -39,22 +39,23 @@ class _ObavijestiScreenState extends State<ObavijestiScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Obavijesti'),
+        title: const Text('Partneri'),
         backgroundColor: const Color(0xFF618264),
         foregroundColor: Colors.white,
         centerTitle: true,
       ),
       body: Container(
         color: const Color(0xFF618264),
-        child: _obavijesti.result.isEmpty
+        child: _partneri.result.isEmpty
             ? const Center(
                 child: CircularProgressIndicator(),
               )
             : ListView.builder(
-                itemCount: _obavijesti.result.length,
+                itemCount: _partneri.result.length,
                 itemBuilder: (context, index) {
-                  if (_obavijesti.result.isEmpty) return const SizedBox.shrink(); // Guard against empty data
-                  final obavijest = _obavijesti.result[index];
+                  if (_partneri.result.isEmpty)
+                    return const SizedBox.shrink(); // Guard against empty data
+                  final partneri = _partneri.result[index];
                   final isExpanded = _expanded[index] ?? false;
 
                   return Container(
@@ -79,7 +80,7 @@ class _ObavijestiScreenState extends State<ObavijestiScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          obavijest.naslov ?? 'N/A',
+                          partneri.naziv ?? 'N/A',
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 16.0,
@@ -88,13 +89,13 @@ class _ObavijestiScreenState extends State<ObavijestiScreen> {
                         const SizedBox(height: 4.0),
                         Text(
                           isExpanded
-                              ? (obavijest.sadrzaj ?? 'N/A')
-                              : ((obavijest.sadrzaj?.length ?? 0) > 100
-                                  ? '${obavijest.sadrzaj?.substring(0, 100)}...'
-                                  : obavijest.sadrzaj ?? 'N/A'),
+                              ? (partneri.deskripcija ?? 'N/A')
+                              : ((partneri.deskripcija?.length ?? 0) > 100
+                                  ? '${partneri.deskripcija?.substring(0, 100)}...'
+                                  : partneri.deskripcija ?? 'N/A'),
                           style: const TextStyle(fontSize: 14.0),
                         ),
-                        if ((obavijest.sadrzaj?.length ?? 0) > 100)
+                        if ((partneri.deskripcija?.length ?? 0) > 100)
                           TextButton(
                             onPressed: () {
                               setState(() {
@@ -106,7 +107,6 @@ class _ObavijestiScreenState extends State<ObavijestiScreen> {
                               style: const TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
-
                               ),
                             ),
                           ),
@@ -114,7 +114,7 @@ class _ObavijestiScreenState extends State<ObavijestiScreen> {
                         Align(
                           alignment: Alignment.bottomRight,
                           child: Text(
-                            obavijest.datumObjave!.substring(0, 10) ?? 'N/A',
+                            partneri.datumObjave!.substring(0, 10),
                             style: TextStyle(
                               color: Colors.grey[700],
                               fontStyle: FontStyle.italic,

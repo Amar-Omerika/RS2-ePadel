@@ -10,3 +10,4 @@ export 'edit_profile_screen.dart';
 export 'reservation_history_screen.dart';
 export 'recommend_courts_screen.dart';
 export 'obavijesti_screen.dart';
+export 'partneri_screen.dart';

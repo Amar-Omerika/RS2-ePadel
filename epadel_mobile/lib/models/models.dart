@@ -8,3 +8,4 @@ export 'feedback.dart';
 export 'ocjene.dart';
 export 'spolovi.dart';
 export 'obavijesti.dart';
+export 'partneri.dart';
