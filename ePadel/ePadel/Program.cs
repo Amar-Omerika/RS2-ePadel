@@ -14,6 +14,7 @@ using ePadel.Services.ReportiService;
 using ePadel.Services.RezervacijaService;
 using ePadel.Services.TerenService;
 using ePadel.Services.TipTerenaService;
+using ePadel.Services.TrenerService;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -37,6 +38,8 @@ builder.Services.AddTransient<IGradoviService, GradoviService>();
 builder.Services.AddTransient<IReportiService, ReportiService>();
 builder.Services.AddTransient<IObavijestiService, ObavijestiService>();
 builder.Services.AddTransient<IPartneriService, PartneriService>();
+builder.Services.AddTransient<ITrenerService, TrenerService>();
+
 
 
 

@@ -26,6 +26,8 @@ namespace ePadel.Services.Database
         public virtual DbSet<Feedback> Feedbacks { get; set; } = null!;
         public virtual DbSet<Obavijesti> Obavijestis { get; set; } = null!;
         public virtual DbSet<Partneri> Partneris { get; set; } = null!;
+        public virtual DbSet<Treneri> Treneris { get; set; } = null!;
+
 
 
 

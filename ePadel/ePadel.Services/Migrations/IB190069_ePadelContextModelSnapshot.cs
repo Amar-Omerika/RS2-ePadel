@@ -543,6 +543,28 @@ namespace ePadel.Services.Migrations
                         });
                 });
 
+            modelBuilder.Entity("ePadel.Services.Database.Treneri", b =>
+                {
+                    b.Property<int>("TrenerId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TrenerId"), 1L, 1);
+
+                    b.Property<string>("Bio")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImePrezime")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("KontaktTel")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("TrenerId");
+
+                    b.ToTable("Treneris");
+                });
+
             modelBuilder.Entity("ePadel.Services.Database.Uloga", b =>
                 {
                     b.Property<int>("UlogaId")

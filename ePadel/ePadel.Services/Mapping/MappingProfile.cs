@@ -10,6 +10,7 @@ using ePadel.Model.Requests.ReportiRequest;
 using ePadel.Model.Requests.RezervacijaRequest;
 using ePadel.Model.Requests.TerenRequest;
 using ePadel.Model.Requests.TipTerenaRequest;
+using ePadel.Model.Requests.TrenerRequest;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,6 +37,8 @@ namespace ePadel.Services.Mapping
             CreateMap<Database.Reporti, Model.Reporti>();
             CreateMap<Database.Obavijesti, Model.Obavijesti>();
             CreateMap<Database.Partneri, Model.Partneri>();
+            CreateMap<Database.Treneri, Model.Treneri>();
+
 
 
 
@@ -68,6 +71,11 @@ namespace ePadel.Services.Mapping
 
             CreateMap<PartneriInsertRequest, Database.Partneri>();
             CreateMap<PartneriUpdateRequest, Database.Partneri>();
+
+            CreateMap<TrenerInsertRequest, Database.Treneri>();
+            CreateMap<TrenerUpdateRequest, Database.Treneri>();
+
+
 
 
 

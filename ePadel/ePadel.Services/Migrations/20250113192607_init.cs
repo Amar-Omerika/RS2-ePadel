@@ -90,6 +90,21 @@ namespace ePadel.Services.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Treneris",
+                columns: table => new
+                {
+                    TrenerId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ImePrezime = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Bio = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    KontaktTel = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Treneris", x => x.TrenerId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Uloga",
                 columns: table => new
                 {
@@ -438,6 +453,9 @@ namespace ePadel.Services.Migrations
 
             migrationBuilder.DropTable(
                 name: "Rezervacije");
+
+            migrationBuilder.DropTable(
+                name: "Treneris");
 
             migrationBuilder.DropTable(
                 name: "Uloga");
