@@ -5,6 +5,7 @@ import 'package:epadel_admin/screens/partneri_screen.dart';
 import 'package:epadel_admin/screens/report_screen.dart';
 import 'package:epadel_admin/screens/rezervacije_screen.dart';
 import 'package:epadel_admin/screens/tereni_screen.dart';
+import 'package:epadel_admin/screens/trener_screen.dart';
 import 'package:flutter/material.dart';
 
 class NavigationItem {
@@ -34,6 +35,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
     NavigationItem(label: 'Report', widget: const ReportScreen()),
     NavigationItem(label: 'Obavijesti', widget: const ObavijestiScreen()),
     NavigationItem(label: 'Partneri', widget: const PartneriScreen()),
+    NavigationItem(label: 'Treneri', widget: const TrenerScreen()),
     NavigationItem(label: 'Login', widget: const LoginScreen()),
   ];
 

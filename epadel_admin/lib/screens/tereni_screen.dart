@@ -9,6 +9,7 @@ import 'package:epadel_admin/screens/obavijesti_screen.dart';
 import 'package:epadel_admin/screens/partneri_screen.dart';
 import 'package:epadel_admin/screens/report_screen.dart';
 import 'package:epadel_admin/screens/rezervacije_screen.dart';
+import 'package:epadel_admin/screens/trener_screen.dart';
 import 'package:epadel_admin/widgets/modals/Tereni/add_teren_modal.dart';
 import 'package:epadel_admin/widgets/modals/Tereni/edit_teren_modal.dart';
 import 'package:flutter/material.dart';
@@ -286,6 +287,14 @@ class _TereniScreenState extends State<TereniScreen> {
                   PageRouteBuilder(
                     transitionDuration: Duration.zero,
                     pageBuilder: (_, __, ___) => const PartneriScreen(),
+                  ),
+                );
+              }
+                   else if (page == 'treneri') {
+                Navigator.of(context).pushReplacement(
+                  PageRouteBuilder(
+                    transitionDuration: Duration.zero,
+                    pageBuilder: (_, __, ___) => const TrenerScreen(),
                   ),
                 );
               }

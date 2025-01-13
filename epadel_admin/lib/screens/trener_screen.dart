@@ -1,40 +1,39 @@
 // ignore_for_file: prefer_const_constructors, use_build_context_synchronously
 
 import 'package:epadel_admin/models/models.dart';
-import 'package:epadel_admin/providers/partneri_provider.dart';
 import 'package:epadel_admin/providers/providers.dart';
 import 'package:epadel_admin/screens/appsidebar.dart';
 import 'package:epadel_admin/screens/feedback_screen.dart';
 import 'package:epadel_admin/screens/korisnici_screen.dart';
 import 'package:epadel_admin/screens/obavijesti_screen.dart';
+import 'package:epadel_admin/screens/partneri_screen.dart';
 import 'package:epadel_admin/screens/report_screen.dart';
 import 'package:epadel_admin/screens/rezervacije_screen.dart';
 import 'package:epadel_admin/screens/tereni_screen.dart';
-import 'package:epadel_admin/screens/trener_screen.dart';
-import 'package:epadel_admin/widgets/modals/Partneri/add_partneri_modal.dart';
-import 'package:epadel_admin/widgets/modals/Partneri/edit_partneri_modal.dart';
+import 'package:epadel_admin/widgets/modals/Treneri/add_trener_modal.dart';
+import 'package:epadel_admin/widgets/modals/Treneri/edit_trener_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class PartneriScreen extends StatefulWidget {
-  static const String routeName = '/partneri';
-
-  const PartneriScreen({Key? key}) : super(key: key);
+class TrenerScreen extends StatefulWidget {
+  static const String routeName = '/treneri';
+  const TrenerScreen({Key? key}) : super(key: key);
 
   @override
-  _PartneriScreenState createState() => _PartneriScreenState();
+  _TrenerScreenState createState() => _TrenerScreenState();
 }
 
-class _PartneriScreenState extends State<PartneriScreen> {
-  PartneriProvider? _partneriProvider;
-  SearchResult<Partneri>? result;
+class _TrenerScreenState extends State<TrenerScreen> {
+  TrenerProvider? _trenerProvider;
+  SearchResult<Trener>? result;
+  final TextEditingController _searchController = TextEditingController();
   int _currentPage = 1;
   int _pageSize = 5;
 
   @override
   void initState() {
     super.initState();
-    _partneriProvider = context.read<PartneriProvider>();
+    _trenerProvider = context.read<TrenerProvider>();
     _initializeData();
   }
 
@@ -44,7 +43,11 @@ class _PartneriScreenState extends State<PartneriScreen> {
       'pageSize': _pageSize.toString()
     };
 
-    var data = await _partneriProvider!.get(filters);
+    if (_searchController.text.isNotEmpty) {
+      filters['Text'] = _searchController.text;
+    }
+
+    var data = await _trenerProvider!.get(filters);
     setState(() {
       result = data;
     });
@@ -61,6 +64,13 @@ class _PartneriScreenState extends State<PartneriScreen> {
     return _currentPage > 1;
   }
 
+  void _nextPage() {
+    setState(() {
+      _currentPage++;
+      _initializeData();
+    });
+  }
+
   bool _canGoToNextPage() {
     if (result != null) {
       int totalPages = (result!.totalCount / _pageSize).ceil();
@@ -69,17 +79,11 @@ class _PartneriScreenState extends State<PartneriScreen> {
     return false;
   }
 
-  void _nextPage() {
-    setState(() {
-      _currentPage++;
-      _initializeData();
-    });
-  }
-
-  void handleAdd(String? naziv, String? deskripcija) async {
-    await _partneriProvider!.insert({
-      'naziv': naziv,
-      'deskripcija': deskripcija,
+  void handleAdd(String? imePrezime, String? bio, String? kontaktTel) async {
+    await _trenerProvider!.insert({
+      'imePrezime': imePrezime,
+      'bio': bio,
+      'kontaktTel': kontaktTel,
     });
     if (context.mounted) {
       Navigator.pop(context);
@@ -87,7 +91,25 @@ class _PartneriScreenState extends State<PartneriScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           backgroundColor: Theme.of(context).primaryColor,
-          content: const Text('Uspješno ste dodali novog partnera!'),
+          content: const Text('Uspješno ste dodali novog trenera!'),
+        ),
+      );
+    }
+  }
+
+  void handleEdit(int id, String imePrezime, String bio, String kontaktTel) async {
+    await _trenerProvider!.update(id, {
+      'imePrezime': imePrezime,
+      'bio': bio,
+      'kontaktTel': kontaktTel,
+    });
+    if (context.mounted) {
+      Navigator.pop(context);
+      _initializeData();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Theme.of(context).primaryColor,
+          content: const Text('Uspješno ste editovali trenera!'),
         ),
       );
     }
@@ -97,87 +119,21 @@ class _PartneriScreenState extends State<PartneriScreen> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AddPartneriModal(handleAdd: handleAdd);
+        return AddTrenerModal(handleAdd: handleAdd);
       },
     );
   }
 
-  void handleEdit(int id, String naziv, String deskripcija) async {
-    await _partneriProvider!.update(id, {
-      'naziv': naziv,
-      'deskripcija': deskripcija,
-    });
-    if (context.mounted) {
-      Navigator.pop(context);
-      _initializeData();
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: Theme.of(context).primaryColor,
-          content: const Text('Uspješno ste editovali partnera!'),
-        ),
-      );
-    }
-  }
-
-  void openEditModal(int id, String naziv, String deskripcija) {
+  void openEditModal(Trener trener) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return EditPartneriModal(
-          id: id,
-          naziv: naziv,
-          deskripcija: deskripcija,
+        return EditTrenerModal(
+          id: trener.trenerId!,
+          imePrezime: trener.imePrezime!,
+          bio: trener.bio!,
+          kontaktTel: trener.kontaktTel!,
           handleEdit: handleEdit,
-        );
-      },
-    );
-  }
-
-  void openDeleteModal(Partneri partner) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Obrisi'),
-          content: const Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text('Da li ste sigurni da želite da obrišete ovog partnera?'),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text('Poništi'),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                try {
-                  await _partneriProvider!.remove(partner.partnerId!);
-                  if (context.mounted) {
-                    Navigator.pop(context);
-                    _initializeData();
-                  }
-                } catch (e) {
-                  if (context.mounted) {
-                    Navigator.pop(context);
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        backgroundColor: Colors.red,
-                        content: Text('Ne možete obrisati ovog partnera!'),
-                      ),
-                    );
-                  }
-                }
-              },
-              child: const Text(
-                'Obriši',
-                style: TextStyle(color: Colors.red),
-              ),
-            ),
-          ],
         );
       },
     );
@@ -190,13 +146,13 @@ class _PartneriScreenState extends State<PartneriScreen> {
         children: [
           // Sidebar
           SidebarNavigation(
-            selectedPage: 'partneri',
+            selectedPage: 'treneri',
             onPageSelected: (page) {
-              if (page == 'partneri') {
+                  if (page == 'treneri') {
                 Navigator.of(context).pushReplacement(
                   PageRouteBuilder(
                     transitionDuration: Duration.zero,
-                    pageBuilder: (_, __, ___) => const PartneriScreen(),
+                    pageBuilder: (_, __, ___) => const TrenerScreen(),
                   ),
                 );
               } else if (page == 'korisnici') {
@@ -227,14 +183,8 @@ class _PartneriScreenState extends State<PartneriScreen> {
                     pageBuilder: (_, __, ___) => const ReportScreen(),
                   ),
                 );
-              } else if (page == 'tereni') {
-                Navigator.of(context).pushReplacement(
-                  PageRouteBuilder(
-                    transitionDuration: Duration.zero,
-                    pageBuilder: (_, __, ___) => const TereniScreen(),
-                  ),
-                );
-              } else if (page == 'obavijesti') {
+              }
+              else if (page == 'obavijesti') {
                 Navigator.of(context).pushReplacement(
                   PageRouteBuilder(
                     transitionDuration: Duration.zero,
@@ -242,16 +192,25 @@ class _PartneriScreenState extends State<PartneriScreen> {
                   ),
                 );
               }
-                   else if (page == 'treneri') {
+              else if (page == 'partneri') {
                 Navigator.of(context).pushReplacement(
                   PageRouteBuilder(
                     transitionDuration: Duration.zero,
-                    pageBuilder: (_, __, ___) => const TrenerScreen(),
+                    pageBuilder: (_, __, ___) => const PartneriScreen(),
+                  ),
+                );
+              }
+                 if (page == 'tereni') {
+                Navigator.of(context).pushReplacement(
+                  PageRouteBuilder(
+                    transitionDuration: Duration.zero,
+                    pageBuilder: (_, __, ___) => const TereniScreen(),
                   ),
                 );
               }
             },
           ),
+          // Main content
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(16.0),
@@ -269,7 +228,7 @@ class _PartneriScreenState extends State<PartneriScreen> {
                               Transform.translate(
                                 offset: const Offset(-120, 0),
                                 child: const Text(
-                                  'Partneri',
+                                  'Treneri',
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 20),
@@ -282,7 +241,7 @@ class _PartneriScreenState extends State<PartneriScreen> {
                                   onPressed: () {
                                     openAddModal();
                                   },
-                                  child: const Text('Dodaj Partnera'),
+                                  child: const Text('Dodaj Trenera'),
                                   style: ButtonStyle(
                                     backgroundColor:
                                         MaterialStateProperty.all<Color>(
@@ -321,103 +280,157 @@ class _PartneriScreenState extends State<PartneriScreen> {
     );
   }
 
-  Widget _buildDataListView() {
-    if (result == null || result!.result.isEmpty) {
-      return Container(
-        padding: const EdgeInsets.all(16.0),
-        child: const Text(
-          'Ne postoje podaci sa vašom pretragom. Pokušajte ponovo sa drugim ključnim riječima.',
-          style: TextStyle(
-              fontSize: 18, color: Color.fromARGB(255, 119, 119, 119)),
-        ),
-      );
-    }
-
+ Widget _buildDataListView() {
+  if (result == null || result!.result.isEmpty) {
     return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10.0),
-        border: Border.all(
-          color: const Color(0xFFD7D2DC),
-          width: 1.0,
-        ),
-      ),
-      child: Center(
-        child: SizedBox(
-          width: double.infinity, // Expand to maximum width
-          child: Container(
-            decoration: BoxDecoration(
-              color: const Color(0xFFD9D9D9),
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-            child: DataTable(
-              border: const TableBorder(
-                horizontalInside: BorderSide(
-                  width: 1,
-                  color: Colors.white,
-                ),
-              ),
-              headingRowColor: MaterialStateProperty.all<Color?>(
-                Colors.green,
-              ),
-              columns: const [
-                DataColumn(
-                  label: Expanded(
-                    child: Text(
-                      'Naziv',
-                      style: TextStyle(
-                          fontWeight: FontWeight.w500, color: Colors.white),
-                    ),
-                  ),
-                ),
-                DataColumn(
-                  label: Expanded(
-                    child: Text(
-                      'Uredi',
-                      style: TextStyle(
-                          fontWeight: FontWeight.w500, color: Colors.white),
-                    ),
-                  ),
-                ),
-                DataColumn(
-                  label: Expanded(
-                    child: Text(
-                      'Obrisi',
-                      style: TextStyle(
-                          fontWeight: FontWeight.w500, color: Colors.white),
-                    ),
-                  ),
-                ),
-              ],
-              rows: result!.result.map((Partneri partner) {
-                return DataRow(cells: [
-                  DataCell(
-                    Text(
-                      maxLines: 1,
-                      partner.naziv!.length > 30
-                          ? '${partner.naziv!.substring(0, 30)}...'
-                          : partner.naziv!,
-                    ),
-                  ),
-                  DataCell(IconButton(
-                    icon: const Icon(Icons.edit),
-                    onPressed: () {
-                      openEditModal(partner.partnerId!, partner.naziv!, partner.deskripcija!);
-                    },
-                  )),
-                  DataCell(IconButton(
-                    icon: const Icon(Icons.delete, color: Color(0xFFFF9A62)),
-                    onPressed: () {
-                      openDeleteModal(partner);
-                    },
-                  )),
-                ]);
-              }).toList(),
-            ),
-          ),
-        ),
+      padding: const EdgeInsets.all(16.0),
+      child: const Text(
+        'Ne postoje podaci sa vašom pretragom. Pokušajte ponovo sa drugim ključnim riječima.',
+        style: TextStyle(
+            fontSize: 18, color: Color.fromARGB(255, 119, 119, 119)),
       ),
     );
   }
+
+  return Container(
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(10.0),
+      border: Border.all(
+        color: const Color(0xFFD7D2DC),
+        width: 1.0,
+      ),
+    ),
+    child: Center(
+      child: SizedBox(
+        width: double.infinity, // Expand to maximum width
+        child: Container(
+          decoration: BoxDecoration(
+            color: const Color(0xFFD9D9D9),
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          child: DataTable(
+            border: const TableBorder(
+              horizontalInside: BorderSide(
+                width: 1,
+                color: Colors.white,
+              ),
+            ),
+            headingRowColor: MaterialStateProperty.all<Color?>(
+              Colors.green,
+            ),
+            columns: const [
+              DataColumn(
+                label: Expanded(
+                  child: Text(
+                    'Ime Prezime',
+                    style: TextStyle(
+                        fontWeight: FontWeight.w500, color: Colors.white),
+                  ),
+                ),
+              ),
+              DataColumn(
+                label: Expanded(
+                  child: Text(
+                    'Kontakt Tel',
+                    style: TextStyle(
+                        fontWeight: FontWeight.w500, color: Colors.white),
+                  ),
+                ),
+              ),
+              DataColumn(
+                label: Expanded(
+                  child: Text(
+                    'Uredi',
+                    style: TextStyle(
+                        fontWeight: FontWeight.w500, color: Colors.white),
+                  ),
+                ),
+              ),
+              DataColumn(
+                label: Expanded(
+                  child: Text(
+                    'Obriši',
+                    style: TextStyle(
+                        fontWeight: FontWeight.w500, color: Colors.white),
+                  ),
+                ),
+              ),
+            ],
+            rows: result!.result.map((Trener trener) {
+              return DataRow(cells: [
+                DataCell(Text(trener.imePrezime!)),
+                DataCell(Text(trener.kontaktTel!)),
+                DataCell(IconButton(
+                  icon: const Icon(Icons.edit),
+                  onPressed: () {
+                    openEditModal(trener);
+                  },
+                )),
+                DataCell(IconButton(
+                  icon: const Icon(Icons.delete, color: Color(0xFFFF9A62)),
+                  onPressed: () {
+                    openDeleteModal(trener);
+                  },
+                )),
+              ]);
+            }).toList(),
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
+void openDeleteModal(Trener trener) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('Obriši'),
+        content: const Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text('Da li ste sigurni da želite da obrišete Trenera?'),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text('Poništi'),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              try {
+                await _trenerProvider!.remove(trener.trenerId!);
+                if (context.mounted) {
+                  Navigator.pop(context);
+                  _initializeData();
+                }
+              } catch (e) {
+                if (context.mounted) {
+                  Navigator.pop(context);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      backgroundColor: Colors.red,
+                      content: Text(
+                          'Ne možete obrisati ovog Trenera!'),
+                    ),
+                  );
+                }
+              }
+            },
+            child: const Text(
+              'Obriši',
+              style: TextStyle(color: Colors.red),
+            ),
+          ),
+        ],
+      );
+    },
+  );
+}
 
   Widget _buildPaginationControls() {
     return Center(

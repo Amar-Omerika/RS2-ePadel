@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:epadel_admin/Helpers/eror_dialog.dart';
 import 'package:epadel_admin/screens/obavijesti_screen.dart';
 import 'package:epadel_admin/screens/partneri_screen.dart';
+import 'package:epadel_admin/screens/trener_screen.dart';
 import 'package:epadel_admin/utils/util.dart';
 import 'package:flutter/material.dart';
 import 'package:epadel_admin/models/models.dart';
@@ -134,6 +135,14 @@ class _ReportScreenState extends State<ReportScreen> {
                   PageRouteBuilder(
                     transitionDuration: Duration.zero,
                     pageBuilder: (_, __, ___) => const PartneriScreen(),
+                  ),
+                );
+              }
+                   else if (page == 'treneri') {
+                Navigator.of(context).pushReplacement(
+                  PageRouteBuilder(
+                    transitionDuration: Duration.zero,
+                    pageBuilder: (_, __, ___) => const TrenerScreen(),
                   ),
                 );
               }

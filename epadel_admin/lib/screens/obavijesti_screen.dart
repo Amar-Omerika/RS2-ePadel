@@ -10,6 +10,7 @@ import 'package:epadel_admin/screens/partneri_screen.dart';
 import 'package:epadel_admin/screens/report_screen.dart';
 import 'package:epadel_admin/screens/rezervacije_screen.dart';
 import 'package:epadel_admin/screens/tereni_screen.dart';
+import 'package:epadel_admin/screens/trener_screen.dart';
 import 'package:epadel_admin/widgets/modals/Obavijesti/add_obavijest_modal.dart';
 import 'package:epadel_admin/widgets/modals/Obavijesti/edit_obavijest_modal.dart';
 import 'package:flutter/material.dart';
@@ -244,6 +245,14 @@ void openEditModal(int id, String naslov, String sadrzaj) {
                   PageRouteBuilder(
                     transitionDuration: Duration.zero,
                     pageBuilder: (_, __, ___) => const PartneriScreen(),
+                  ),
+                );
+              }
+                 else if (page == 'treneri') {
+                Navigator.of(context).pushReplacement(
+                  PageRouteBuilder(
+                    transitionDuration: Duration.zero,
+                    pageBuilder: (_, __, ___) => const TrenerScreen(),
                   ),
                 );
               }

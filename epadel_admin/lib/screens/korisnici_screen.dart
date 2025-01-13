@@ -13,6 +13,8 @@ import 'package:epadel_admin/screens/tereni_screen.dart';
 import 'package:epadel_admin/widgets/modals/Korisnici/edit_korisnici_modal.dart';
 import 'package:provider/provider.dart';
 
+import 'trener_screen.dart';
+
 class KorisniciScreen extends StatefulWidget {
   static const String routeName = '/korisnici';
   const KorisniciScreen({Key? key}) : super(key: key);
@@ -201,6 +203,14 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
                   PageRouteBuilder(
                     transitionDuration: Duration.zero,
                     pageBuilder: (_, __, ___) => const PartneriScreen(),
+                  ),
+                );
+              }
+               else if (page == 'treneri') {
+                Navigator.of(context).pushReplacement(
+                  PageRouteBuilder(
+                    transitionDuration: Duration.zero,
+                    pageBuilder: (_, __, ___) => const TrenerScreen(),
                   ),
                 );
               }
