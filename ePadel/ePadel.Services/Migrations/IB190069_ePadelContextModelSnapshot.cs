@@ -225,6 +225,15 @@ namespace ePadel.Services.Migrations
                     b.HasKey("ObavijestId");
 
                     b.ToTable("Obavijestis");
+
+                    b.HasData(
+                        new
+                        {
+                            ObavijestId = 1,
+                            DatumObjave = new DateTime(2025, 1, 15, 15, 7, 24, 215, DateTimeKind.Local).AddTicks(4143),
+                            Naslov = "Radno vrijeme tokom praznika",
+                            Sadrzaj = "Prvi i drugi dan praznika centar ence raditi s toga necemo raditi vracamo se ponovo 31.og vidimo se !"
+                        });
                 });
 
             modelBuilder.Entity("ePadel.Services.Database.Ocjene", b =>
@@ -268,6 +277,15 @@ namespace ePadel.Services.Migrations
                     b.HasKey("PartnerId");
 
                     b.ToTable("Partneris");
+
+                    b.HasData(
+                        new
+                        {
+                            PartnerId = 1,
+                            DatumObjave = new DateTime(2025, 1, 15, 15, 7, 24, 215, DateTimeKind.Local).AddTicks(4195),
+                            Deskripcija = "Oficijalni partner padel reketa, koji vam omogucuje maximalno profesionalno iskustvo igranja padela.",
+                            Naziv = "Nox Europe"
+                        });
                 });
 
             modelBuilder.Entity("ePadel.Services.Database.PlatiTermin", b =>
@@ -563,6 +581,15 @@ namespace ePadel.Services.Migrations
                     b.HasKey("TrenerId");
 
                     b.ToTable("Treneris");
+
+                    b.HasData(
+                        new
+                        {
+                            TrenerId = 1,
+                            Bio = "Roger Federer (Basel, Švicarska, 8. kolovoza 1981.), umirovljeni je švicarski tenisač.Roger je jedan od najboljih tenisača svih vremena. Proveo je 310 tjedana na 1. mjestu ATP ljestvice.",
+                            ImePrezime = "Roger Federer",
+                            KontaktTel = "123-456-789"
+                        });
                 });
 
             modelBuilder.Entity("ePadel.Services.Database.Uloga", b =>
