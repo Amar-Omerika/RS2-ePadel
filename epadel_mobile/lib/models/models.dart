@@ -9,3 +9,4 @@ export 'ocjene.dart';
 export 'spolovi.dart';
 export 'obavijesti.dart';
 export 'partneri.dart';
+export 'trener.dart';

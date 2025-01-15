@@ -31,6 +31,8 @@ void main() async {
         ChangeNotifierProvider(create: (_) => SpoloviProvider()),
         ChangeNotifierProvider(create: (_) => ObavijestiProvider()),
         ChangeNotifierProvider(create: (_) => PartneriProvider()),
+        ChangeNotifierProvider(create: (_) => TrenerProvider()),
+
 
       ],
       child: const MyApp(),
@@ -63,6 +65,7 @@ class MyApp extends StatelessWidget {
        RecommendScreen.routeName: (context) => const RecommendScreen(),
        ObavijestiScreen.routeName: (context) => const ObavijestiScreen(),
         PartneriScreen.routeName: (context) => const PartneriScreen(),
+        TreneriScreen.routeName: (context) => const TreneriScreen(),
 
        
       },

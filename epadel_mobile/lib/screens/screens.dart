@@ -11,3 +11,4 @@ export 'reservation_history_screen.dart';
 export 'recommend_courts_screen.dart';
 export 'obavijesti_screen.dart';
 export 'partneri_screen.dart';
+export 'treneri_screen.dart';
