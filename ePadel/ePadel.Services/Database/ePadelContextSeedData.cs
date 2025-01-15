@@ -203,7 +203,7 @@ namespace ePadel.Services.Database
 
             });
 
-       
+
             modelBuilder.Entity<Feedback>().HasData(new Feedback[]{
             new Feedback()
             {
@@ -213,6 +213,39 @@ namespace ePadel.Services.Database
             },
 
         });
+
+            modelBuilder.Entity<Obavijesti>().HasData(new Obavijesti[]
+                {
+              new Obavijesti()
+                 {
+                 ObavijestId = 1,
+                 Naslov = "Radno vrijeme tokom praznika",
+                 Sadrzaj = "Prvi i drugi dan praznika centar ence raditi s toga necemo raditi vracamo se ponovo 31.og vidimo se !",
+                  DatumObjave = DateTime.Now
+                 },
+          });
+
+            modelBuilder.Entity<Partneri>().HasData(new Partneri[]
+            {
+                new Partneri()
+                {
+                    PartnerId = 1,
+                    Naziv = "Nox Europe",
+                    Deskripcija = "Oficijalni partner padel reketa, koji vam omogucuje maximalno profesionalno iskustvo igranja padela.",
+                    DatumObjave = DateTime.Now
+                },
+            });
+
+            modelBuilder.Entity<Treneri>().HasData(new Treneri[]
+            {
+                new Treneri()
+                {
+                    TrenerId = 1,
+                    ImePrezime = "Roger Federer",
+                    Bio = "Roger Federer (Basel, Švicarska, 8. kolovoza 1981.), umirovljeni je švicarski tenisač.Roger je jedan od najboljih tenisača svih vremena. Proveo je 310 tjedana na 1. mjestu ATP ljestvice.",
+                    KontaktTel = "123-456-789",
+                },
+            });
         }
     }
 }
