@@ -138,9 +138,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           if (error.toString().contains("Exception")) {
                             setState(() {
                               loginFailed = true;
-                              errorMessage = error
-                                  .toString()
-                                  .replaceFirst("Exception: ", "");
+                              errorMessage = error.toString()
+                                 .substring(86, error.toString().length - 2);
                             });
                           }
                         }
