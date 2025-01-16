@@ -172,7 +172,18 @@ abstract class BaseProvider<T> with ChangeNotifier {
     } else if (response.statusCode == 404) {
       throw Exception("Not found");
     } else if (response.statusCode == 500) {
-      throw Exception("Internal server error");
+           if (response.body.isNotEmpty) {
+        var data = jsonDecode(response.body);
+        if (data['errors'] != null && !data['errors'].isEmpty) {
+          var errorData = data["errors"] as Map<dynamic, dynamic>;
+          var firstKey = errorData.keys.toList().first;
+          var errorString = data['errors'][firstKey];
+          print("Error string is $errorString");
+          throw Exception("Bad request $errorString");
+        }
+        throw Exception('Bad request');
+      }
+      throw Exception('Empty 500 response');
     } else {
       throw Exception("Exception... handle this gracefully");
     }

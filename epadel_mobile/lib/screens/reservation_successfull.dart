@@ -127,8 +127,10 @@ class _ReservationSuccessfulScreenState extends State<ReservationSuccessfulScree
                                 _feedbackController.clear();
                                 showSuccessDialog(context, "Uspješno ste ostavili komentar!");
                               } on Exception catch (e) {
-                                String errorMessage = e.toString().replaceFirst('Exception: ', '');
-                                showErrorDialog(context, errorMessage);
+                                String errorMessage = e.toString()
+                                 .substring(86, e.toString().length - 2);
+                                 _feedbackController.clear();
+                                showErrorDialog(context, 'Feedback možete postaviti samo jednom!');
                               }
                             }
                           },
