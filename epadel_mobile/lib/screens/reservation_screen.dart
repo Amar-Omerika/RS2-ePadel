@@ -340,9 +340,9 @@ class _ReservationScreenState extends State<ReservationScreen> {
                               int brojReketaInt =
                                   int.tryParse(brojReketa!) ?? -1;
                               if (potrebnaReketa == 'Da' &&
-                                  (brojReketaInt < 0 || brojReketaInt > 4)) {
+                                  (brojReketaInt < 1 || brojReketaInt > 4)) {
                                 return showErrorDialog(context,
-                                    'Broj reketa mora biti izmedju 0 i 4.');
+                                    'Broj reketa mora biti izmedju 1 i 4.');
                               }
 
                               if (_slots.isEmpty ||
